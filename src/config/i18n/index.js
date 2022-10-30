@@ -9,22 +9,38 @@ import auth_es from "../../assets/traslations/es/auth.json";
 import global_en from "../../assets/traslations/en/global.json";
 import global_es from "../../assets/traslations/es/global.json";
 
-i18next.init({
-    interpolation: { escapeValue: false },
-    lng: "es",
-    resources: {
-        en: {
-            auth: auth_en,
-            global: global_en
-        },
-        es: {
-            auth: auth_es,
-            global: global_es
-        },
-    }
-})
-
 const I18n = ({ children }) => {
+
+    const getCurrentLang = () => {
+        let startLang = "es"
+        const preSelect = localStorage.getItem("lang");
+
+        if (!!preSelect) {
+            startLang = preSelect;
+        } else {
+            const current = navigator.language || navigator.userLanguage
+            if (!!current) {
+                startLang = current;
+            }
+        }
+        return startLang;
+    }
+
+    i18next.init({
+        interpolation: { escapeValue: false },
+        lng: getCurrentLang(),
+        resources: {
+            en: {
+                auth: auth_en,
+                global: global_en
+            },
+            es: {
+                auth: auth_es,
+                global: global_es
+            },
+        }
+    })
+
     return (
         <I18nextProvider i18n={i18next} >
             {children}

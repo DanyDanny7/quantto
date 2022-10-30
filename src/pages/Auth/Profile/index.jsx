@@ -9,11 +9,12 @@ const Profile = () => {
   const [__, i18n] = useTranslation("global");
 
   const onHeadBtn = () => {
+    let selectLanguage = "es";
     if (i18n.resolvedLanguage === "es") {
-      i18n.changeLanguage('en');
-    } else {
-      i18n.changeLanguage('es');
+      selectLanguage = "en"
     }
+    i18n.changeLanguage(selectLanguage);
+    localStorage.setItem("lang", selectLanguage)
   }
 
   return (
