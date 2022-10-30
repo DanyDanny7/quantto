@@ -1,28 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Typography,
     TextField,
-    Button,
     Link as LinkUi,
     Divider,
     FormControl,
     InputAdornment,
     IconButton,
-    Paper
+    Paper,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
 import { get } from "lodash";
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useDispatch, useSelector } from "react-redux";
 
 import LayoutAuth from "../../../components/layout/LayoutAuth";
-import validator from "./validator"
+import Notification from "../../../components/form/Notification";
+import validator from "./validator";
+
+import { login } from "../../../store/actions/auth/loginAction"
 
 const Login = () => {
     const navigate = useNavigate();
-    const [showPass, setShowPass] = useState(false)
+    const dispatch = useDispatch();
+    const loginReducer = useSelector(state => state.todos.loginReducer);
+    const [showPass, setShowPass] = useState(false);
+    const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
 
     const [__] = useTranslation("auth");
     const inputs = __('login.input', { returnObjects: true })
@@ -32,10 +39,13 @@ const Login = () => {
         setShowPass(state => !state)
     }
 
-    const onSubmit = (values) => {
-        console.log(values)
-        navigate("/")
-    }
+    useEffect(() => {
+        if (get(loginReducer, "isLoged")) {
+            navigate("/")
+        } else if (get(loginReducer, "isReject")) {
+            setShowNoti({ open: true, msg: "Usuario o contraseña inválida", variant: "error" })
+        }
+    }, [loginReducer, navigate])
 
     const formik = useFormik({
         initialValues: {
@@ -43,7 +53,7 @@ const Login = () => {
             password: '',
         },
         validationSchema: validator(inputs),
-        onSubmit,
+        onSubmit: (values) => dispatch(login(values))
     });
 
     return (
@@ -108,10 +118,17 @@ const Login = () => {
                                 </Link>
                             </LinkUi>
                         </Box>
-
-                        <Button color="primary" variant="contained" fullWidth type="submit" size='large'>
+                        <LoadingButton
+                            color="primary"
+                            variant="contained"
+                            fullWidth
+                            type="submit"
+                            size='large'
+                            loadingPosition="end"
+                            loading={get(loginReducer, "isLoading")}
+                        >
                             {__("login.button.name")}
-                        </Button>
+                        </LoadingButton>
 
                         <Box className='my-6 text-center flex justify-between items-center' >
                             <Divider className='flex-1' />
@@ -128,6 +145,7 @@ const Login = () => {
                         </Box>
                     </Box>
                 </Paper>
+                <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
             </Box>
         </LayoutAuth>
     )

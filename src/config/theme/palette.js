@@ -9,12 +9,15 @@ const palette = {
     },
     error: {
         main: error[300],
+        contrastText: neutral[50]
     },
     warning: {
-        main: alert[300]
+        main: alert[300],
+        contrastText: neutral[50]
     },
     success: {
-        main: success[300]
+        main: success[300],
+        contrastText: neutral[50]
     },
     text: {
         lite: neutral[500],
