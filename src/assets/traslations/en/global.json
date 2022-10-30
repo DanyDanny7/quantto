@@ -1,0 +1,23 @@
+{
+    "header": {
+        "sub-title": "In process Inventory [[code]] active",
+        "btn-1": "End Inventory",
+        "btn-2": "Change language"
+    },
+    "change": "Español",
+    "layout": {
+        "search": "Search",
+        "titles": [
+            "my inventory",
+            "my users",
+            "Payments"
+        ],
+        "menus": [
+            "Active Inventory",
+            "Inventories",
+            "Inventory taker",
+            "Payment history",
+            "Profile"
+        ]
+    }
+}

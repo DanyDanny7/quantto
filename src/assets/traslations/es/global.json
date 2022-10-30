@@ -1,0 +1,23 @@
+{
+    "header": {
+        "sub-title": "Posees el inventario [[code]] activo",
+        "btn-1": "Finalizar conteo",
+        "btn-2": "Cambiar idioma"
+    },
+    "change": "Ingles",
+    "layout": {
+        "search": "Buscar",
+        "titles": [
+            "Mi inventario",
+            "Mis usuarios",
+            "Pagos"
+        ],
+        "menus": [
+            "Inventario Activo",
+            "Inventarios",
+            "Contadores",
+            "Historial de pagos",
+            "Perfil"
+        ]
+    }
+}
