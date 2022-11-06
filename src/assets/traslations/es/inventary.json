@@ -1,0 +1,81 @@
+{
+    "active": {
+        "header": {
+            "title": "Inventario Activo",
+            "sub-title": "Posees el inventario [[code]] activo"
+        },
+        "btn": "Finalizar conteo",
+        "filters": {
+            "search": "Buscar",
+            "selects": [
+                {
+                    "title": "Categoria:",
+                    "options": [
+                        "Todos",
+                        "Téoricos",
+                        "Fisicos",
+                        "Diferencias"
+                    ]
+                },
+                {
+                    "title": "Teoricos:",
+                    "options": [
+                        "Todos",
+                        "Opción1",
+                        "Opción2",
+                        "Opción3"
+                    ]
+                },
+                {
+                    "title": "Fisicos:",
+                    "options": [
+                        "Todos",
+                        "Opción1",
+                        "Opción2",
+                        "Opción3"
+                    ]
+                },
+                {
+                    "title": "Diferencias:",
+                    "options": [
+                        "Todos",
+                        "Opción1",
+                        "Opción2",
+                        "Opción3"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "Código",
+            "Producto",
+            "Categoría",
+            "Barcode",
+            "Teórico",
+            "Físicos",
+            "Diferencias"
+        ],
+        "cards": {
+            "card-1": {
+                "title": "Detalle de conteo activo",
+                "count-name": "Conteo:",
+                "start": "Inicio:",
+                "end": "Final:",
+                "progress": "Avance:",
+                "units-counted": "Unidades contadas:",
+                "elapsed-time": "Tiempo transcurrido:"
+            },
+            "card-2": {
+                "title": "Conteo de artículos",
+                "counted": "Contados",
+                "not-counted": "No Contados"
+            },
+            "card-3": {
+                "title": "Categorías de artículos",
+                "on-hand": "Téoricos",
+                "counted-units": "Fisicos",
+                "diference": "Diferencia"
+            }
+        }
+    }
+}

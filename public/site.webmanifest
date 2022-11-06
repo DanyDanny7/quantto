@@ -1,0 +1,14 @@
+{
+    "name": "Quanto",
+    "short_name": "Quanto",
+    "icons": [
+        {
+            "src": "/android-chrome-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#f95a05",
+    "background_color": "#f95a05",
+    "display": "standalone"
+}

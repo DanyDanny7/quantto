@@ -1,0 +1,32 @@
+{
+    "payment": {
+        "header": {
+            "title": "",
+            "sub-title": ""
+        },
+        "btn": "ES",
+        "filters": {
+            "search": "Search",
+            "selects": [
+                {
+                    "title": "Filter1",
+                    "options": [
+                        "Option-1",
+                        "Option-2",
+                        "Option-3",
+                        "Option-4"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "Date",
+            "Name",
+            "Inventary",
+            "Attached",
+            "Amount",
+            "Card",
+            "Voucher"
+        ]
+    }
+}

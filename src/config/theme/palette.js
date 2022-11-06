@@ -20,8 +20,12 @@ const palette = {
         contrastText: neutral[50]
     },
     text: {
+        slite: neutral[400],
         lite: neutral[500],
         main: neutral[800],
+    },
+    background: {
+        base: neutral[100]
     },
     color: { alert, blue, error, green, greenlight, neutral, orange, pink, purple, purplelight, skyblue, success }
 };

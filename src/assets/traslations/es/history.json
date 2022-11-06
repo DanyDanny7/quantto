@@ -1,0 +1,32 @@
+{
+    "payment": {
+        "header": {
+            "title": "Historial de pagos",
+            "sub-title": "Puedes ver el detalle de tus pagos de conteos realizados"
+        },
+        "btn": "EN",
+        "filters": {
+            "search": "Buscar",
+            "selects": [
+                {
+                    "title": "Rango de fechas:",
+                    "options": [
+                        "Tres meses",
+                        "Último mes",
+                        "Última semana",
+                        "Hoy"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "Fecha",
+            "Pago por",
+            "Inventario",
+            "Adjunto",
+            "Monto",
+            "Tarjeta de pago",
+            "Comprobante"
+        ]
+    }
+}

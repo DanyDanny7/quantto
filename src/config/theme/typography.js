@@ -98,12 +98,12 @@ const typography = {
         letterSpacing: "-2%",
     },
     // ------------------ Buttons ---------------
-    buttonLarge: {
+    buttonSmall: {
         fontFamily: "Ubuntu-Medium",
         fontWeight: "medium",
-        fontSize: "18px",
-        lineHeight: "24px",
-        letterSpacing: "-5%",
+        fontSize: "14",
+        lineHeight: "16px",
+        letterSpacing: "-2%",
     },
     buttonMedium: {
         fontFamily: "Ubuntu-Medium",
@@ -112,13 +112,22 @@ const typography = {
         lineHeight: "24px",
         letterSpacing: "-2%",
     },
-    buttonSmall: {
+    buttonLarge: {
         fontFamily: "Ubuntu-Medium",
         fontWeight: "medium",
-        fontSize: "14",
-        lineHeight: "16px",
-        letterSpacing: "-2%",
+        fontSize: "18px",
+        lineHeight: "24px",
+        letterSpacing: "-5%",
     },
+    buttonXtra: {
+        fontFamily: "Ubuntu-Medium",
+        fontWeight: "medium",
+        fontSize: "24px",
+        lineHeight: "32px",
+        letterSpacing: "-5%",
+    },
+    
+    
     // ------------------ Caption ---------------
     caption: {
         fontFamily: "Ubuntu-Light",

@@ -54,16 +54,16 @@ const Login = () => {
         },
         validationSchema: validator(inputs),
         onSubmit: (values) => {
-            if (get(values, "email") === "raul@lebbel.io" && get(values, "password") === "Raul.123") {
-                navigate("/")
-            } else {
-                dispatch(login(values))
-            }
+            // if (get(values, "email") === "raul@lebbel.io" && get(values, "password") === "Raul.123") {
+            //     navigate("/")
+            // } else {
+            dispatch(login(values))
+            // }
         }
     });
 
     return (
-        <LayoutAuth type="login">
+        <LayoutAuth title={__('login.name')} type="login">
             <Box className='flex flex-col justify-center items-center h-full'>
                 <Paper className='py-8 px-16 w-1/2' elevation={3} style={{ minWidth: 433 }} >
                     <Box className='mb-2' ><Typography variant='heading1'>{__("login.title")}</Typography></Box>

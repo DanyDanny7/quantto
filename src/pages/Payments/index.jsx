@@ -3,7 +3,8 @@ import { Typography } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { get } from "lodash";
 
-import Layout from "../../components/layout/Layout"
+import Layout from "../../components/layout/Layout";
+import Table from "../../components/form/Table";
 
 const Payments = () => {
   const [__] = useTranslation("global");
@@ -16,7 +17,7 @@ const Payments = () => {
         btnLabel: __('header.btn-1')
       }}
     >
-      <Typography variant='body1'>Payments</Typography>
+      <Table />
     </Layout>
   )
 }

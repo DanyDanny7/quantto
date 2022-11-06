@@ -1,7 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles';
-import { useTranslation } from "react-i18next";
-import { replace, get } from "lodash";
+import { get } from "lodash";
 
 import { Box, Typography, Toolbar as ToolbarUi, Button } from '@mui/material';
 
@@ -15,14 +14,8 @@ const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
 
 const Toolbar = ({
     toolbarHeight,
-    propsToolbar = {
-        title: "Inventario",
-        code: "#Asq937614",
-        btnLabel: "Finalizar conteo",
-        btnFunc: () => { }
-    }
+    propsToolbar = { label: "", btnLabel: "", code: "", btnFunc: () => { } }
 }) => {
-    const [__] = useTranslation("global");
 
     return (
         <StyledToolbar sx={{ height: toolbarHeight }} >
@@ -30,15 +23,15 @@ const Toolbar = ({
                 <Typography variant="heading2" color="text.main" gutterBottom >
                     {get(propsToolbar, "title")}
                 </Typography>
-                {get(propsToolbar, "code") &&
-                    <Typography variant="bodySmall" color="text.main" >
-                        {replace(__('header.sub-title'), "[[code]]", get(propsToolbar, "code"))}
-                    </Typography>
-                }
+                <Typography variant="bodySmall" color="text.main" >
+                    {get(propsToolbar, "label")}
+                </Typography>
             </Box>
-            <Button color="primary" variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
-                {get(propsToolbar, "btnLabel")}
-            </Button>
+            {get(propsToolbar, "btnLabel", false) &&
+                <Button color="primary" variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
+                    {get(propsToolbar, "btnLabel")}
+                </Button>
+            }
         </StyledToolbar>
     )
 }

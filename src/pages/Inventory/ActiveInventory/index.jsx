@@ -1,26 +1,184 @@
-import React from 'react'
-import { Typography } from '@mui/material';
+import React from 'react';
 import { useTranslation } from "react-i18next";
-import { get } from "lodash";
+import { get, map, replace } from "lodash";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+    IconButton,
+    Paper,
+    Grid,
+    Box,
+    Typography
+} from '@mui/material';
+import { useTheme } from "@mui/material/styles";
+
 
 import Layout from "../../../components/layout/Layout"
+import Table from "../../../components/form/Table";
+import PieChart from "./component/PieChart";
+import BarChart from "./component/BarChart";
+
+function createData(code, product, category, barcode, onHand, counted, difference) {
+    return { code, product, category, barcode, onHand, counted, difference };
+}
+
+const rows = [
+    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+];
 
 const ActiveInventory = () => {
-    const [__] = useTranslation("global");
+    const theme = useTheme();
+    const [__] = useTranslation("inve");
+    const module = "active"
+    const code = "#Asq937614"
+
+    const titles = __(`${module}.table`, { returnObjects: true });
+
+    const headTable = [
+        {
+            key: "code",
+            label: get(titles, "[0]"),
+            align: "left",
+        },
+        {
+            key: "product",
+            label: get(titles, "[1]"),
+            align: "center"
+        },
+        {
+            key: "category",
+            label: get(titles, "[2]"),
+            align: "center"
+        },
+        {
+            key: "barcode",
+            label: get(titles, "[3]"),
+            align: "center"
+        },
+        {
+            key: "onHand",
+            label: get(titles, "[4]"),
+            align: "center"
+        },
+        {
+            key: "counted",
+            label: get(titles, "[5]"),
+            align: "center"
+        },
+        {
+            key: "difference",
+            label: get(titles, "[6]"),
+            align: "center"
+        },
+        {
+            key: "options",
+            label: "",
+            align: "center"
+        },
+    ]
+
+    const dataTable = map(rows, (row) => ({
+        ...row,
+        options: <IconButton ariaLabel="more" size="small"><MoreVertIcon fontSize="inherit" /></IconButton>
+    }))
+
+    const card1 = {
+        "count-name": "Nombre",
+        "start": "09/10/22 - 9:00 AM",
+        "end": "------",
+        "progress": "75%",
+        "units-counted": "100",
+        "elapsed-time": "8:00:00",
+    }
 
     return (
         <Layout
             propsToolbar={{
-                title: get(__('layout.menus', { returnObjects: true }), "[0]"),
-                code: "#Asq937614",
-                btnLabel: __('header.btn-1')
+                title: __(`${module}.header.title`),
+                label: replace(__(`${module}.header.sub-title`), "[[code]]", code),
+                code: null,
+                btnLabel: null
             }}
         >
-            <Typography variant='body1'>
-                {get(__('layout.menus', { returnObjects: true }), "[0]")}
-            </Typography>
+            <Box className='mb-6'>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6} xl={3}>
+                        <Paper className='py-8 px-6 overflow-auto h-full'>
+                            <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
+                            <Box className='mb-3'>
+                                <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
+                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
+                            </Box>
+                            <Box className='my-3'>
+                                <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
+                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
+                            </Box>
+                            <Box className='my-3'>
+                                <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
+                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
+                            </Box>
+                            <Box className='my-3'>
+                                <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
+                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
+                            </Box>
+                            <Box className='my-3'>
+                                <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
+                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
+                            </Box>
+                            <Box className='my-3'>
+                                <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
+                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={6} xl={4}>
+                        <Paper className='py-8 px-6 h-full'>
+                            <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
+                            <Box className='m-auto my-6' maxWidth={250} >
+                                <PieChart values={[90, 30]} />
+                            </Box>
+                            <Box className='flex items-center justify-around'>
+                                <Box className='flex items-center'>
+                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.skyblue[500]} />
+                                    <Typography variant="bodySmall">{__(`${module}.cards.card-2.counted`)}</Typography>
+                                </Box>
+                                <Box className='flex items-center'>
+                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.purplelight[300]} />
+                                    <Typography variant="bodySmall">{__(`${module}.cards.card-2.not-counted`)}</Typography>
+                                </Box>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} xl={5}>
+                        <Paper className='py-8 px-6 h-full'>
+                            <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
+                            <Box className='m-auto my-6 px-6' overflow="auto">
+                                <BarChart minWidth={350} />
+                            </Box>
+                            <Box className='flex items-center justify-around'>
+                                <Box className='flex items-center'>
+                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.greenlight[400]} />
+                                    <Typography variant="bodySmall">{__(`${module}.cards.card-3.on-hand`)}</Typography>
+                                </Box>
+                                <Box className='flex items-center'>
+                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.orange[400]} />
+                                    <Typography variant="bodySmall">{__(`${module}.cards.card-3.counted-units`)}</Typography>
+                                </Box>
+                                <Box className='flex items-center'>
+                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.pink[300]} />
+                                    <Typography variant="bodySmall">{__(`${module}.cards.card-3.diference`)}</Typography>
+                                </Box>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Table headTable={headTable} dataTale={dataTable} __={__} module={module} sizeFilters={125} />
         </Layout>
     )
 }
 
-export default ActiveInventory
+export default ActiveInventory;

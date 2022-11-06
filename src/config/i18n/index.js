@@ -4,10 +4,15 @@ import i18next from "i18next";
 import { I18nextProvider } from "react-i18next";
 
 import auth_en from "../../assets/traslations/en/auth.json";
-import auth_es from "../../assets/traslations/es/auth.json";
+import glob_en from "../../assets/traslations/en/global.json";
+import hist_en from "../../assets/traslations/en/history.json";
+import inve_en from "../../assets/traslations/en/inventary.json";
 
-import global_en from "../../assets/traslations/en/global.json";
-import global_es from "../../assets/traslations/es/global.json";
+import auth_es from "../../assets/traslations/es/auth.json";
+import glob_es from "../../assets/traslations/es/global.json";
+import hist_es from "../../assets/traslations/es/history.json";
+import inve_es from "../../assets/traslations/es/inventary.json";
+
 
 const I18n = ({ children }) => {
 
@@ -31,12 +36,16 @@ const I18n = ({ children }) => {
         lng: getCurrentLang(),
         resources: {
             en: {
+                global: glob_en,
                 auth: auth_en,
-                global: global_en
+                hist: hist_en,
+                inve: inve_en,
             },
             es: {
+                global: glob_es,
                 auth: auth_es,
-                global: global_es
+                hist: hist_es,
+                inve: inve_es,
             },
         }
     })

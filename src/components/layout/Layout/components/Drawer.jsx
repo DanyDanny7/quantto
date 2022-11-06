@@ -103,7 +103,7 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                 <Box height={toolbarHeight}>
                     <Quanto sx={{ width: "100%", height: '100%' }} />
                 </Box>
-                <InputSearch sx={{ ml: 5, mr: 3, mb: 2 }} size="small" />
+                <InputSearch sx={{ ml: 5, mr: 3, mb: 2 }} size="small" color="secondary" />
                 <List>
                     {options.map((item, index) => (
                         <>

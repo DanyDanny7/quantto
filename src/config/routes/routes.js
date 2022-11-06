@@ -1,10 +1,11 @@
 import Home from "../../pages/Home";
-
+/* ---------- Auth ---------- */
 import Login from "../../pages/Auth/Login";
 import Register from "../../pages/Auth/Register";
-import Profile from "../../pages/Auth/Profile";
 import ForgotPass from "../../pages/Auth/ForgotPass";
-import RecoveryPass from "../../pages/Auth/RecoveryPass";
+import RecoveryPassRequest from "../../pages/Auth/RecoveryPassRequest";
+import RecoveryPassReceive from "../../pages/Auth/RecoveryPassReceive";
+import Profile from "../../pages/Auth/Profile";
 
 import Counts from "../../pages/Counts";
 import PaymentHistory from "../../pages/History/PaymentHistory";
@@ -19,6 +20,7 @@ const routes = [
         element: <Home />,
     },
 
+    /* ---------- Auth ---------- */
     {
         key: "login",
         path: "/login",
@@ -30,21 +32,26 @@ const routes = [
         element: <Register />,
     },
     {
-        key: "register",
+        key: "forgot-pass",
         path: "/forgot-pass",
         element: <ForgotPass />,
     },
     {
-        key: "register",
-        path: "/recovery-pass",
-        element: <RecoveryPass />,
+        key: "recovery-pass-request",
+        path: "/recovery-pass-request",
+        element: <RecoveryPassRequest />,
     },
-
+    {
+        key: "recovery-pass-receive",
+        path: "/recovery-pass-receive",
+        element: <RecoveryPassReceive />,
+    },
     {
         key: "profile",
         path: "/profile",
         element: <Profile />,
     },
+
     {
         key: "counts",
         path: "/counts",

@@ -1,0 +1,81 @@
+{
+    "active": {
+        "header": {
+            "title": "Inventory Active",
+            "sub-title": "In process Inventory [[code]] active"
+        },
+        "btn": "End Inventory",
+        "filters": {
+            "search": "Search",
+            "selects": [
+                {
+                    "title": "Category:",
+                    "options": [
+                        "All",
+                        "option-1",
+                        "option-2",
+                        "option-3"
+                    ]
+                },
+                {
+                    "title": "filter2",
+                    "options": [
+                        "All",
+                        "option-1",
+                        "option-2",
+                        "option-3"
+                    ]
+                },
+                {
+                    "title": "filter3",
+                    "options": [
+                        "All",
+                        "option-1",
+                        "option-2",
+                        "option-3"
+                    ]
+                },
+                {
+                    "title": "filter4:",
+                    "options": [
+                        "All",
+                        "option-1",
+                        "option-2",
+                        "option-3"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "Code",
+            "Product",
+            "Category",
+            "Barcode",
+            "On Hand",
+            "Counted",
+            "Difference"
+        ],
+        "cards": {
+            "card-1": {
+                "title": "Active Invetory count Detailes",
+                "count-name": "Count Name:",
+                "start": "Start:",
+                "end": "End:",
+                "progress": "Progress:",
+                "units-counted": "Units Counted:",
+                "elapsed-time": "Elapsed Time:"
+            },
+            "card-2": {
+                "title": "Progress",
+                "counted": "Counted",
+                "not-counted": "Not Counted"
+            },
+            "card-3": {
+                "title": "SKU Categories",
+                "on-hand": "Un Hand",
+                "counted-units": "Counted Units",
+                "diference": "Diference"
+            }
+        }
+    }
+}

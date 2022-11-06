@@ -50,7 +50,7 @@ const Register = () => {
     });
 
     return (
-        <LayoutAuth type="register">
+        <LayoutAuth title={__('register.name')} type="register">
             <Box className='flex flex-col justify-center items-center '>
                 <Paper className='py-8 px-16 w-1/2' elevation={3} style={{ minWidth: 433 }} >
                     <Box className='mb-2' ><Typography variant='heading1'>{__("register.title")}</Typography></Box>
