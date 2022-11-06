@@ -18,10 +18,12 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
 import { get } from "lodash";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import CloseSession from "../../../assets/icons/CloseSession"
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from "react-router-dom";
 
+
+import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
 import validator from "./validator"
 
@@ -29,6 +31,7 @@ const Profile = () => {
   const [__, i18n] = useTranslation("auth");
   const [showPass, setShowPass] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate();
 
   const [data, setData] = useState();
 
@@ -66,9 +69,15 @@ const Profile = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: get(data, "username"),
-      email: get(data, "email"),
-      company: get(data, "companyId"),
+      // name: get(data, "username"),
+      // email: get(data, "email"),
+      // company: get(data, "companyId"),
+      // password: "",
+      // confirmation: "",
+      
+      name: "Ed warren",
+      email: "edwarren@correo.com",
+      company: "Gotech.sv",
       password: "",
       confirmation: "",
     },
@@ -81,6 +90,9 @@ const Profile = () => {
     if (!isEdit) {
       setIsEdit(true)
     }
+  }
+  const onLogout = () => {
+    navigate("/login")
   }
 
   return (
@@ -106,7 +118,7 @@ const Profile = () => {
               </Box>
             </Box>
           </Box>
-          <Button color="primary" startIcon={<CloseSession />}>
+          <Button color="primary" startIcon={<CloseSession />} onClick={onLogout}>
             <Typography variant="buttonMedium" >{__("profile.button.logout")}</Typography>
           </Button>
         </Paper>

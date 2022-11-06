@@ -143,7 +143,7 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                     <Box className='flex-1 p-4 flex items-center justify-between border rounded-2xl'>
                         <Box className='text-left'>
                             <Typography variant="buttonMedium">
-                                Name Example
+                                Ed warren
                             </Typography>
                             <br />
                             <Typography variant="bodySmall">

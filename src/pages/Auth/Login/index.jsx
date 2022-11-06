@@ -54,11 +54,11 @@ const Login = () => {
         },
         validationSchema: validator(inputs),
         onSubmit: (values) => {
-            // if (get(values, "email") === "raul@lebbel.io" && get(values, "password") === "Raul.123") {
-            //     navigate("/")
-            // } else {
-            dispatch(login(values))
-            // }
+            if (get(values, "email") === "raul@lebbel.io" && get(values, "password") === "Raul.123") {
+                navigate("/inventory/active-inventory")
+            } else {
+                dispatch(login(values))
+            }
         }
     });
 
