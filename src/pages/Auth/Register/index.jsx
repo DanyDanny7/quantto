@@ -16,13 +16,18 @@ import { useFormik } from 'formik';
 import { get } from "lodash";
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useDispatch, useSelector } from "react-redux";
 
 import LayoutAuth from "../../../components/layout/LayoutAuth";
 import validator from "./validator"
 
+import { register } from "../../../store/actions/auth/registerAction"
+
+
 const Register = () => {
-    const [showPass, setShowPass] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [showPass, setShowPass] = useState(false);
 
     const [__] = useTranslation("auth");
     const inputs = __('register.input', { returnObjects: true })
@@ -32,21 +37,30 @@ const Register = () => {
         setShowPass(state => !state)
     }
 
-    const onSubmit = (values) => {
-        console.log(values)
-        navigate("/")
-    }
+    // const onSubmit = (values) => {
+    //     console.log(values)
+    //     navigate("/")
+    // }
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            company: '',
+            username: '',
+            companyNombre: '',
             email: '',
-            password: '',
+            pass: '',
             confirmation: '',
+
+
+
+            // "username": "string",
+            // "pass": "string",
+            // "email": "string",
+            // "phone": "string",
+            // "token": "string",
+            // "companyNombre": "string"
         },
         validationSchema: validator(inputs),
-        onSubmit,
+        onSubmit: (values) => dispatch(register(values))
     });
 
     return (
@@ -59,35 +73,35 @@ const Register = () => {
 
                         <Box className='mb-8'>
                             <FormControl fullWidth >
-                                <Typography className='pb-2' component="label" htmlFor="name" >
+                                <Typography className='pb-2' component="label" htmlFor="username" >
                                     {get(inputs, "[0].name")}
                                 </Typography>
                                 <TextField
                                     fullWidth
-                                    id="name"
-                                    name="name"
+                                    id="username"
+                                    name="username"
                                     placeholder={get(inputs, "[0].placeholder")}
-                                    value={get(formik, "values.name")}
+                                    value={get(formik, "values.username")}
                                     onChange={get(formik, "handleChange")}
-                                    error={get(formik, "touched.name") && Boolean(get(formik, "errors.name"))}
-                                    helperText={get(formik, "touched.name") && get(formik, "errors.name")}
+                                    error={get(formik, "touched.username") && Boolean(get(formik, "errors.username"))}
+                                    helperText={get(formik, "touched.username") && get(formik, "errors.username")}
                                 />
                             </FormControl>
                         </Box>
                         <Box className='mb-8'>
                             <FormControl fullWidth >
-                                <Typography className='pb-2' component="label" htmlFor="company" >
+                                <Typography className='pb-2' component="label" htmlFor="companyNombre" >
                                     {get(inputs, "[1].name")}
                                 </Typography>
                                 <TextField
                                     fullWidth
-                                    id="company"
-                                    name="company"
+                                    id="companyNombre"
+                                    name="companyNombre"
                                     placeholder={get(inputs, "[1].placeholder")}
-                                    value={get(formik, "values.company")}
+                                    value={get(formik, "values.companyNombre")}
                                     onChange={get(formik, "handleChange")}
-                                    error={get(formik, "touched.company") && Boolean(get(formik, "errors.company"))}
-                                    helperText={get(formik, "touched.company") && get(formik, "errors.company")}
+                                    error={get(formik, "touched.companyNombre") && Boolean(get(formik, "errors.companyNombre"))}
+                                    helperText={get(formik, "touched.companyNombre") && get(formik, "errors.companyNombre")}
                                 />
                             </FormControl>
                         </Box>

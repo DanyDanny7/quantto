@@ -8,3 +8,4 @@ export const userModule = "/user"
 
 // paths
 export const loginPath = "/Login"
+export const registerPath = "/RegisterNewUser"

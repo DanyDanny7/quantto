@@ -21,17 +21,24 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 
 
 import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
-import validator from "./validator"
+import validator from "./validator";
+
+import { logout } from "../../../store/actions/auth/loginAction"
+
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [__, i18n] = useTranslation("auth");
+
   const [showPass, setShowPass] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const navigate = useNavigate();
 
   const [data, setData] = useState();
 
@@ -49,7 +56,6 @@ const Profile = () => {
       rutaImagen: "string"
     })
   }, [])
-
 
   const inputs = __('profile.input', { returnObjects: true })
   const sections = __('profile.section', { returnObjects: true })
@@ -74,7 +80,7 @@ const Profile = () => {
       // company: get(data, "companyId"),
       // password: "",
       // confirmation: "",
-      
+
       name: "Ed warren",
       email: "edwarren@correo.com",
       company: "Gotech.sv",
@@ -92,7 +98,8 @@ const Profile = () => {
     }
   }
   const onLogout = () => {
-    navigate("/login")
+    dispatch(logout())
+    // navigate("/login")
   }
 
   return (

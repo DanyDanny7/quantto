@@ -1,4 +1,7 @@
+import { concat, get, map } from "lodash";
+
 import Home from "../../pages/Home";
+import ValidatEmail from "../../pages/Home/ValidatEmail";
 /* ---------- Auth ---------- */
 import Login from "../../pages/Auth/Login";
 import Register from "../../pages/Auth/Register";
@@ -11,15 +14,13 @@ import Counts from "../../pages/Counts";
 import PaymentHistory from "../../pages/History/PaymentHistory";
 import Inventory from "../../pages/Inventory";
 import ActiveInventory from "../../pages/Inventory/ActiveInventory";
-import Payments from "../../pages/Payments";
+// import Payments from "../../pages/Payments";
 
-const routes = [
-    {
-        key: "home",
-        path: "/",
-        element: <Home />,
-    },
+import PublicRouter from "./PublicRouter";
+import PrivateRoutes from "./PrivateRoutes";
 
+
+const routesPublics = [
     /* ---------- Auth ---------- */
     {
         key: "login",
@@ -45,24 +46,22 @@ const routes = [
         key: "recovery-pass-receive",
         path: "/recovery-pass-receive",
         element: <RecoveryPassReceive />,
-    },
+    }
+]
+
+const routesPrivates = [
+    /* ---------- Auth ---------- */
     {
         key: "profile",
         path: "/profile",
         element: <Profile />,
     },
-
     {
-        key: "counts",
-        path: "/counts",
-        element: <Counts />,
+        key: "validate",
+        path: "/validate-email",
+        element: <ValidatEmail />,
     },
-    {
-        key: "payment_history",
-        path: "/history/payment-history",
-        element: <PaymentHistory />,
-
-    },
+    /* ---------- Inventary ---------- */
     {
         key: "inventory",
         path: "/inventory",
@@ -95,11 +94,24 @@ const routes = [
         path: "/inventory/active-inventory",
         element: <ActiveInventory />,
     },
+    /* ---------- Counts ---------- */
     {
-        key: "payments",
-        path: "/payments",
-        element: <Payments />,
+        key: "counts",
+        path: "/counts",
+        element: <Counts />,
+    },
+    /* ---------- History ---------- */
+    {
+        key: "payment_history",
+        path: "/history/payment-history",
+        element: <PaymentHistory />,
+
     },
 ]
+
+const routes = concat(
+    map(routesPublics, (route) => ({ ...route, element: <PublicRouter>{get(route, "element")}</PublicRouter> })),
+    map(routesPrivates, (route) => ({ ...route, element: <PrivateRoutes>{get(route, "element")}</PrivateRoutes> }))
+)
 
 export default routes

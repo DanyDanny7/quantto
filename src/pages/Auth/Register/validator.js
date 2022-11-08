@@ -4,8 +4,8 @@ import { get } from "lodash";
 const validators = (inputs) => (value) => {
     return (
         yup.object({
-            name: yup.string().required(get(inputs, "[0].error")),
-            company: yup.string().required(get(inputs, "[1].error")),
+            username: yup.string().required(get(inputs, "[0].error")),
+            companyNombre: yup.string().required(get(inputs, "[1].error")),
             email: yup.string().email(get(inputs, "[2].error-2")).required(get(inputs, "[2].error")),
             password: yup.string()
                 // .matches(/^(?=.*[a-z])/, 'Ingrese al menos 1 minuscula')

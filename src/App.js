@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from "./config/theme";
-import RouterApp from "./config/routes/RouterProviderApp";
+import RouterApp from "./config/routes/Provider";
 import ProviderI18n from "./config/i18n";
 
 const App = () => {

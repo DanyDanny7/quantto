@@ -27,7 +27,7 @@ import { login } from "../../../store/actions/auth/loginAction"
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loginReducer = useSelector(state => state.todos.loginReducer);
+    const loginReducer = useSelector(state => state.loginReducer);
     const [showPass, setShowPass] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
 
@@ -53,13 +53,7 @@ const Login = () => {
             password: '',
         },
         validationSchema: validator(inputs),
-        onSubmit: (values) => {
-            if (get(values, "email") === "raul@lebbel.io" && get(values, "password") === "Raul.123") {
-                navigate("/inventory/active-inventory")
-            } else {
-                dispatch(login(values))
-            }
-        }
+        onSubmit: (values) => dispatch(login(values))
     });
 
     return (

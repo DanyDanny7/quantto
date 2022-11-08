@@ -30,7 +30,7 @@ const RecoveryPassRequest = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
-    const loginReducer = useSelector(state => state.todos.loginReducer);
+    const loginReducer = useSelector(state => state.loginReducer);
     const [showPass, setShowPass] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" });
     const [timer, setTimer] = useState(null);

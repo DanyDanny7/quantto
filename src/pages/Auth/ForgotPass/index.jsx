@@ -26,7 +26,7 @@ import validator from "./validator";
 const ForgotPass = () => {
     const navigate = useNavigate();
     // const dispatch = useDispatch();
-    // const loginReducer = useSelector(state => state.todos.loginReducer);
+    // const loginReducer = useSelector(state => state.loginReducer);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" });
     const [type, setType] = useState(0);
     const [rejectEmail, setRejectEmail] = useState();
