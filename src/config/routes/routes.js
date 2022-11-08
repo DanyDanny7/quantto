@@ -1,6 +1,7 @@
 import { concat, get, map } from "lodash";
+import { Navigate } from "react-router-dom";
 
-import Home from "../../pages/Home";
+// import Home from "../../pages/Home";
 import ValidatEmail from "../../pages/Home/ValidatEmail";
 /* ---------- Auth ---------- */
 import Login from "../../pages/Auth/Login";
@@ -50,6 +51,12 @@ const routesPublics = [
 ]
 
 const routesPrivates = [
+    /* ---------- 404 ---------- */
+    {
+        key: "404",
+        path: "*",
+        element: <Navigate to="/inventory/active-inventory" />,
+    },
     /* ---------- Auth ---------- */
     {
         key: "profile",
