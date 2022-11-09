@@ -29,7 +29,7 @@ import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
 import validator from "./validator";
 
-import { logout } from "../../../store/actions/auth/loginAction"
+import { logout } from "../../../store/thunk/auth/logout"
 
 
 const Profile = () => {

@@ -2,9 +2,11 @@ import {
     LOGIN_LOADING,
     LOGIN_SUCCESS,
     LOGIN_REJECT,
+} from "../../../actions/auth/login";
 
+import {
     LOGOUT_SUCCESS,
-} from "../../actions/auth/loginAction"
+} from "../../../actions/auth/logout"
 
 const stateInit = {
     isLoading: false,

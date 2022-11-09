@@ -51,12 +51,6 @@ const routesPublics = [
 ]
 
 const routesPrivates = [
-    /* ---------- 404 ---------- */
-    {
-        key: "404",
-        path: "*",
-        element: <Navigate to="/inventory/active-inventory" />,
-    },
     /* ---------- Auth ---------- */
     {
         key: "profile",
@@ -113,6 +107,12 @@ const routesPrivates = [
         path: "/history/payment-history",
         element: <PaymentHistory />,
 
+    },
+    /* ---------- 404 ---------- */
+    {
+        key: "404",
+        path: "*",
+        element: <Navigate to="/inventory/active-inventory" />,
     },
 ]
 

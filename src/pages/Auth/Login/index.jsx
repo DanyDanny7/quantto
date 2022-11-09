@@ -22,7 +22,7 @@ import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
 import validator from "./validator";
 
-import { login } from "../../../store/actions/auth/loginAction"
+import { login } from "../../../store/thunk/auth/login";
 
 const Login = () => {
     const navigate = useNavigate();

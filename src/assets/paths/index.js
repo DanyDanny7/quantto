@@ -3,7 +3,7 @@ export const root = "https://api.getquantto.com"
 export const baseAPi = "/api"
 
 // module
-export const userModule = "/user"
+export const userModule = "/web"
 
 
 // paths
