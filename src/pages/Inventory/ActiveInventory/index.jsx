@@ -3,19 +3,23 @@ import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
+    Divider,
     IconButton,
     Paper,
     Grid,
     Box,
-    Typography
+    Typography,
+    MenuList,
+    MenuItem,
+    Popover
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
-
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
 import PieChart from "./component/PieChart";
 import BarChart from "./component/BarChart";
+import { useNavigate } from 'react-router-dom';
 
 function createData(code, product, category, barcode, onHand, counted, difference) {
     return { code, product, category, barcode, onHand, counted, difference };
@@ -31,9 +35,14 @@ const rows = [
 
 const ActiveInventory = () => {
     const theme = useTheme();
+    const navegate = useNavigate();
     const [__] = useTranslation("inve");
     const module = "active"
     const code = "#Asq937614"
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
 
     const titles = __(`${module}.table`, { returnObjects: true });
 
@@ -80,11 +89,6 @@ const ActiveInventory = () => {
         },
     ]
 
-    const dataTable = map(rows, (row) => ({
-        ...row,
-        options: <IconButton ariaLabel="more" size="small"><MoreVertIcon fontSize="inherit" /></IconButton>
-    }))
-
     const card1 = {
         "count-name": "Nombre",
         "start": "09/10/22 - 9:00 AM",
@@ -93,6 +97,34 @@ const ActiveInventory = () => {
         "units-counted": "100",
         "elapsed-time": "8:00:00",
     }
+
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const showMore = () => {
+        navegate("AJHG623645")
+    }
+
+
+    const dataTable = map(rows, (row) => ({
+        ...row,
+        options: (
+            <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? 'long-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+            >
+                <MoreVertIcon />
+            </IconButton>
+        )
+    }))
 
     return (
         <Layout
@@ -177,6 +209,22 @@ const ActiveInventory = () => {
                 </Grid>
             </Box>
             <Table headTable={headTable} dataTale={dataTable} __={__} module={module} sizeFilters={125} />
+
+            <Popover
+                id={"menu-inventario-activo"}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                elevation={1}
+            >
+                <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
+                    <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>Ver conteos</strong></Typography></MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>Eliminar</strong></Typography></MenuItem>
+                </MenuList>
+            </Popover>
         </Layout>
     )
 }

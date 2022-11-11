@@ -24,8 +24,9 @@ const Layout = ({ children, propsToolbar }) => {
                 <Drawer drawerWidth={drawerWidth} toolbarHeight={toolbarHeight} />
             </Box>
             <Box className='flex-1' component="main" sx={{ flexGrow: 1, p: 3, bgcolor: "background.base", minHeight: "100vh", width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
-                <Box height={toolbarHeight} />
-                {children}
+                <Box className='h-full flex flex-col' paddingTop={`${toolbarHeight}px`} >
+                    {children}
+                </Box>
             </Box>
         </Box>
     );

@@ -60,7 +60,7 @@ const PieChart = ({ values, ...restProps }) => {
 
 
     return (
-        <Box class="chart-container" {...restProps}>
+        <Box className="chart-container" {...restProps}>
             <canvas ref={chartRef} />
         </Box>
     )

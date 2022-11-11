@@ -130,24 +130,24 @@ const TableComponent = ({ headTable, dataTale, __, module, filter, sizeFilters }
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            {map(headTable, ({ key, label, align }) => (
-                                <TableCell key={key} align={align} >
+                            {map(headTable, ({ key, label, align }, i) => (
+                                <TableCell key={i} align={align} >
                                     <Typography variant="buttonSmall">{label}</Typography>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {dataTale.map((row) => (
+                        {dataTale.map((row, i) => (
                             <TableRow
-                                key={row.name}
+                                key={i}
                                 sx={{
                                     '&:last-child td, &:last-child th': { border: 0 },
                                     "&:nth-of-type(odd)": { bgcolor: "background.base" }
                                 }}
                             >
-                                {headTable.map(({ key, align }) => (
-                                    <TableCell align={align} >
+                                {map(headTable, ({ key, align }, i) => (
+                                    <TableCell key={i} align={align} >
                                         <Typography variant="bodySmall">{get(row, `${[key]}`)}</Typography>
                                     </TableCell>
                                 ))}

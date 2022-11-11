@@ -69,7 +69,7 @@ const RecoveryPassReceive = () => {
                                         endAdornment:
                                             <InputAdornment position="end" className='mr-2'>
                                                 <IconButton
-                                                    aria-label="toggle password visibility"
+                                                    ariaLabel="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleClickShowPassword}
                                                     edge="end"
@@ -99,7 +99,7 @@ const RecoveryPassReceive = () => {
                                         endAdornment:
                                             <InputAdornment position="end" className='mr-2'>
                                                 <IconButton
-                                                    aria-label="toggle password visibility"
+                                                    ariaLabel="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleClickShowPassword}
                                                     edge="end"

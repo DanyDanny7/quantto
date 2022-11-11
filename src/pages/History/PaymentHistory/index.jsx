@@ -64,7 +64,7 @@ const PaymentHistory = () => {
   const dataTable = map(rows, (row) => ({
     ...row,
     amount: `$ ${get(row, "amount")}`,
-    voucher: <IconButton ariaLabel="download" size="small"><DownloadIcon fontSize="inherit" /></IconButton>
+    voucher: <IconButton aria-label="download" size="small"><DownloadIcon fontSize="inherit" /></IconButton>
   }))
 
   return (

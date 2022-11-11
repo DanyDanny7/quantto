@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import {
     ListItemText,
     ListItem,
@@ -106,8 +106,8 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                 <InputSearch sx={{ ml: 5, mr: 3, mb: 2 }} size="small" color="secondary" />
                 <List>
                     {options.map((item, index) => (
-                        <>
-                            <ListItem key={get(item, "key")} disablePadding>
+                        <Fragment key={get(item, "key")}>
+                            <ListItem disablePadding>
                                 <ListItemButton
                                     onClick={handleClick(item)}
                                     disabled={get(item, "title")}
@@ -133,7 +133,7 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                                 </ListItemButton>
                             </ListItem>
                             {get(item, "divider") && <Divider />}
-                        </>
+                        </Fragment>
                     ))}
                 </List>
             </Box>
