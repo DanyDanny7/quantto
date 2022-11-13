@@ -6,6 +6,7 @@ import { IconButton } from '@mui/material';
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
+import Toolbar from "./Toolbar";
 
 function createData(date, name, inventary, attached, amount, card, voucher) {
   return { date, name, inventary, attached, amount, card, voucher };
@@ -21,7 +22,8 @@ const rows = [
 
 const PaymentHistory = () => {
   const [__] = useTranslation("hist");
-  const titles = __('payment.table', { returnObjects: true })
+  const module = "payment"
+  const titles = __(`${module}.table`, { returnObjects: true })
 
   const headTable = [
     {
@@ -70,13 +72,18 @@ const PaymentHistory = () => {
   return (
     <Layout
       propsToolbar={{
-        title: __('payment.header.title'),
-        label: __('payment.header.sub-title'),
+        title: __(`${module}.header.title`),
+        label: __(`${module}.header.sub-title`),
         code: null,
         btnLabel: null
       }}
     >
-      <Table headTable={headTable} dataTale={dataTable} __={__} module="payment" sizeFilters={125} />
+      <Table headTable={headTable}
+        toolbar={<Toolbar __={__} module={module} />}
+        dataTable={dataTable}
+        __={__}
+        module="payment" sizeFilters={125}
+      />
       {/* <Table headTable={headTable} dataTale={dataTable} __={__} module={module} sizeFilters={125} /> */}
     </Layout>
   )
