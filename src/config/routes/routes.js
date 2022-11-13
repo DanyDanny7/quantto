@@ -13,11 +13,13 @@ import Profile from "../../pages/Auth/Profile";
 
 import Counts from "../../pages/Counts";
 import PaymentHistory from "../../pages/History/PaymentHistory";
-import Inventory from "../../pages/Inventory";
 
-/* ---------- Auth ---------- */
+/* ---------- Inventary ---------- */
 import ActiveInventory from "../../pages/Inventory/ActiveInventory";
-import ActiveInventoryDetail from "../../pages/Inventory/ActiveInventory/Detail";
+import ActiveInventoryCounts from "../../pages/Inventory/ActiveInventory/Counts";
+import Inventory from "../../pages/Inventory";
+import InventoryDetail from "../../pages/Inventory/Inventory";
+import InventoryDetailCounts from "../../pages/Inventory/Inventory/Counts";
 // import Payments from "../../pages/Payments";
 
 import PublicRouter from "./PublicRouter";
@@ -78,15 +80,26 @@ const routesInvent = [
         element: <Inventory />,
     },
     {
+        key: "inventory",
+        path: "/inventory/:id",
+        element: <InventoryDetail />,
+    },
+    {
+        key: "inventory",
+        path: "/inventory/:id/count/:id",
+        element: <InventoryDetailCounts />,
+    },
+    {
         key: "active_inventory",
-        path: "/inventory/active-inventory",
+        path: "/inventory/active",
         element: <ActiveInventory />,
     },
     {
         key: "active_inventory",
-        path: "/inventory/active-inventory/:id",
-        element: <ActiveInventoryDetail />,
-    }
+        path: "/inventory/active/:id",
+        element: <ActiveInventoryCounts />,
+    },
+
 ]
 
 const routesCounts = [
@@ -109,7 +122,7 @@ const routesError = [
     {
         key: "404",
         path: "*",
-        element: <Navigate to="/inventory/active-inventory" />,
+        element: <Navigate to="/inventory/active" />,
     },
 ]
 

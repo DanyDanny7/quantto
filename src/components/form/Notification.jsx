@@ -10,7 +10,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const Notification = ({ showNoti, setShowNoti, }) => {
 
     const handleClose = () => {
-        setShowNoti({ open: false, msg: "" });
+        setShowNoti({ open: false, msg: "", variant: "" });
     };
 
     const getVariant = () => {

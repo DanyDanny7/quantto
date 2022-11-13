@@ -1,10 +1,66 @@
 {
-    "active": {
+    "inventaries": {
         "header": {
-            "title": "Inventario Activo",
-            "sub-title": "Posees el inventario [[code]] activo"
+            "title": "Historial de inventarios",
+            "sub-title": "Selecciona tu inventario para iniciarlo, editarlo o eliminarlo según sea posible"
         },
-        "btn": "Finalizar conteo",
+        "btn": "Nuevo inventario",
+        "menu": {
+            "detail": "Ver detalle",
+            "edit": "Editar",
+            "start": "Iniciar inventario",
+            "delete": "Eliminar",
+            "finish": "Finalizar conteo"
+        },
+        "filters": {
+            "search": "Buscar",
+            "selects": [
+                {
+                    "title": "Rango de fecha:",
+                    "options": [
+                        "Esta semana",
+                        "Opción1",
+                        "Opción2",
+                        "Opción3"
+                    ]
+                },
+                {
+                    "title": "Estado:",
+                    "options": [
+                        "Todos",
+                        "Opción1",
+                        "Opción2",
+                        "Opción3"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "Código",
+            "Creación",
+            "Cantidad",
+            "Estado",
+            "Contadores",
+            "Archivo",
+            "Teórico",
+            "Físicos",
+            "Diferencias"
+        ]
+    },
+    "detail": {
+        "header": {
+            "title-1": "Inventario [[code]]",
+            "title-2": "Inventario Activo",
+            "sub-title-1": "Detalle de inventario",
+            "sub-title-2": "Posees el inventario [[code]] activo"
+        },
+        "btn-1": "Pagar inventario",
+        "btn-2": "Finalizar conteo",
+        "btn-3": "Activar Inventario",
+        "menu": {
+            "recount": "Recontear",
+            "delete": "Eliminar"
+        },
         "filters": {
             "search": "Buscar",
             "selects": [
@@ -76,6 +132,59 @@
                 "counted-units": "Fisicos",
                 "diference": "Diferencia"
             }
+        },
+        "alert": {
+            "alert-1": {
+                "title": "¡Lo sentimos!",
+                "subtitle": "No es posible activar este conteo porque tienes uno en progreso, Si deseas activar el conteo debes finalizar el que tienes en progreso",
+                "btn-1": "Ir al conteo activo",
+                "btn-2": "Entendido"
+            }
         }
+    },
+    "counts": {
+        "header": {
+            "title": "Conteos de inventario [[code]]",
+            "sub-title": "Pudes ver los detalles de tu conteo"
+        },
+        "btn": "Finalizar conteo",
+        "menu": {
+            "recount": "Recontear",
+            "delete": "Eliminar"
+        },
+        "filters": {
+            "search": "Buscar",
+            "selects": [
+                {
+                    "title": "Categoria:",
+                    "options": [
+                        "Todos",
+                        "Téoricos",
+                        "Fisicos",
+                        "Diferencias"
+                    ]
+                },
+                {
+                    "title": "Estado:",
+                    "options": [
+                        "Creados",
+                        "Opción1",
+                        "Opción2",
+                        "Opción3"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "Creación",
+            "Hora",
+            "Producto",
+            "Contador",
+            "Ubicación",
+            "Cantidad"
+        ],
+        "notification-1": "Reconteo enviado al contador \"[[name]]\"",
+        "notification-2": "Eliminado satisfactoriamente",
+        "notification-3": ""
     }
 }

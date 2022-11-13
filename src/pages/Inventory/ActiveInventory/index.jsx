@@ -17,8 +17,8 @@ import { useTheme } from "@mui/material/styles";
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
-import PieChart from "./component/PieChart";
-import BarChart from "./component/BarChart";
+import PieChart from "../component/PieChart";
+import BarChart from "../component/BarChart";
 import { useNavigate } from 'react-router-dom';
 
 function createData(code, product, category, barcode, onHand, counted, difference) {
@@ -37,7 +37,7 @@ const ActiveInventory = () => {
     const theme = useTheme();
     const navegate = useNavigate();
     const [__] = useTranslation("inve");
-    const module = "active"
+    const module = "detail"
     const code = "#Asq937614"
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -129,10 +129,10 @@ const ActiveInventory = () => {
     return (
         <Layout
             propsToolbar={{
-                title: __(`${module}.header.title`),
-                label: replace(__(`${module}.header.sub-title`), "[[code]]", code),
-                code: null,
-                btnLabel: null
+                title: replace(__(`${module}.header.title-2`), "[[code]]", code),
+                label: replace(__(`${module}.header.sub-title-2`), "[[code]]", code),
+                btnLabel: __(`${module}.btn-2`),
+                btnFunc: () => { },
             }}
         >
             <Box className='mb-6'>
@@ -208,7 +208,8 @@ const ActiveInventory = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Table headTable={headTable} dataTale={dataTable} __={__} module={module} sizeFilters={125} />
+            {console.log(dataTable)}
+            <Table headTable={headTable} dataTable={dataTable} __={__} module={module} sizeFilters={125} />
 
             <Popover
                 id={"menu-inventario-activo"}

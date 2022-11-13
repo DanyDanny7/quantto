@@ -14,7 +14,7 @@
         ],
         "menus": [
             "Inventario Activo",
-            "Inventarios",
+            "Historico de inventario",
             "Contadores",
             "Historial de pagos",
             "Perfil"

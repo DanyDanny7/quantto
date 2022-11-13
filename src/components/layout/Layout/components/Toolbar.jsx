@@ -14,7 +14,7 @@ const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
 
 const Toolbar = ({
     toolbarHeight,
-    propsToolbar = { label: "", btnLabel: "", code: "", btnFunc: () => { } }
+    propsToolbar = { label: "", btnLabel: "", btnFunc: () => { }, color: "primary" }
 }) => {
 
     return (
@@ -28,7 +28,7 @@ const Toolbar = ({
                 </Typography>
             </Box>
             {get(propsToolbar, "btnLabel", false) &&
-                <Button color="primary" variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
+                <Button color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
                     {get(propsToolbar, "btnLabel")}
                 </Button>
             }

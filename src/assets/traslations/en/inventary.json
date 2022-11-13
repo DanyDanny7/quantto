@@ -77,5 +77,49 @@
                 "diference": "Diference"
             }
         }
+    },
+    "detail": {
+        "header": {
+            "title": "",
+            "sub-title": ""
+        },
+        "btn": "",
+        "filters": {
+            "search": "Search",
+            "recount": "Recount",
+            "delete": "Delete",
+            "selects": [
+                {
+                    "title": "Category:",
+                    "options": [
+                        "All",
+                        "option-1",
+                        "option-2",
+                        "option-3"
+                    ]
+                },
+                {
+                    "title": "filter2",
+                    "options": [
+                        "All",
+                        "option-1",
+                        "option-2",
+                        "option-3"
+                    ]
+                }
+            ]
+        },
+        "table": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "notification-1": " \"[[name]]\"",
+        "notification-2": "",
+        "notification-3": ""
     }
 }
