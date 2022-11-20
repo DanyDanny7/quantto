@@ -5,8 +5,8 @@ import { get } from "lodash";
 import { useSelector } from "react-redux"
 
 const PublicRoutes = ({ children }) => {
-    const loginReducer = useSelector((state) => state.loginReducer)
-    return get(loginReducer, "isLogged") ? <Navigate to="/inventory/active-inventory" /> : children;
+    const loginState = useSelector((state) => state.auth.login)
+    return get(loginState, "isLogged") ? <Navigate to="/inventory/active" /> : children;
 }
 
 export default PublicRoutes

@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LayoutAuth from "../../../components/layout/LayoutAuth";
 import validator from "./validator"
 
-import { register } from "../../../store/actions/auth/registerAction"
+import { register } from "../../../store/auth/thunk/register"
 
 
 const Register = () => {

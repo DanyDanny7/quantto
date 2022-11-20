@@ -45,7 +45,31 @@
             "Teórico",
             "Físicos",
             "Diferencias"
-        ]
+        ],
+        "modal": {
+            "title": "Creación de inventario",
+            "option-1": "Archivos",
+            "option-2": "Usuarios",
+            "sub-title-1": "Completa los campos y adjunta el archivo para continuar",
+            "download-file": "Descargar plantilla",
+            "download-file-name": "Plantilla",
+            "btn-1": "Siguiente paso",
+            "btn-2": "Paso anterior",
+            "btn-3": "Cancelar",
+            "dropzone": {
+                "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv o  xlsx",
+                "text-active": "Suelta tu plantilla aquí",
+                "complement": "Opcional",
+                "text-head": "Archivo"
+            },
+            "input": {
+                "name": "Nombre del inventario",
+                "placeholder": "Ingresa el nombre del inventario"
+            },
+            "error": {
+                "file": "Solo se admiten archivos .xls y .csv"
+            }
+        }
     },
     "detail": {
         "header": {
@@ -59,7 +83,9 @@
         "btn-3": "Activar Inventario",
         "menu": {
             "recount": "Recontear",
-            "delete": "Eliminar"
+            "details": "Ver conteos",
+            "delete": "Eliminar",
+            "delete-success": "Conteo eliminado con éxito"
         },
         "filters": {
             "search": "Buscar",
@@ -150,7 +176,8 @@
         "btn": "Finalizar conteo",
         "menu": {
             "recount": "Recontear",
-            "delete": "Eliminar"
+            "delete": "Eliminar",
+            "delete-success": "Conteo eliminado con éxito"
         },
         "filters": {
             "search": "Buscar",

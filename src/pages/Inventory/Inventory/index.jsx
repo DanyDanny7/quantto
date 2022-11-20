@@ -230,7 +230,7 @@ const ActiveInventory = () => {
         elevation={1}
       >
         <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
-          <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.recount`)}</strong></Typography></MenuItem>
+          <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>
           <Divider />
           <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
         </MenuList>

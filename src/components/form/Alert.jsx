@@ -53,7 +53,6 @@ const Alert = ({
                     <Typography className='text-center' variant="bodyMedium">
                         {subtitle}
                     </Typography>
-                    {console.log(get(btn1, "func"))}
                     <Button variant="contained" color="primary" sx={{ mt: 5 }} onClick={get(btn1, "func")}>
                         {get(btn1, "label")}
                     </Button>

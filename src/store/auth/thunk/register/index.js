@@ -1,0 +1,23 @@
+import { get, isEmpty } from "lodash";
+
+import {
+    registerLoading,
+    registerReject,
+    registerRequest,
+    registerSuccess,
+} from "../../actions/register";
+
+export const register = (formData) => async (dispatch, getState) => {
+    dispatch(registerLoading());
+    try {
+        const { data } = await registerRequest(formData);
+        if (!isEmpty(get(data, "data", {}))) {
+            dispatch(registerSuccess(data))
+        } else {
+            dispatch(registerReject(data))
+        }
+    } catch (error) {
+        dispatch(registerReject(error))
+    }
+    return Promise.resolve();
+};

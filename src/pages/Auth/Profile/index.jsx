@@ -4,7 +4,6 @@ import {
   Typography,
   TextField,
   Button,
-  Link as LinkUi,
   Divider,
   FormControl,
   InputAdornment,
@@ -24,12 +23,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 
-
 import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
 import validator from "./validator";
 
-import { logout } from "../../../store/thunk/auth/logout"
+import { logout } from "../../../store/auth/thunk/logout"
 
 
 const Profile = () => {

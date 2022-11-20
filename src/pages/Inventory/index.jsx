@@ -11,12 +11,13 @@ import {
   Popover
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from 'react-router-dom';
 
 import Layout from "../../components/layout/Layout"
 import Table from "../../components/form/Table";
 import Notification from "../../components/form/Notification";
-import { useNavigate } from 'react-router-dom';
 import Toolbar from "./component/Toolbar"
+import NewInventory from "./component/NewInventory";
 
 function createData(code, create_at, quantity, status, counts, file, onHand, counted, difference) {
   return { code, create_at, quantity, status, counts, file, onHand, counted, difference };
@@ -41,6 +42,7 @@ const ActiveInventory = () => {
   const [selected, setSelected] = useState({});
   const [showNoti, setShowNoti] = useState({ open: false, variant: "", msg: "" })
   const open = Boolean(anchorEl);
+  const [openNew, setOpenNew] = useState(false)
 
 
   const titles = __(`${module}.table`, { returnObjects: true });
@@ -166,8 +168,9 @@ const ActiveInventory = () => {
       propsToolbar={{
         title: __(`${module}.header.title`),
         label: replace(__(`${module}.header.sub-title`), "[[code]]", code),
-        code: null,
-        btnLabel: null
+        btnLabel: __(`${module}.btn`),
+        btnFunc: () => setOpenNew(true),
+        color: "primary"
       }}
     >
       <Table
@@ -193,6 +196,7 @@ const ActiveInventory = () => {
         </MenuList>
       </Popover>
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
+      <NewInventory __={__} open={openNew} setOpen={setOpenNew} module={module} />
     </Layout>
   )
 }

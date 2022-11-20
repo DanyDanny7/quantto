@@ -7,7 +7,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const Notification = ({ showNoti, setShowNoti, }) => {
+const Notification = ({ showNoti, setShowNoti, timer = 5000 }) => {
 
     const handleClose = () => {
         setShowNoti({ open: false, msg: "", variant: "" });
@@ -31,7 +31,7 @@ const Notification = ({ showNoti, setShowNoti, }) => {
                 open={showNoti.open}
                 onClose={handleClose}
                 key={"msg"}
-                autoHideDuration={5000}
+                autoHideDuration={timer}
             >
                 <Alert onClose={handleClose} {...getVariant()} >
                     <Typography variant="bodySmall" >

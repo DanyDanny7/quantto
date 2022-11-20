@@ -22,12 +22,12 @@ import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
 import validator from "./validator";
 
-import { login } from "../../../store/thunk/auth/login";
+import { login } from "../../../store/auth/thunk/login";
 
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loginReducer = useSelector(state => state.loginReducer);
+    const loginState = useSelector(state =>  state.auth.login);
     const [showPass, setShowPass] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
 
@@ -40,12 +40,12 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if (get(loginReducer, "isLoged")) {
+        if (get(loginState, "isLoged")) {
             navigate("/")
-        } else if (get(loginReducer, "isReject")) {
+        } else if (get(loginState, "isReject")) {
             setShowNoti({ open: true, msg: "Usuario o contraseña inválida", variant: "error" })
         }
-    }, [loginReducer, navigate])
+    }, [loginState, navigate])
 
     const formik = useFormik({
         initialValues: {
@@ -125,7 +125,7 @@ const Login = () => {
                             type="submit"
                             size='large'
                             loadingPosition="end"
-                            loading={get(loginReducer, "isLoading")}
+                            loading={get(loginState, "isLoading")}
                         >
                             {__("login.button.name")}
                         </LoadingButton>

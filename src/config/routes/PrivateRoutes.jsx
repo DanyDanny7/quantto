@@ -5,15 +5,13 @@ import { get } from "lodash";
 import { useSelector } from "react-redux"
 
 const PublicRoutes = ({ children }) => {
-    const loginReducer = useSelector((state) => state.loginReducer)
-
+    const loginState = useSelector((state) => state.auth.login)
     return (
         <>
-            {/* {(get(loginReducer, "isLogged") && get(loginReducer, "isVerified")) ? <Navigate to="/inventory/active-inventory" /> : <Navigate to="/validate-email" />} */}
-            {get(loginReducer, "isLogged") ? children : <Navigate to="/login" />}
+            {/* {(get(loginState, "isLogged") && get(loginState, "isVerified")) ? <Navigate to="/inventory/active-inventory" /> : <Navigate to="/validate-email" />} */}
+            {get(loginState, "isLogged") ? children : <Navigate to="/login" />}
         </>
     )
-
 }
 
 export default PublicRoutes

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -14,12 +14,15 @@ import {
     Popover
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
 import PieChart from "../component/PieChart";
 import BarChart from "../component/BarChart";
-import { useNavigate } from 'react-router-dom';
+
+import { getInventaryActive } from "../../../store/inventary/thunk/getInventaryActive";
 
 function createData(code, product, category, barcode, onHand, counted, difference) {
     return { code, product, category, barcode, onHand, counted, difference };
@@ -35,6 +38,7 @@ const rows = [
 
 const ActiveInventory = () => {
     const theme = useTheme();
+    const dispatch = useDispatch();
     const navegate = useNavigate();
     const [__] = useTranslation("inve");
     const module = "detail"
@@ -42,6 +46,15 @@ const ActiveInventory = () => {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+
+    const inventaryActiveState = useSelector(state =>  state.inventary.inventaryActive);
+
+
+    useEffect(() => {
+        dispatch(getInventaryActive())
+    }, [dispatch])
+
 
 
     const titles = __(`${module}.table`, { returnObjects: true });
@@ -208,7 +221,6 @@ const ActiveInventory = () => {
                     </Grid>
                 </Grid>
             </Box>
-            {console.log(dataTable)}
             <Table headTable={headTable} dataTable={dataTable} __={__} module={module} sizeFilters={125} />
 
             <Popover
@@ -221,9 +233,9 @@ const ActiveInventory = () => {
                 elevation={1}
             >
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
-                    <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>Ver conteos</strong></Typography></MenuItem>
+                    <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>Eliminar</strong></Typography></MenuItem>
+                    <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
                 </MenuList>
             </Popover>
         </Layout>

@@ -84,7 +84,7 @@ const ToolbarComponent = ({ __, module, selected, setSelected }) => {
                 {!isEmpty(selected) &&
                     <Button color="secondary" sx={{ mr: 3 }} onClick={onClickRecount} >
                         <Typography variant="buttonMedium">
-                            {__(`${module}.filters.recount`)}
+                            {__(`${module}.menu.recount`)}
                         </Typography>
                     </Button>
                 }

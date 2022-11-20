@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
+import { get } from "lodash";
 // import qs from "qs";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
@@ -31,12 +32,12 @@ export const Methods = {
   DELETE: "delete",
 };
 
-export const withToken = async (options) => {
-  // const token = await localStorage.getItem("token");
-
+export const withToken = async (options, getState = () => { }) => {
   return {
     ...options,
-    // token
+    token: get(getState(), "loginReducer.dataUser.data.token"),
+    userId: get(getState(), "loginReducer.dataUser.data.userId"),
+    companyId: get(getState(), "loginReducer.dataUser.data.companyId"),
   };
 };
 
@@ -46,12 +47,12 @@ export const getOptions = ({
   token = null,
   headers: extraHeaders = {},
   params = {},
-  // companyId,
-  // userId
+  companyId,
+  userId
 }) => {
   const headers = {
-    // userId: userId,
-    // CompanyId: companyId,
+    userId: userId,
+    CompanyId: companyId,
     Accept: "application/json",
     ...JSONBody,
     ...extraHeaders,

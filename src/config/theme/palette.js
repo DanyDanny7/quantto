@@ -20,6 +20,7 @@ const palette = {
         contrastText: neutral[50]
     },
     text: {
+        sslite: neutral[200],
         slite: neutral[400],
         lite: neutral[500],
         main: neutral[800],

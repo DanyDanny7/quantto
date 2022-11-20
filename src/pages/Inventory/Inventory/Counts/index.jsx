@@ -16,6 +16,8 @@ import { useTheme } from "@mui/material/styles";
 
 import Layout from "../../../../components/layout/Layout"
 import Table from "../../../../components/form/Table";
+import Notification from "../../../../components/form/Notification";
+
 import Toolbar from "./components/Toolbar"
 
 function createData(id, create_at, hour, product, count, location, quantity) {
@@ -39,6 +41,7 @@ const ActiveInventory = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [selected, setSelected] = React.useState([]);
+    const [showNoti, setShowNoti] = React.useState({ open: false, msg: "", variant: "" });
 
     const titles = __(`${module}.table`, { returnObjects: true });
 
@@ -60,6 +63,10 @@ const ActiveInventory = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleDelete = () => {
+        setShowNoti({ open: open, msg: __(`${module}.menu.delete-success`), variant: "success" })
+        handleClose()
+    }
 
     const isSelected = (id) => {
         return selected.indexOf(id) !== -1
@@ -202,9 +209,10 @@ const ActiveInventory = () => {
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
                     <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.recount`)}</strong></Typography></MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
+                    <MenuItem onClick={handleDelete}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
                 </MenuList>
             </Popover>
+            <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
         </Layout>
     )
 }
