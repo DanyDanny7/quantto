@@ -51,11 +51,15 @@
             "option-1": "Archivos",
             "option-2": "Usuarios",
             "sub-title-1": "Completa los campos y adjunta el archivo para continuar",
+            "sub-title-2": "Selecciona los usuarios para asignarlos a tu conteo",
             "download-file": "Descargar plantilla",
             "download-file-name": "Plantilla",
+            "table-title": "Contadores",
             "btn-1": "Siguiente paso",
             "btn-2": "Paso anterior",
             "btn-3": "Cancelar",
+            "btn-4": "Nuevo contador",
+            "btn-5": "Crear inventario",
             "dropzone": {
                 "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv o  xlsx",
                 "text-active": "Suelta tu plantilla aquí",
@@ -68,6 +72,12 @@
             },
             "error": {
                 "file": "Solo se admiten archivos .xls y .csv"
+            },
+            "alert": {
+                "title": "Conteo creado con éxito",
+                "sub-title": "Es hora de realizar tu pago para activar tu conteo; si aún no lo quieres comenzar dale click en guardar y salir",
+                "btn-1": "Activar inventario",
+                "btn-2": "Guardar y salir"
             }
         }
     },

@@ -7,11 +7,13 @@ import auth_en from "../../assets/traslations/en/auth.json";
 import glob_en from "../../assets/traslations/en/global.json";
 import hist_en from "../../assets/traslations/en/history.json";
 import inve_en from "../../assets/traslations/en/inventary.json";
+import count_en from "../../assets/traslations/en/counts.json";
 
 import auth_es from "../../assets/traslations/es/auth.json";
 import glob_es from "../../assets/traslations/es/global.json";
 import hist_es from "../../assets/traslations/es/history.json";
 import inve_es from "../../assets/traslations/es/inventary.json";
+import count_es from "../../assets/traslations/es/counts.json";
 
 
 const I18n = ({ children }) => {
@@ -40,12 +42,14 @@ const I18n = ({ children }) => {
                 auth: auth_en,
                 hist: hist_en,
                 inve: inve_en,
+                count: count_en,
             },
             es: {
                 global: glob_es,
                 auth: auth_es,
                 hist: hist_es,
                 inve: inve_es,
+                count: count_es,
             },
         }
     })

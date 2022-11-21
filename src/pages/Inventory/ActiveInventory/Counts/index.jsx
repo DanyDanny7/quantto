@@ -104,6 +104,7 @@ const ActiveInventory = () => {
                 />
             ),
             align: "center",
+            width: 70,
         },
         {
             key: "create_at",
@@ -181,7 +182,6 @@ const ActiveInventory = () => {
             propsToolbar={{
                 title: replace(__(`${module}.header.title`), "[[code]]", code),
                 label: replace(__(`${module}.header.sub-title`), "[[code]]", code),
-                code: null,
                 btnLabel: __(`${module}.btn`),
                 btnFunc: countFinish
             }}
@@ -193,7 +193,7 @@ const ActiveInventory = () => {
                 dataTable={dataTable}
                 __={__}
                 module={module}
-                multipleCheckbox
+                propsTableCell={{ padding: "checkbox" }}
             />
 
             <Popover

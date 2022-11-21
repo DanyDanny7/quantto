@@ -10,7 +10,6 @@ import {
   MenuItem,
   Popover
 } from '@mui/material';
-import { useTheme } from "@mui/material/styles";
 import { useNavigate } from 'react-router-dom';
 
 import Layout from "../../components/layout/Layout"
@@ -18,6 +17,7 @@ import Table from "../../components/form/Table";
 import Notification from "../../components/form/Notification";
 import Toolbar from "./component/Toolbar"
 import NewInventory from "./component/NewInventory";
+import NewInventaryAlert from "./component/NewInventaryAlert";
 
 function createData(code, create_at, quantity, status, counts, file, onHand, counted, difference) {
   return { code, create_at, quantity, status, counts, file, onHand, counted, difference };
@@ -32,7 +32,6 @@ const rows = [
 ];
 
 const ActiveInventory = () => {
-  const theme = useTheme();
   const navegate = useNavigate();
   const [__] = useTranslation("inve");
   const module = "inventaries"
@@ -43,10 +42,9 @@ const ActiveInventory = () => {
   const [showNoti, setShowNoti] = useState({ open: false, variant: "", msg: "" })
   const open = Boolean(anchorEl);
   const [openNew, setOpenNew] = useState(false)
-
+  const [openAlert, setOpenAlert] = useState(false);
 
   const titles = __(`${module}.table`, { returnObjects: true });
-
 
   const handleClick = (item) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,6 +54,19 @@ const ActiveInventory = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const onSubmit = () => {
+    setTimeout(() => {
+      setOpenAlert(true)
+    }, 500);
+  }
+
+  const onActivePay = () => {
+    setOpenAlert(false)
+    setTimeout(() => {
+      window.alert("Acá se activaría el metodo de pago")
+    }, 500);
+  }
 
   // ---------- Table ---------------
   const headTable = [
@@ -196,7 +207,15 @@ const ActiveInventory = () => {
         </MenuList>
       </Popover>
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
-      <NewInventory __={__} open={openNew} setOpen={setOpenNew} module={module} />
+      <NewInventory __={__} open={openNew} setOpen={setOpenNew} module={module} onSubmit={onSubmit} />
+      <NewInventaryAlert
+        title={__(`${module}.modal.alert.title`)}
+        subtitle={__(`${module}.modal.alert.sub-title`)}
+        btn1={{ label: __(`${module}.modal.alert.btn-1`), func: onActivePay }}
+        btn2={{ label: __(`${module}.modal.alert.btn-2`), func: () => setOpenAlert(false) }}
+        openAlert={openAlert}
+        closeAlert={() => setOpenAlert(false)}
+      />
     </Layout>
   )
 }

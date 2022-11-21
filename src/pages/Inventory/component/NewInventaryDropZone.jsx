@@ -76,7 +76,7 @@ const TELEFONO = 'Telefonos';
 const DESCRIPCION = '*Descripcion';
 const CENTRO_COSTO = 'Centro Costo destino';
 
-const DropZoneComponent = ({ __, module }) => {
+const NewInventaryDropZone = ({ __, module }) => {
     // const classes = useStyles();
     // const theme = useTheme();
     const [file, setFile] = useState();
@@ -250,14 +250,12 @@ const DropZoneComponent = ({ __, module }) => {
                         </ Paper>
                     </Box>
                 ) : (
-                    <div
-                    // className={classes.root}
-                    >
+                    <div>
                         <input {...getInputProps()} />
                         <div {...getRootProps()} >
                             <Box
                                 sx={{
-                                    minHeight: 200,
+                                    height: 300,
                                     width: '100%',
                                     border: (theme) => `2px dashed ${theme.palette.color.neutral[500]}`,
                                     borderRadius: 2,
@@ -282,7 +280,10 @@ const DropZoneComponent = ({ __, module }) => {
                                 </SvgIcon>
 
                                 {isDragActive
-                                    ? <Typography variant="bodyMedium" gutterBottom>{__(`${module}.modal.dropzone.text-active`)}</Typography>
+                                    ? <>
+                                        <Typography variant="bodyMedium" gutterBottom>{__(`${module}.modal.dropzone.text-active`)}</Typography>
+                                        <br />
+                                    </>
                                     : <>
                                         <Typography variant="bodyMedium" gutterBottom>{__(`${module}.modal.dropzone.text-start`)}</Typography>
                                         <Typography variant="bodyMedium" color={(theme) => theme.palette.color.neutral[500]}>
@@ -301,4 +302,4 @@ const DropZoneComponent = ({ __, module }) => {
     )
 }
 
-export default DropZoneComponent
+export default NewInventaryDropZone

@@ -1,10 +1,7 @@
 
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { get } from "lodash";
-import { blue } from '@mui/material/colors';
+import { get, isEmpty } from "lodash";
 
-import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import {
     Button,
@@ -16,11 +13,6 @@ import {
     IconButton,
     Typography,
     Box,
-    Stepper,
-    Step,
-    StepLabel,
-    StepContent,
-    Paper,
     Stack,
     Collapse,
     Link,
@@ -32,13 +24,16 @@ import {
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import UploadFileModal from "./DropZoneComponent"
+import NewInventaryDropZone from "./NewInventaryDropZone";
+import NewInventoryTable from "./NewInventoryTable";
+import NewInventaryAlert from "./NewInventaryAlert";
 
 
-
-const NewInventory = ({ open, setOpen, __, module }) => {
+const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
     const [activeStep, setActiveStep] = useState(0);
-    const [name, setName] = useState("")
+    const [name, setName] = useState("");
+    const [selected, setSelected] = useState([]);
+
 
     const handleClose = () => {
         setOpen(false);
@@ -47,7 +42,12 @@ const NewInventory = ({ open, setOpen, __, module }) => {
     };
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if (activeStep < 1) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        } else {
+            onSubmit()
+            handleClose()
+        }
     };
 
     const handleBack = () => {
@@ -56,10 +56,6 @@ const NewInventory = ({ open, setOpen, __, module }) => {
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
     };
 
     const steps = [
@@ -109,7 +105,7 @@ const NewInventory = ({ open, setOpen, __, module }) => {
                                 </Avatar>
                                 <Typography variant="bodyMedium" {...(get(steps, "[0]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })}>{get(steps, "[0]label")}</Typography>
                             </Stack>
-                            <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9 }} />
+                            <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9, color: "secondary.main" }} />
                             <Stack direction="row" alignItems="center" spacing={1}>
                                 <Avatar
                                     {...(get(steps, "[1]key") > activeStep + 1
@@ -159,30 +155,29 @@ const NewInventory = ({ open, setOpen, __, module }) => {
                                         </FormControl>
                                         <Divider orientation="vertical" flexItem fullWidth />
                                         <Box flex={1} >
-                                            <UploadFileModal __={__} module={module} />
+                                            <NewInventaryDropZone __={__} module={module} />
                                         </Box>
                                     </Stack>
                                 </Stack>
                             </Collapse>
                             <Collapse in={activeStep === 1}>
-                                <Stack direction="row" justifyContent="space-between" alignItems="center" >
-                                    <Typography variant="bodyMedium">{__(`${module}.modal.sub-title-1`)}</Typography>
-                                    <Button color="secondary" endIcon={<ArrowDropDownIcon />}>
-                                        {/* <Typography variant="bodyMedium">{__(`${module}.modal.download-file`)}</Typography> */}
-                                        otro contenido
-                                    </Button>
+                                <Stack direction="column" spacing={3} >
+                                    <Stack direction="row" justifyContent="space-between" alignItems="center" >
+                                        <Typography variant="bodyMedium">{__(`${module}.modal.sub-title-2`)}</Typography>
+                                    </Stack>
+                                    <Divider />
+                                    <Box flex={1} >
+                                        <NewInventoryTable
+                                            __={__}
+                                            module={module}
+                                            selected={selected}
+                                            setSelected={setSelected}
+                                        />
+                                    </Box>
                                 </Stack>
                             </Collapse>
                         </Box>
                     </Box>
-                    {activeStep === steps.length && (
-                        <Paper square elevation={0} sx={{ p: 3 }}>
-                            <Typography>All steps completed - you&apos;re finished</Typography>
-                            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                                Reset
-                            </Button>
-                        </Paper>
-                    )}
 
                 </DialogContent>
                 <DialogActions>
@@ -199,10 +194,13 @@ const NewInventory = ({ open, setOpen, __, module }) => {
                             variant="contained"
                             color="primary"
                             onClick={handleNext}
-                            disabled={!name}
+                            disabled={!name || (isEmpty(selected) && activeStep === 1)}
                         // sx={{ bgcolor: (theme) => theme.palette.color.neutral[600], color: "common.white", "&:hover": { bgcolor: (theme) => theme.palette.color.neutral[700] } }}
                         >
-                            {__(`${module}.modal.btn-1`)}
+                            {activeStep < 1
+                                ? __(`${module}.modal.btn-1`)
+                                : __(`${module}.modal.btn-5`)
+                            }
                         </Button>
                     </Stack>
                 </DialogActions>

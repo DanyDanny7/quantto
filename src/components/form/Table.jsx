@@ -11,19 +11,18 @@ import {
 } from "@mui/material"
 import { get, map } from "lodash";
 
-const TableComponent = ({ headTable, dataTable, __, module, filter, toolbar }) => {
+const TableComponent = ({ headTable, dataTable, __, module, filter, toolbar, propsTable = {}, propsTableCell = {} }) => {
 
     return (
         <Paper>
             {toolbar}
             <TableContainer >
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }} aria-label="simple table" {...propsTable}>
                     <TableHead>
-                        <TableRow>
-
-                            {map(headTable, ({ key, label, align }, i) => (
-                                <TableCell key={i} align={align} >
-                                    <Typography variant="buttonSmall">{label}</Typography>
+                        <TableRow >
+                            {map(headTable, ({ key, label, align, width = "auto" }, i) => (
+                                <TableCell key={i} align={align} {...propsTableCell} sx={{ width }} >
+                                    <Typography variant="buttonSmall" component="div" >{label}</Typography>
                                 </TableCell>
                             ))}
                         </TableRow>
@@ -38,9 +37,9 @@ const TableComponent = ({ headTable, dataTable, __, module, filter, toolbar }) =
                                         "&:nth-of-type(odd)": { bgcolor: "background.base" }
                                     }}
                                 >
-                                    {map(headTable, ({ key, align }, i) => (
-                                        <TableCell key={i} align={align} >
-                                            <Typography variant="bodySmall">{get(row, `${[key]}`)}</Typography>
+                                    {map(headTable, ({ key, align, width = "auto" }, i) => (
+                                        <TableCell key={i} align={align} {...propsTableCell} sx={{ width }} >
+                                            <Typography variant="bodySmall" component="div" >{get(row, `${[key]}`)}</Typography>
                                         </TableCell>
                                     ))}
                                 </TableRow>
