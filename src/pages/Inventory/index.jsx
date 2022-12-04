@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -11,6 +11,7 @@ import {
   Popover
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../components/layout/Layout"
 import Table from "../../components/form/Table";
@@ -18,6 +19,9 @@ import Notification from "../../components/form/Notification";
 import Toolbar from "./component/Toolbar"
 import NewInventory from "./component/NewInventory";
 import NewInventaryAlert from "./component/NewInventaryAlert";
+
+import { getInventary } from "../../store/inventary/thunk/getInventary";
+
 
 function createData(code, create_at, quantity, status, counts, file, onHand, counted, difference) {
   return { code, create_at, quantity, status, counts, file, onHand, counted, difference };
@@ -33,6 +37,8 @@ const rows = [
 
 const ActiveInventory = () => {
   const navegate = useNavigate();
+  const dispatch = useDispatch();
+
   const [__] = useTranslation("inve");
   const module = "inventaries"
   const code = "#Asq937614"
@@ -45,6 +51,10 @@ const ActiveInventory = () => {
   const [openAlert, setOpenAlert] = useState(false);
 
   const titles = __(`${module}.table`, { returnObjects: true });
+
+  useEffect(() => {
+    dispatch(getInventary())
+}, [dispatch])
 
   const handleClick = (item) => (event) => {
     setAnchorEl(event.currentTarget);

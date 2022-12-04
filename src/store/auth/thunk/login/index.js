@@ -12,6 +12,7 @@ export const login = (formData) => async (dispatch, getState) => {
     try {
         const { data } = await loginRequest(formData, getState);
         if (!isEmpty(get(data, "data", {}))) {
+            console.log(data)
             dispatch(loginSuccess(data))
         } else {
             dispatch(loginReject(data))

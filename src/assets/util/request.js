@@ -35,9 +35,9 @@ export const Methods = {
 export const withToken = async (options, getState = () => { }) => {
   return {
     ...options,
-    token: get(getState(), "loginReducer.dataUser.data.token"),
-    userId: get(getState(), "loginReducer.dataUser.data.userId"),
-    companyId: get(getState(), "loginReducer.dataUser.data.companyId"),
+    token: get(getState(), "auth.login.dataUser.token"),
+    userId: get(getState(), "auth.login.dataUser.userId"),
+    companyId: get(getState(), "auth.login.dataUser.companyId"),
   };
 };
 
@@ -48,16 +48,16 @@ export const getOptions = ({
   headers: extraHeaders = {},
   params = {},
   companyId,
-  userId
+  userId,
 }) => {
   const headers = {
-    userId: userId,
+    UserId: userId,
     CompanyId: companyId,
     Accept: "application/json",
     ...JSONBody,
     ...extraHeaders,
   };
-
+  console.log(headers)
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
