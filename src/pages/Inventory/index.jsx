@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace } from "lodash";
+import { get, map, replace, toString } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Divider,
@@ -8,10 +9,13 @@ import {
   Typography,
   MenuList,
   MenuItem,
-  Popover
+  Popover,
+  Pagination,
+  Stack
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 
 import Layout from "../../components/layout/Layout"
 import Table from "../../components/form/Table";
@@ -23,17 +27,17 @@ import NewInventaryAlert from "./component/NewInventaryAlert";
 import { getInventary } from "../../store/inventary/thunk/getInventary";
 
 
-function createData(code, create_at, quantity, status, counts, file, onHand, counted, difference) {
-  return { code, create_at, quantity, status, counts, file, onHand, counted, difference };
-}
+// function createData(code, create_at, quantity, status, counts, file, onHand, counted, difference) {
+//   return { code, create_at, quantity, status, counts, file, onHand, counted, difference };
+// }
 
-const rows = [
-  createData('19283', "04/09/22", 100, "Creado", 10, "Example.csv", 5, 6, 7),
-  createData('19283', "04/09/22", 40, "Activo", 5, "Example.csv", 5, 6, 7),
-  createData('19283', "04/09/22", 100, "Pagado", 10, "Example.csv", 5, 6, 7),
-  createData('19283', "04/09/22", 40, "Creado", 5, "Example.csv", 5, 6, 7),
-  createData('19283', "04/09/22", 100, "Finalizado", 10, "Example.csv", 5, 6, 7),
-];
+// const ∂∂ = [
+//   createData('19283', "04/09/22", 100, "Creado", 10, "Example.csv", 5, 6, 7),
+//   createData('19283', "04/09/22", 40, "Activo", 5, "Example.csv", 5, 6, 7),
+//   createData('19283', "04/09/22", 100, "Pagado", 10, "Example.csv", 5, 6, 7),
+//   createData('19283', "04/09/22", 40, "Creado", 5, "Example.csv", 5, 6, 7),
+//   createData('19283', "04/09/22", 100, "Finalizado", 10, "Example.csv", 5, 6, 7),
+// ];
 
 const ActiveInventory = () => {
   const navegate = useNavigate();
@@ -42,7 +46,7 @@ const ActiveInventory = () => {
   const [__] = useTranslation("inve");
   const module = "inventaries"
   const code = "#Asq937614"
-
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState({});
   const [showNoti, setShowNoti] = useState({ open: false, variant: "", msg: "" })
@@ -52,15 +56,21 @@ const ActiveInventory = () => {
 
   const titles = __(`${module}.table`, { returnObjects: true });
 
+  const inventaryState = useSelector(state => state.inventary.inventary.data.data);
+
+  const getData = (page) => {
+    dispatch(getInventary({ page }))
+  }
+
   useEffect(() => {
-    dispatch(getInventary())
-}, [dispatch])
+    getData(1)
+  }, [dispatch])
 
   const handleClick = (item) => (event) => {
     setAnchorEl(event.currentTarget);
     setSelected(item)
-
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -78,12 +88,22 @@ const ActiveInventory = () => {
     }, 500);
   }
 
+  const onChangePagination = (e, page) => {
+    getData(page)
+  }
+
   // ---------- Table ---------------
   const headTable = [
     {
-      key: "code",
+      key: "inventoryId",
       label: get(titles, "[0]"),
       align: "left",
+    },
+    {
+      key: "name",
+      label: "Nombre",
+      align: "left",
+      width: 200,
     },
     {
       key: "create_at",
@@ -91,7 +111,7 @@ const ActiveInventory = () => {
       align: "center"
     },
     {
-      key: "quantity",
+      key: "itemsQty",
       label: get(titles, "[2]"),
       align: "center"
     },
@@ -101,7 +121,7 @@ const ActiveInventory = () => {
       align: "center"
     },
     {
-      key: "counts",
+      key: "countsUsers",
       label: get(titles, "[4]"),
       align: "center"
     },
@@ -132,9 +152,9 @@ const ActiveInventory = () => {
     },
   ]
 
-
-  const dataTable = map(rows, (row) => ({
+  const dataTable = map(get(inventaryState, "data", []), (row) => ({
     ...row,
+    create_at: moment(row.date).format("DD-MM-YYYY"),
     options: (
       <IconButton
         aria-label="more"
@@ -151,9 +171,8 @@ const ActiveInventory = () => {
 
   // ---------- Menu ---------------
 
-  const onDetail = () => {
-    navegate("AJHG623645")
-  }
+  const onDetail = () => navegate(toString(get(selected, "inventoryId")))
+
   const onEdit = () => {
     // setShowNoti({ open: true, variant: "success", msg: "" })
   }
@@ -202,6 +221,15 @@ const ActiveInventory = () => {
         module={module}
         sizeFilters={125}
       />
+      <Stack sx={{ mt: 2 }} alignItems="flex-end">
+        <Pagination
+          count={get(inventaryState, "totalPage", 1)}
+          page={get(inventaryState, "currentPage", 1)}
+          onChange={onChangePagination}
+          color="primary"
+        />
+      </Stack>
+
 
       <Popover
         id={"menu-inventario-activo"}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
@@ -48,12 +49,16 @@ const ActiveInventory = () => {
     const open = Boolean(anchorEl);
 
 
-    const inventaryActiveState = useSelector(state =>  state.inventary.inventaryActive);
+    const inventaryActive = useSelector(state => state.inventary.inventaryActive);
 
 
-    useEffect(() => {
-        dispatch(getInventaryActive())
-    }, [dispatch])
+    const getData = (page) => {
+        dispatch(getInventaryActive({ page }))
+      }
+      
+      useEffect(() => {
+        getData(1)
+      }, [dispatch])
 
 
 

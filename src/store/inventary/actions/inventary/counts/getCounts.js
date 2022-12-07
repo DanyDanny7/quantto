@@ -16,7 +16,7 @@ export const getInventaryCountsRequest = async (params = {}, getState) => {
         method: Methods.GET,
         params,
     }, getState);
-    return request(`/api/web/getcounts`, options);
+    return request(`/api/web/getinventorybytempleteid`, options);
 };
 
 

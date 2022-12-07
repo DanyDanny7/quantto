@@ -16,7 +16,7 @@ export const getInventaryActiveRequest = async (params = {}, getState) => {
         method: Methods.GET,
         params,
     }, getState);
-    return request(`/api/web/getinventories`, options);
+    return request(`/api/web/getinventoryinprocess`, options);
 };
 
 

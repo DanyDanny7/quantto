@@ -81,12 +81,12 @@ const routesInvent = [
     },
     {
         key: "inventory",
-        path: "/inventory/:id",
+        path: "/inventory/:detailId",
         element: <InventoryDetail />,
     },
     {
         key: "inventory",
-        path: "/inventory/:id/count/:id",
+        path: "/inventory/:detailId/count/:countId",
         element: <InventoryDetailCounts />,
     },
     {

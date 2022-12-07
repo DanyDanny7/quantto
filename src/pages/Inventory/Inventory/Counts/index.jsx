@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
+import { useParams } from 'react-router-dom';
 import { get, map, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
@@ -11,14 +13,17 @@ import {
     Popover,
     Checkbox
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useTheme } from "@mui/material/styles";
 
 import Layout from "../../../../components/layout/Layout"
 import Table from "../../../../components/form/Table";
 import Notification from "../../../../components/form/Notification";
-
 import Toolbar from "./components/Toolbar"
+
+import { getInventaryCounts } from "../../../../store/inventary/thunk/getInventary/counts/getCounts";
+
 
 function createData(id, create_at, hour, product, count, location, quantity) {
     return { id, create_at, hour, product, count, location, quantity };
@@ -34,9 +39,12 @@ const rows = [
 
 const ActiveInventory = () => {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const params = useParams();
     const [__] = useTranslation("inve");
     const module = "counts"
-    const code = "#Asq937614"
+    const detailId = `#${get(params, "detailId")}`
+    const countId = `#${get(params, "countId")}`
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -45,9 +53,20 @@ const ActiveInventory = () => {
 
     const titles = __(`${module}.table`, { returnObjects: true });
 
+    const inventaryDetailState = useSelector(state => state.inventary.inventary);
+    console.log(inventaryDetailState)
+
+
+    const getData = (page) => {
+        dispatch(getInventaryCounts({ page, inventoryid: detailId, inventorydetailid: countId }))
+    }
+
+
+    useEffect(() => {
+        getData(1)
+    }, [dispatch])
 
     //  --------- Tabla -------------
-
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             const newSelected = rows.map((n) => n.id);
@@ -180,8 +199,8 @@ const ActiveInventory = () => {
     return (
         <Layout
             propsToolbar={{
-                title: replace(__(`${module}.header.title`), "[[code]]", code),
-                label: replace(__(`${module}.header.sub-title`), "[[code]]", code),
+                title: replace(__(`${module}.header.title`), "[[code]]", detailId),
+                label: replace(__(`${module}.header.sub-title`), "[[code]]", detailId),
                 code: null,
                 btnLabel: __(`${module}.btn`),
                 btnFunc: countFinish

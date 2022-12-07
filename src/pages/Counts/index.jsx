@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
 import { Checkbox, IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../components/layout/Layout"
 import Table from "../../components/form/Table";
 import Notification from "../../components/form/Notification";
 import Toolbar from "./Toolbar";
 import NewCounters from "./components/NewCounters";
+
+import { getCounts } from "../../store/counts/thunk/getCounts"
 
 function createData(id, date, name, state) {
   return { id, date, name, state };
@@ -25,14 +29,25 @@ const rows = [
 
 const Counts = () => {
   const [__] = useTranslation("count");
+  const dispatch = useDispatch();
   const module = "counts"
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "" });
 
-
   const titles = __(`${module}.table`, { returnObjects: true })
+
+  const inventaryState = useSelector(state => state);
+  console.log(inventaryState)
+
+  const getData = () => {
+    dispatch(getCounts())
+  }
+
+  useEffect(() => {
+    getData(1)
+  }, [dispatch])
 
 
   const closeNewCouter = () => {

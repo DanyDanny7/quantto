@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Divider,
   IconButton,
@@ -15,6 +16,7 @@ import {
   Popover
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
@@ -23,64 +25,82 @@ import PieChart from "../component/PieChart";
 import BarChart from "../component/BarChart";
 import Toolbar from "./Toolbar";
 
-function createData(code, product, category, barcode, onHand, counted, difference) {
-  return { code, product, category, barcode, onHand, counted, difference };
-}
+import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
 
-const rows = [
-  createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-  createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-  createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-  createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-  createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-];
+
+// function createData(code, product, category, barcode, onHand, counted, difference) {
+//   return { code, product, category, barcode, onHand, counted, difference };
+// }
+
+// const rows = [
+//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
+// ];
 
 const ActiveInventory = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const navegate = useNavigate();
+  const params = useParams();
   const [__] = useTranslation("inve");
   const module = "detail"
-  const code = "#Asq937614"
+  const code = `#${get(params, "detailId") !== "0" ? get(params, "detailId") : 1}`
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [active, setActive] = useState({});
   const open = Boolean(anchorEl);
   const [alertActive, setAlertActive] = useState(false);
 
   const titles = __(`${module}.table`, { returnObjects: true });
 
+  const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
+
+  const getData = (page) => {
+    dispatch(getInventaryDetail({ page, inventoryid: code }))
+  }
+
+  useEffect(() => {
+    getData(1)
+  }, [dispatch])
+
+  // ---------- Table ---------------
+
   const headTable = [
     {
-      key: "code",
+      key: "itemId",
       label: get(titles, "[0]"),
       align: "left",
     },
     {
-      key: "product",
+      key: "itemName",
       label: get(titles, "[1]"),
-      align: "center"
+      align: "left"
     },
+    // {
+    //   key: "category",
+    //   label: get(titles, "[2]"),
+    //   align: "center"
+    // },
     {
-      key: "category",
-      label: get(titles, "[2]"),
-      align: "center"
-    },
-    {
-      key: "barcode",
+      key: "barCode",
       label: get(titles, "[3]"),
       align: "center"
     },
     {
-      key: "onHand",
+      key: "inventory",
       label: get(titles, "[4]"),
       align: "center"
     },
     {
-      key: "counted",
+      key: "stock",
       label: get(titles, "[5]"),
       align: "center"
     },
     {
-      key: "difference",
+      key: "diference",
       label: get(titles, "[6]"),
       align: "center"
     },
@@ -100,17 +120,18 @@ const ActiveInventory = () => {
     "elapsed-time": "8:00:00",
   }
 
-  const handleClick = (event) => {
+  const handleClick = (e) => (event) => {
     setAnchorEl(event.currentTarget);
+    setActive(e)
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
   const showMore = () => {
-    navegate("count/AJHG623645")
+    navegate(`count/${get(active, "inventoryDetailId")}`)
   }
 
-  const dataTable = map(rows, (row) => ({
+  const dataTable = map(get(inventaryDetailState, "data.data.countsTemplate", []), (row) => ({
     ...row,
     options: (
       <IconButton
@@ -119,7 +140,7 @@ const ActiveInventory = () => {
         aria-controls={open ? 'long-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
+        onClick={handleClick(row)}
       >
         <MoreVertIcon />
       </IconButton>
@@ -172,7 +193,7 @@ const ActiveInventory = () => {
             <Paper className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
               <Box className='m-auto my-6' maxWidth={250} >
-                <PieChart values={[90, 30]} />
+                <PieChart values={[get(inventaryDetailState, "data.data.getCountsPieChart.counted", 0), get(inventaryDetailState, "data.data.getCountsPieChart.notCounted", 0)]} />
               </Box>
               <Box className='flex items-center justify-around'>
                 <Box className='flex items-center'>
@@ -190,7 +211,7 @@ const ActiveInventory = () => {
             <Paper className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
               <Box className='m-auto my-6 px-6' overflow="auto">
-                <BarChart minWidth={350} />
+                <BarChart minWidth={350} countsBarChart={get(inventaryDetailState, "data.data.getCountsBarChart")} />
               </Box>
               <Box className='flex items-center justify-around'>
                 <Box className='flex items-center'>

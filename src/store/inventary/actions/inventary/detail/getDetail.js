@@ -16,7 +16,7 @@ export const getInventaryDetailRequest = async (params = {}, getState) => {
         method: Methods.GET,
         params,
     }, getState);
-    return request(`/api/web/getinventarydetail`, options);
+    return request(`/api/Web/getinventorybyid`, options);
 };
 
 

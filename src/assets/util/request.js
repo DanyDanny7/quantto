@@ -36,8 +36,8 @@ export const withToken = async (options, getState = () => { }) => {
   return {
     ...options,
     token: get(getState(), "auth.login.dataUser.token"),
-    userId: get(getState(), "auth.login.dataUser.userId"),
-    companyId: get(getState(), "auth.login.dataUser.companyId"),
+    userid: get(getState(), "auth.login.dataUser.userId"),
+    companyid: get(getState(), "auth.login.dataUser.companyId"),
   };
 };
 
@@ -47,17 +47,16 @@ export const getOptions = ({
   token = null,
   headers: extraHeaders = {},
   params = {},
-  companyId,
-  userId,
+  companyid,
+  userid,
 }) => {
   const headers = {
-    UserId: userId,
-    CompanyId: companyId,
+    //UserId: userId,
+    //CompanyId: companyId,
     Accept: "application/json",
     ...JSONBody,
     ...extraHeaders,
   };
-  console.log(headers)
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -67,7 +66,7 @@ export const getOptions = ({
     method,
     data,
     headers,
-    params,
+    params: { companyid, userid, language: "es", ...params },
     // paramsSerializer: (params) => {
     //   return qs.stringify(params, { encode: false });
     // },

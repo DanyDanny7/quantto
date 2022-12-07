@@ -6,27 +6,26 @@ import Chart from 'chart.js/auto'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Box } from '@mui/material';
 
-const PieChart = ({ values, ...restProps }) => {
+const PieChart = ({ values, countsBarChart, ...restProps }) => {
     const theme = useTheme();
     const chartRef = useRef(null);
 
     const data = {
-        labels: ['Electrodomesticos', 'Calzado'],
+        labels: [get(countsBarChart, "category", "")],
         datasets: [
             {
-                data: [100, 100],
+                data: [get(countsBarChart, "fisico", 0)],
                 backgroundColor: theme.palette.color.greenlight[400],
             },
             {
-                data: [60, 60],
+                data: [get(countsBarChart, "teorico", 0)],
                 backgroundColor: theme.palette.color.orange[400],
             },
             {
-                data: [10, 10],
+                data: [get(countsBarChart, "fisico", 0) - get(countsBarChart, "teorico", 0)],
                 backgroundColor: theme.palette.color.pink[300],
             }
         ]
-
     };
 
     const options = {
