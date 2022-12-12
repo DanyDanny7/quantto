@@ -51,8 +51,8 @@ export const getOptions = ({
   userid,
 }) => {
   const headers = {
-    //UserId: userId,
-    //CompanyId: companyId,
+    userid: userid,
+    companyid: companyid,
     Accept: "application/json",
     ...JSONBody,
     ...extraHeaders,

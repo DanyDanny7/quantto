@@ -38,8 +38,8 @@ const Counts = () => {
 
   const titles = __(`${module}.table`, { returnObjects: true })
 
-  const inventaryState = useSelector(state => state);
-  console.log(inventaryState)
+  const countsState = useSelector(state => state.counts);
+  console.log(countsState)
 
   const getData = () => {
     dispatch(getCounts())
