@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace } from "lodash";
+import { get, isNull, map, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -26,6 +26,7 @@ import BarChart from "../component/BarChart";
 import Toolbar from "./Toolbar";
 
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
+import moment from 'moment/moment';
 
 
 // function createData(code, product, category, barcode, onHand, counted, difference) {
@@ -57,7 +58,7 @@ const ActiveInventory = () => {
   const titles = __(`${module}.table`, { returnObjects: true });
 
   const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
-
+  console.log(inventaryDetailState)
   const getData = (page) => {
     dispatch(getInventaryDetail({ page, inventoryid: code }))
   }
@@ -112,12 +113,12 @@ const ActiveInventory = () => {
   ]
 
   const card1 = {
-    "count-name": "Nombre",
-    "start": "09/10/22 - 9:00 AM",
-    "end": "------",
-    "progress": "75%",
-    "units-counted": "100",
-    "elapsed-time": "8:00:00",
+    "count-name": get(inventaryDetailState, "data.data.name", "- -"),
+    "start": isNull(get(inventaryDetailState, "data.data.startDate")) ? "- -" : moment(get(inventaryDetailState, "data.data.startDate")).format("DD/MM/YY - HH:mm A"),
+    "end": isNull(get(inventaryDetailState, "data.data.endDate")) ? "- -" : moment(get(inventaryDetailState, "data.data.endDate")).format("DD/MM/YY - HH:mm A"),
+    "progress": get(inventaryDetailState, "data.data.percentage", "- -"),
+    "units-counted": get(inventaryDetailState, "data.data.itemsQty", "- -"),
+    "elapsed-time": "- -",
   }
 
   const handleClick = (e) => (event) => {
@@ -157,6 +158,7 @@ const ActiveInventory = () => {
         // color: "warning"
         color: "success"
       }}
+      goBack
     >
       <Box className='mb-6'>
         <Grid container spacing={3}>

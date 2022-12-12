@@ -17,7 +17,7 @@ export const register = (formData) => async (dispatch, getState) => {
             dispatch(registerReject(data))
         }
     } catch (error) {
-        dispatch(registerReject(error))
+        dispatch(registerReject(get(error, "response.data")))
     }
     return Promise.resolve();
 };

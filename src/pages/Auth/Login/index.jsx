@@ -43,7 +43,10 @@ const Login = () => {
         if (get(loginState, "isLoged")) {
             navigate("/")
         } else if (get(loginState, "isReject")) {
-            setShowNoti({ open: true, msg: "Usuario o contraseña inválida", variant: "error" })
+            const msg = `${get(loginState, "allResp", "")}`
+            setShowNoti({ open: true, msg, variant: "error" })
+        } else {
+            setShowNoti({ open: false, msg: undefined, variant: "" })
         }
     }, [loginState, navigate])
 
@@ -72,6 +75,7 @@ const Login = () => {
                                     fullWidth
                                     id="email"
                                     name="email"
+                                    size='small'
                                     placeholder={get(inputs, "[0].placeholder")}
                                     value={get(formik, "values.email")}
                                     onChange={get(formik, "handleChange")}
@@ -94,11 +98,12 @@ const Login = () => {
                                     onChange={get(formik, "handleChange")}
                                     error={get(formik, "touched.password") && Boolean(get(formik, "errors.password"))}
                                     helperText={get(formik, "touched.password") && get(formik, "errors.password")}
+                                    size='small'
                                     InputProps={{
                                         endAdornment:
                                             <InputAdornment position="end" className='mr-2'>
                                                 <IconButton
-                                                    ariaLabel="toggle password visibility"
+                                                    aria-label="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleClickShowPassword}
                                                     edge="end"

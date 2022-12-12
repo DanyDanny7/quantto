@@ -18,7 +18,7 @@ export const login = (formData) => async (dispatch, getState) => {
             dispatch(loginReject(data))
         }
     } catch (error) {
-        dispatch(loginReject(error))
+        dispatch(loginReject(get(error, "response.data")))
     }
     return Promise.resolve();
 };

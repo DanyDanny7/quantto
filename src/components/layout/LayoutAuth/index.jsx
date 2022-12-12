@@ -22,12 +22,12 @@ const LayoutAuth = ({ title, type, children, ...restProps }) => {
             <Helmet><title>{title}</title></Helmet>
             <Box className='flex'>
                 <CardMedia
-                    component="image"
+                    component="img"
                     image={get(getType(type), "src")}
                     alt="Live from space album cover"
                     sx={{ width: "45%", height: "100vh", bgcolor: "#1b0700" }}
                 />
-                <Box className='overflow-auto h-screen flex-1 py-8'>
+                <Box className='flex flex-col overflow-auto h-screen flex-1 py-8'>
                     {children}
                 </Box>
             </Box>

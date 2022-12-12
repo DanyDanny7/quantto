@@ -9,7 +9,7 @@ import Drawer from "./components/Drawer";
 const drawerWidth = 272;
 const toolbarHeight = 120;
 
-const Layout = ({ children, propsToolbar }) => {
+const Layout = ({ children, propsToolbar, goBack }) => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -18,7 +18,7 @@ const Layout = ({ children, propsToolbar }) => {
                 sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` } }}
                 elevation={0}
             >
-                <Toolbar toolbarHeight={toolbarHeight} propsToolbar={propsToolbar} />
+                <Toolbar toolbarHeight={toolbarHeight} propsToolbar={propsToolbar} goBack={goBack} />
             </AppBar>
             <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
                 <Drawer drawerWidth={drawerWidth} toolbarHeight={toolbarHeight} />

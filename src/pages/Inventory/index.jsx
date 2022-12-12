@@ -57,6 +57,8 @@ const ActiveInventory = () => {
   const titles = __(`${module}.table`, { returnObjects: true });
 
   const inventaryState = useSelector(state => state.inventary.inventary.data.data);
+  const state = useSelector(state => state);
+
 
   const getData = (page) => {
     dispatch(getInventary({ page }))

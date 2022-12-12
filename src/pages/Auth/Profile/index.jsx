@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -15,13 +15,11 @@ import {
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
-import { get } from "lodash";
+import { get, words, map, join, upperCase, slice } from "lodash";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 
 import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
@@ -29,31 +27,14 @@ import validator from "./validator";
 
 import { logout } from "../../../store/auth/thunk/logout"
 
-
 const Profile = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [__, i18n] = useTranslation("auth");
 
   const [showPass, setShowPass] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    setData({
-      userId: 0,
-      companyId: "string",
-      companyName: "Gotech.sv",
-      username: "Ed warren",
-      phone: "string",
-      email: "edwarren@correo.com",
-      firstTime: true,
-      token: "string",
-      jwt: "string",
-      rutaImagen: "string"
-    })
-  }, [])
+  const dataUser = useSelector(state => state.auth.login.dataUser);
 
   const inputs = __('profile.input', { returnObjects: true })
   const sections = __('profile.section', { returnObjects: true })
@@ -73,15 +54,9 @@ const Profile = () => {
 
   const formik = useFormik({
     initialValues: {
-      // name: get(data, "username"),
-      // email: get(data, "email"),
-      // company: get(data, "companyId"),
-      // password: "",
-      // confirmation: "",
-
-      name: "Ed warren",
-      email: "edwarren@correo.com",
-      company: "Gotech.sv",
+      name: get(dataUser, "username"),
+      email: get(dataUser, "email"),
+      company: get(dataUser, "companyName"),
       password: "",
       confirmation: "",
     },
@@ -100,6 +75,10 @@ const Profile = () => {
     // navigate("/login")
   }
 
+  const short = (text) => {
+    return (upperCase(join(slice(map(words(text), (w) => get(w, "[0]")), 0, 2), "")))
+  }
+
   return (
     <Layout
       propsToolbar={{
@@ -113,13 +92,13 @@ const Profile = () => {
       <Box>
         <Paper className='flex justify-between items-center py-6 px-8 w-full mb-6' elevation={3}  >
           <Box className='flex'>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ height: 80, width: 80 }} />
+            <Avatar alt={short(get(dataUser, "username"))} src={"/"} sx={{ height: 80, width: 80 }} >{short(get(dataUser, "username"))}</Avatar>
             <Box className='pl-8'>
-              <Typography variant="buttonXtra">{get(data, "username")}</Typography>
+              <Typography variant="buttonXtra">{get(dataUser, "username", "- -")}</Typography>
               <Box className='flex'>
-                <Typography variant="bodyLarge">{get(data, "email")}</Typography>
+                <Typography variant="bodyLarge">{get(dataUser, "email", "- -")}</Typography>
                 <Typography className='px-2' variant="bodyLarge" color="text.slite">|</Typography>
-                <Typography variant="bodyLarge">{get(data, "companyName")}</Typography>
+                <Typography variant="bodyLarge">{get(dataUser, "companyName", "- -")}</Typography>
               </Box>
             </Box>
           </Box>
@@ -230,7 +209,7 @@ const Profile = () => {
                           endAdornment:
                             <InputAdornment position="end" className='mr-2'>
                               <IconButton
-                                ariaLabel="toggle password visibility"
+                                aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
                                 onMouseDown={handleClickShowPassword}
                                 edge="end"
@@ -264,7 +243,7 @@ const Profile = () => {
                             endAdornment:
                               <InputAdornment position="end" className='mr-2'>
                                 <IconButton
-                                  ariaLabel="toggle password visibility"
+                                  aria-label="toggle password visibility"
                                   onClick={handleClickShowPassword}
                                   onMouseDown={handleClickShowPassword}
                                   edge="end"

@@ -200,7 +200,7 @@ const Counts = () => {
         __={__}
         module="payment"
         sizeFilters={125}
-        propsTableCell={{ padding: "checkbox" }}
+        propsTableCell={{ padding: "checkbox", height: 81 }}
       />
       <NewCounters
         open={open}

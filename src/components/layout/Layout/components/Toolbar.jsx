@@ -1,8 +1,10 @@
 import React from 'react'
 import { styled } from '@mui/material/styles';
 import { get } from "lodash";
+import { useNavigate } from 'react-router-dom';
 
-import { Box, Typography, Toolbar as ToolbarUi, Button } from '@mui/material';
+import { Box, Typography, Toolbar as ToolbarUi, Button, IconButton, Stack } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
     alignItems: 'center',
@@ -14,15 +16,24 @@ const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
 
 const Toolbar = ({
     toolbarHeight,
-    propsToolbar = { label: "", btnLabel: "", btnFunc: () => { }, color: "primary" }
+    propsToolbar = { label: "", btnLabel: "", btnFunc: () => { }, color: "primary" },
+    goBack
 }) => {
+    const navigate = useNavigate();
 
     return (
         <StyledToolbar sx={{ height: toolbarHeight }} >
             <Box className='flex flex-col' sx={{ flexGrow: 1 }}>
-                <Typography variant="heading2" color="text.main" gutterBottom >
-                    {get(propsToolbar, "title")}
-                </Typography>
+                <Stack direction="flex" spacing={3} alignItems="center">
+                    {!!goBack &&
+                        <IconButton onClick={() => navigate(-1)} >
+                            <ArrowBackIcon sx={{ color: "text.main" }} />
+                        </IconButton>
+                    }
+                    <Typography variant="heading2" color="text.main" gutterBottom >
+                        {get(propsToolbar, "title")}
+                    </Typography>
+                </Stack>
                 <Typography variant="bodySmall" color="text.main" >
                     {get(propsToolbar, "label")}
                 </Typography>

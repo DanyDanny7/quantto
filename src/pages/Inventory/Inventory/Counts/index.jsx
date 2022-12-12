@@ -205,6 +205,7 @@ const ActiveInventory = () => {
                 btnLabel: __(`${module}.btn`),
                 btnFunc: countFinish
             }}
+            goBack
         >
 
             <Table

@@ -138,7 +138,7 @@ const NewCounters = ({ open, onClose, isEdit, __, module }) => {
                                         endAdornment:
                                             <InputAdornment position="end" className='mr-2'>
                                                 <IconButton
-                                                    ariaLabel="toggle password visibility"
+                                                    aria-label="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleClickShowPassword}
                                                     edge="end"
@@ -169,7 +169,7 @@ const NewCounters = ({ open, onClose, isEdit, __, module }) => {
                                                 endAdornment:
                                                     <InputAdornment position="end" className='mr-2'>
                                                         <IconButton
-                                                            ariaLabel="toggle password visibility"
+                                                            aria-label="toggle password visibility"
                                                             onClick={handleClickShowPassword}
                                                             onMouseDown={handleClickShowPassword}
                                                             edge="end"

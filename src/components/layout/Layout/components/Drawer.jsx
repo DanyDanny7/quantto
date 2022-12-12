@@ -16,6 +16,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { get, find } from "lodash";
 import { useNavigate, useHref } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import Quanto from "../../../../assets/icons/Quanto";
 import InputSearch from "../../../../components/form/InputSearch";
@@ -28,6 +29,8 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
     const href = useHref();
     const [active, setActive] = useState(0);
     const [__] = useTranslation("global");
+
+    const dataUser = useSelector(state => state.auth.login.dataUser);
 
     const handleClick = (act) => () => {
         setActive(get(act, "key"))
@@ -143,11 +146,11 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                     <Box className='flex-1 p-4 flex items-center justify-between border rounded-2xl'>
                         <Box className='text-left'>
                             <Typography variant="buttonMedium">
-                                Ed warren
+                                {get(dataUser, "username")}
                             </Typography>
                             <br />
                             <Typography variant="bodySmall">
-                                AS1837645
+                                {get(dataUser, "userId")}
                             </Typography>
                         </Box>
                         <Box>

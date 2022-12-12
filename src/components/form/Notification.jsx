@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect} from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Typography } from '@mui/material';
@@ -9,8 +10,19 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Notification = ({ showNoti, setShowNoti, timer = 5000 }) => {
 
+    useEffect(() => {
+      const time = setTimeout(() => {
+        setShowNoti({ open: false, msg: undefined, variant: "" })
+      }, timer);
+    
+      return () => {
+        clearTimeout(time)
+      }
+    }, [showNoti.open])
+    
+
     const handleClose = () => {
-        setShowNoti({ open: false, msg: "", variant: "" });
+        setShowNoti({ open: false, msg: undefined, variant: "" });
     };
 
     const getVariant = () => {
@@ -27,7 +39,7 @@ const Notification = ({ showNoti, setShowNoti, timer = 5000 }) => {
     return (
         <div>
             <Snackbar
-                anchorOrigin={{ vertical: 'button', horizontal: "right" }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: "right" }}
                 open={showNoti.open}
                 onClose={handleClose}
                 key={"msg"}
