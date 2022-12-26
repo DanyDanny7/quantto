@@ -28,19 +28,6 @@ import Toolbar from "./Toolbar";
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
 import moment from 'moment/moment';
 
-
-// function createData(code, product, category, barcode, onHand, counted, difference) {
-//   return { code, product, category, barcode, onHand, counted, difference };
-// }
-
-// const rows = [
-//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-//   createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-// ];
-
 const ActiveInventory = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -58,7 +45,7 @@ const ActiveInventory = () => {
   const titles = __(`${module}.table`, { returnObjects: true });
 
   const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
-  console.log(inventaryDetailState)
+
   const getData = (page) => {
     dispatch(getInventaryDetail({ page, inventoryid: code }))
   }
@@ -163,7 +150,7 @@ const ActiveInventory = () => {
       <Box className='mb-6'>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} xl={3}>
-            <Paper className='py-8 px-6 overflow-auto h-full'>
+            <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
               <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
               <Box className='mb-3'>
                 <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
@@ -192,7 +179,7 @@ const ActiveInventory = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} xl={4}>
-            <Paper className='py-8 px-6 h-full'>
+            <Paper elevation={[1]} className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
               <Box className='m-auto my-6' maxWidth={250} >
                 <PieChart values={[get(inventaryDetailState, "data.data.getCountsPieChart.counted", 0), get(inventaryDetailState, "data.data.getCountsPieChart.notCounted", 0)]} />
@@ -210,7 +197,7 @@ const ActiveInventory = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} xl={5}>
-            <Paper className='py-8 px-6 h-full'>
+            <Paper elevation={[1]} className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
               <Box className='m-auto my-6 px-6' overflow="auto">
                 <BarChart minWidth={350} countsBarChart={get(inventaryDetailState, "data.data.getCountsBarChart")} />
@@ -241,6 +228,7 @@ const ActiveInventory = () => {
         __={__}
         module={module}
         sizeFilters={125}
+        loading={get(inventaryDetailState, "isLoading", false)}
       />
 
       <Popover
@@ -250,7 +238,7 @@ const ActiveInventory = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        elevation={1}
+        elevation={[1]}
       >
         <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
           <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>

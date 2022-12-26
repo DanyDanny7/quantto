@@ -13,30 +13,33 @@
             "finish": "Finalizar conteo"
         },
         "filters": {
-            "search": "Buscar",
-            "selects": [
-                {
-                    "title": "Rango de fecha:",
-                    "options": [
-                        "Esta semana",
-                        "Opción1",
-                        "Opción2",
-                        "Opción3"
-                    ]
-                },
-                {
-                    "title": "Estado:",
-                    "options": [
-                        "Todos",
-                        "Opción1",
-                        "Opción2",
-                        "Opción3"
-                    ]
-                }
-            ]
+            "search": "Buscar"
         },
+        "status": [
+            {
+                "statusId": 1,
+                "description": "NUEVO / PENDIENTE PAGO",
+                "color": "default"
+            },
+            {
+                "statusId": 2,
+                "description": "PAGADO",
+                "color": "info"
+            },
+            {
+                "statusId": 3,
+                "description": "EN PROCESO",
+                "color": "success"
+            },
+            {
+                "statusId": 4,
+                "description": "FINALIZADO",
+                "color": "primary"
+            }
+        ],
         "table": [
             "Código",
+            "Nombre",
             "Creación",
             "Cantidad",
             "Estado",
@@ -71,7 +74,7 @@
                 "placeholder": "Ingresa el nombre del inventario"
             },
             "error": {
-                "file": "Solo se admiten archivos .xls y .csv"
+                "file": "Solo se admiten archivos .csv"
             },
             "alert": {
                 "title": "Conteo creado con éxito",

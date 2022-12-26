@@ -8,10 +8,44 @@ import {
     TableRow,
     Paper,
     Typography,
+    Box
 } from "@mui/material"
+import CircularProgress, {
+    circularProgressClasses,
+} from '@mui/material/CircularProgress';
 import { get, map } from "lodash";
 
-const TableComponent = ({ headTable, dataTable, __, module, filter, toolbar, propsTable = {}, propsTableCell = {} }) => {
+const TableComponent = ({ headTable, dataTable, __, module, filter, loading, toolbar, propsTable = {}, propsTableCell = {} }) => {
+
+    const CircularProgressCustom = (props) => (
+        <Box sx={{ position: 'relative' }}>
+            <CircularProgress
+                variant="determinate"
+                sx={{
+                    color: (theme) =>
+                        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+                }}
+                size={40}
+                thickness={4}
+                {...props}
+                value={100}
+            />
+            <CircularProgress
+                variant="indeterminate"
+                disableShrink
+                sx={{
+                    color: "secondary",
+                    animationDuration: '750ms',
+                    position: 'absolute',
+                    left: 0,
+                    [`& .${circularProgressClasses.circle}`]: { strokeLinecap: 'round', }
+                }}
+                size={40}
+                thickness={4}
+                {...props}
+            />
+        </Box>
+    );
 
     return (
         <Paper>
@@ -39,7 +73,11 @@ const TableComponent = ({ headTable, dataTable, __, module, filter, toolbar, pro
                                 >
                                     {map(headTable, ({ key, align, width = "auto" }, i) => (
                                         <TableCell key={i} align={align} {...propsTableCell} sx={{ width }} >
-                                            <Typography variant="bodySmall" component="div" >{get(row, `${[key]}`)}</Typography>
+                                            <>
+                                                {!loading &&
+                                                    <Typography variant="bodySmall" component="div" >{get(row, `${[key]}`)}</Typography>
+                                                }
+                                            </>
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -47,6 +85,17 @@ const TableComponent = ({ headTable, dataTable, __, module, filter, toolbar, pro
                         })}
                     </TableBody>
                 </Table>
+                {loading &&
+                    <Box sx={{
+                        display: 'flex',
+                        height: 300,
+                        width: '100%',
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                        <CircularProgressCustom />
+                    </Box>
+                }
             </TableContainer>
         </Paper >
     );

@@ -28,18 +28,24 @@ const inventaryActiveReducer = (state = stateInit, action) => {
         // ------------- Inventary Active --------------------
         case GET_INVENTARY_ACTIVE_LOADING: return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            isSuccess: false,
+            isReject: false,
+            data: [],
         }
         case GET_INVENTARY_ACTIVE_SUCCESS: return {
             ...state,
             isLoading: false,
             isSuccess: true,
-            data: action.payload
+            isReject: false,
+            data: action.payload,
         }
         case GET_INVENTARY_ACTIVE_REJECT: return {
             ...state,
             isLoading: false,
+            isSuccess: false,
             isReject: true,
+            data: [],
         }
 
         // ------------- Inventary Active Counts --------------------
@@ -47,7 +53,10 @@ const inventaryActiveReducer = (state = stateInit, action) => {
             ...state,
             counts: {
                 ...state.counts,
-                isLoading: true
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: [],
             }
         }
         case GET_INVENTARY_ACTIVE_COUNTS_SUCCESS: return {
@@ -56,6 +65,7 @@ const inventaryActiveReducer = (state = stateInit, action) => {
                 ...state.counts,
                 isLoading: false,
                 isSuccess: true,
+                isReject: false,
                 data: action.payload,
             }
         }
@@ -64,7 +74,9 @@ const inventaryActiveReducer = (state = stateInit, action) => {
             counts: {
                 ...state.counts,
                 isLoading: false,
+                isSuccess: false,
                 isReject: true,
+                data: [],
             }
         }
 

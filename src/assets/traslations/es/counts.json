@@ -6,18 +6,11 @@
         },
         "btn": "Crear contador",
         "filters": {
-            "search": "Buscar",
-            "selects": [
-                {
-                    "title": "Estado:",
-                    "options": [
-                        "Todos",
-                        "Option-2",
-                        "Option-3",
-                        "Option-4"
-                    ]
-                }
-            ]
+            "search": "Buscar"
+        },
+        "status": {
+            "active": "Activo",
+            "inactive": "Inactivo"
         },
         "modal": {
             "title-1": "Creación de nuevo contador",
@@ -31,8 +24,6 @@
             },
             "notification-1": "Contador creado con éxito",
             "notification-2": "Contador actualizado con éxito",
-            "notification-3": "Contador [[name]] Eliminado",
-            "notification-4": "[[number]] Contadores Eliminados",
             "input": [
                 {
                     "name": "Nombre",
@@ -51,12 +42,24 @@
                     "error": "Contraseña es requerida",
                     "error-2": "Tus contraseñas no coinciden, inténtalo nuevamente."
                 }
-            ]
+            ],
+            "delete": {
+                "title": "Eliminar contador",
+                "submit": "Eliminar",
+                "cancel": "Cancelar",
+                "confirm1": "¿Desea eliminar el contador [[name]]?",
+                "confirm2": "¿Desea eliminar [[number]] Contadores?",
+                "success1": "Se eliminó con éxito el contador [[name]]",
+                "success2": "Se eliminó con éxito [[number]] contadores"
+            }
         },
         "table": [
-            "Fecha de creación",
             "Contador",
+            "Fecha de creación",
             "Estado"
-        ]
+        ],
+        "msg": {
+            "success": "Contador creado con éxito"
+        }
     }
 }

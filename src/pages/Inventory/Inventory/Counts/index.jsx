@@ -54,8 +54,6 @@ const ActiveInventory = () => {
     const titles = __(`${module}.table`, { returnObjects: true });
 
     const inventaryDetailState = useSelector(state => state.inventary.inventary);
-    console.log(inventaryDetailState)
-
 
     const getData = (page) => {
         dispatch(getInventaryCounts({ page, inventoryid: detailId, inventorydetailid: countId }))
@@ -215,6 +213,7 @@ const ActiveInventory = () => {
                 __={__}
                 module={module}
                 multipleCheckbox
+                loading={get(inventaryDetailState, "isLoading", false)}
             />
 
             <Popover

@@ -127,7 +127,6 @@ const ActiveInventory = () => {
         navegate("AJHG623645")
     }
 
-
     const dataTable = map(rows, (row) => ({
         ...row,
         options: (
@@ -156,7 +155,7 @@ const ActiveInventory = () => {
             <Box className='mb-6'>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} xl={3}>
-                        <Paper className='py-8 px-6 overflow-auto h-full'>
+                        <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
                             <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
                             <Box className='mb-3'>
                                 <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
@@ -185,7 +184,7 @@ const ActiveInventory = () => {
                         </Paper>
                     </Grid>
                     <Grid item xs={12} sm={6} xl={4}>
-                        <Paper className='py-8 px-6 h-full'>
+                        <Paper elevation={[1]} className='py-8 px-6 h-full'>
                             <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
                             <Box className='m-auto my-6' maxWidth={250} >
                                 <PieChart values={[90, 30]} />
@@ -203,7 +202,7 @@ const ActiveInventory = () => {
                         </Paper>
                     </Grid>
                     <Grid item xs={12} xl={5}>
-                        <Paper className='py-8 px-6 h-full'>
+                        <Paper elevation={[1]} className='py-8 px-6 h-full'>
                             <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
                             <Box className='m-auto my-6 px-6' overflow="auto">
                                 <BarChart minWidth={350} />
@@ -236,6 +235,8 @@ const ActiveInventory = () => {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 elevation={1}
+                loading={get(inventaryActive, "isLoading", false)}
+
             >
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
                     <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>

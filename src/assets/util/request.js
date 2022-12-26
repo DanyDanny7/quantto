@@ -36,6 +36,7 @@ export const withToken = async (options, getState = () => { }) => {
   return {
     ...options,
     token: get(getState(), "auth.login.dataUser.token"),
+    jwt: get(getState(), "auth.login.dataUser.jwt"),
     userid: get(getState(), "auth.login.dataUser.userId"),
     companyid: get(getState(), "auth.login.dataUser.companyId"),
   };
@@ -49,7 +50,9 @@ export const getOptions = ({
   params = {},
   companyid,
   userid,
+  jwt,
 }) => {
+  console.log(token)
   const headers = {
     userid: userid,
     companyid: companyid,
@@ -58,7 +61,7 @@ export const getOptions = ({
     ...extraHeaders,
   };
   if (token) {
-    headers.Authorization = `Bearer ${token}`;
+    headers.Authorization = `Bearer ${jwt}`;
   }
 
   const options = {

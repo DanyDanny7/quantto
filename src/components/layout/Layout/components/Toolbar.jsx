@@ -24,7 +24,7 @@ const Toolbar = ({
     return (
         <StyledToolbar sx={{ height: toolbarHeight }} >
             <Box className='flex flex-col' sx={{ flexGrow: 1 }}>
-                <Stack direction="flex" spacing={3} alignItems="center">
+                <Stack direction="row" spacing={3} alignItems="center">
                     {!!goBack &&
                         <IconButton onClick={() => navigate(-1)} >
                             <ArrowBackIcon sx={{ color: "text.main" }} />

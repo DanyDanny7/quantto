@@ -1,113 +1,107 @@
 {
-    "active": {
+    "inventaries": {
         "header": {
-            "title": "Inventory Active",
-            "sub-title": "In process Inventory [[code]] active"
+            "title": "-",
+            "sub-title": "-"
         },
-        "btn": "End Inventory",
+        "btn": "-",
+        "menu": {
+            "detail": "-",
+            "edit": "-",
+            "start": "-",
+            "delete": "-",
+            "finish": "-"
+        },
         "filters": {
-            "search": "Search",
-            "selects": [
-                {
-                    "title": "Category:",
-                    "options": [
-                        "All",
-                        "option-1",
-                        "option-2",
-                        "option-3"
-                    ]
-                },
-                {
-                    "title": "filter2",
-                    "options": [
-                        "All",
-                        "option-1",
-                        "option-2",
-                        "option-3"
-                    ]
-                },
-                {
-                    "title": "filter3",
-                    "options": [
-                        "All",
-                        "option-1",
-                        "option-2",
-                        "option-3"
-                    ]
-                },
-                {
-                    "title": "filter4:",
-                    "options": [
-                        "All",
-                        "option-1",
-                        "option-2",
-                        "option-3"
-                    ]
-                }
-            ]
+            "search": "Search"
         },
-        "table": [
-            "Code",
-            "Product",
-            "Category",
-            "Barcode",
-            "On Hand",
-            "Counted",
-            "Difference"
+        "status": [
+            {
+                "statusId": 1,
+                "description": "NEW / PENDING PAYMENT",
+                "color": "default"
+            },
+            {
+                "statusId": 2,
+                "description": "PAID",
+                "color": "info"
+            },
+            {
+                "statusId": 3,
+                "description": "IN PROCESS",
+                "color": "success"
+            },
+            {
+                "statusId": 4,
+                "description": "FINISHED",
+                "color": "primary"
+            }
         ],
-        "cards": {
-            "card-1": {
-                "title": "Active Invetory count Detailes",
-                "count-name": "Count Name:",
-                "start": "Start:",
-                "end": "End:",
-                "progress": "Progress:",
-                "units-counted": "Units Counted:",
-                "elapsed-time": "Elapsed Time:"
+        "table": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "modal": {
+            "title": "-",
+            "option-1": "-",
+            "option-2": "-",
+            "sub-title-1": "-",
+            "sub-title-2": "-",
+            "download-file": "-",
+            "download-file-name": "-",
+            "table-title": "-",
+            "btn-1": "-",
+            "btn-2": "-",
+            "btn-3": "-",
+            "btn-4": "-",
+            "btn-5": "-",
+            "dropzone": {
+                "text-start": "-",
+                "text-active": "-",
+                "complement": "-",
+                "text-head": "-"
             },
-            "card-2": {
-                "title": "Progress",
-                "counted": "Counted",
-                "not-counted": "Not Counted"
+            "input": {
+                "name": "-",
+                "placeholder": "-"
             },
-            "card-3": {
-                "title": "SKU Categories",
-                "on-hand": "Un Hand",
-                "counted-units": "Counted Units",
-                "diference": "Diference"
+            "error": {
+                "file": "-"
+            },
+            "alert": {
+                "title": "-",
+                "sub-title": "-",
+                "btn-1": "-",
+                "btn-2": "-"
             }
         }
     },
     "detail": {
         "header": {
-            "title": "",
-            "sub-title": ""
+            "title-1": "-",
+            "title-2": "-",
+            "sub-title-1": "-",
+            "sub-title-2": "-"
         },
-        "btn": "",
+        "btn-1": "-",
+        "btn-2": "-",
+        "btn-3": "-",
+        "menu": {
+            "recount": "-",
+            "details": "-",
+            "delete": "-",
+            "delete-success": "-"
+        },
         "filters": {
-            "search": "Search",
-            "recount": "Recount",
-            "delete": "Delete",
-            "selects": [
-                {
-                    "title": "Category:",
-                    "options": [
-                        "All",
-                        "option-1",
-                        "option-2",
-                        "option-3"
-                    ]
-                },
-                {
-                    "title": "filter2",
-                    "options": [
-                        "All",
-                        "option-1",
-                        "option-2",
-                        "option-3"
-                    ]
-                }
-            ]
+            "search": "Search"
         },
         "table": [
             "",
@@ -118,8 +112,61 @@
             "",
             ""
         ],
-        "notification-1": " \"[[name]]\"",
-        "notification-2": "",
+        "cards": {
+            "card-1": {
+                "title": "-",
+                "count-name": "-",
+                "start": "-",
+                "end": "-",
+                "progress": "-",
+                "units-counted": "-",
+                "elapsed-time": "-:"
+            },
+            "card-2": {
+                "title": "-",
+                "counted": "-",
+                "not-counted": "-s"
+            },
+            "card-3": {
+                "title": "-",
+                "on-hand": "-",
+                "counted-units": "-",
+                "diference": "-a"
+            }
+        },
+        "alert": {
+            "alert-1": {
+                "title": "-",
+                "subtitle": "-",
+                "btn-1": "-",
+                "btn-2": "-o"
+            }
+        }
+    },
+    "counts": {
+        "header": {
+            "title": "-",
+            "sub-title": "-o"
+        },
+        "btn": "-",
+        "menu": {
+            "recount": "-",
+            "delete": "-",
+            "delete-success": "-o"
+        },
+        "filters": {
+            "search": "Search"
+        },
+        "table": [
+            "Creación",
+            "Hora",
+            "Producto",
+            "Contador",
+            "Ubicación",
+            "Cantidad"
+        ],
+        "notification-1": "Reconteo enviado al contador \"[[name]]\"",
+        "notification-2": "Eliminado satisfactoriamente",
         "notification-3": ""
     }
 }

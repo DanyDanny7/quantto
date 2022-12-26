@@ -24,6 +24,7 @@ const palette = {
         slite: neutral[400],
         lite: neutral[500],
         main: neutral[800],
+        dark: neutral[900],
     },
     background: {
         base: neutral[100]

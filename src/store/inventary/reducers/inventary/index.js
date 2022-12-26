@@ -41,18 +41,24 @@ const inventaryReducer = (state = stateInit, action) => {
         // ------------- Inventary --------------------
         case GET_INVENTARY_LOADING: return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            isSuccess: false,
+            isReject: false,
+            data: [],
         }
         case GET_INVENTARY_SUCCESS: return {
             ...state,
             isLoading: false,
             isSuccess: true,
-            data: action.payload
+            isReject: false,
+            data: action.payload,
         }
         case GET_INVENTARY_REJECT: return {
             ...state,
             isLoading: false,
+            isSuccess: false,
             isReject: true,
+            data: [],
         }
 
         // ------------- Inventary Counts --------------------
@@ -60,7 +66,10 @@ const inventaryReducer = (state = stateInit, action) => {
             ...state,
             counts: {
                 ...state.counts,
-                isLoading: true
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: [],
             }
         }
         case GET_INVENTARY_COUNTS_SUCCESS: return {
@@ -69,6 +78,7 @@ const inventaryReducer = (state = stateInit, action) => {
                 ...state.counts,
                 isLoading: false,
                 isSuccess: true,
+                isReject: false,
                 data: action.payload,
             }
         }
@@ -77,7 +87,9 @@ const inventaryReducer = (state = stateInit, action) => {
             counts: {
                 ...state.counts,
                 isLoading: false,
+                isSuccess: false,
                 isReject: true,
+                data: [],
             }
         }
 
@@ -86,7 +98,10 @@ const inventaryReducer = (state = stateInit, action) => {
             ...state,
             detail: {
                 ...state.detail,
-                isLoading: true
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: [],
             }
         }
         case GET_INVENTARY_DETAIL_SUCCESS: return {
@@ -95,6 +110,7 @@ const inventaryReducer = (state = stateInit, action) => {
                 ...state.detail,
                 isLoading: false,
                 isSuccess: true,
+                isReject: false,
                 data: action.payload,
             }
         }
@@ -103,7 +119,9 @@ const inventaryReducer = (state = stateInit, action) => {
             detail: {
                 ...state.detail,
                 isLoading: false,
+                isSuccess: false,
                 isReject: true,
+                data: [],
             }
         }
 

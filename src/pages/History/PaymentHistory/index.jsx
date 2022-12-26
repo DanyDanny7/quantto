@@ -1,29 +1,56 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map } from "lodash";
 import DownloadIcon from '@mui/icons-material/Download';
-import { IconButton } from '@mui/material';
+import {
+  Divider,
+  IconButton,
+  Typography,
+  MenuList,
+  MenuItem,
+  Popover,
+  Pagination,
+  Stack,
+  Chip
+} from '@mui/material';
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
 import Toolbar from "./Toolbar";
 
-function createData(date, name, inventary, attached, amount, card, voucher) {
-  return { date, name, inventary, attached, amount, card, voucher };
-}
+import { getHistoryPayment } from "../../../store/history/thunk/historyPayment"
 
-const rows = [
-  createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
-  createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
-  createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
-  createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
-  createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
-];
+
+// function createData(date, name, inventary, attached, amount, card, voucher) {
+//   return { date, name, inventary, attached, amount, card, voucher };
+// }
+
+// const rows = [
+//   createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
+//   createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
+//   createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
+//   createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
+//   createData('04/09/22', "Name of person", "Ejemplo de inventario", "Example.csv", 45.58, "**** 7013", ""),
+// ];
 
 const PaymentHistory = () => {
   const [__] = useTranslation("hist");
+  const dispatch = useDispatch();
+
   const module = "payment"
   const titles = __(`${module}.table`, { returnObjects: true })
+
+  const historyState = useSelector(state => state.history.historyPayment);
+
+  const getData = () => {
+    dispatch(getHistoryPayment())
+  }
+
+  useEffect(() => {
+    getData(1)
+  }, [dispatch])
 
   const headTable = [
     {
@@ -63,11 +90,15 @@ const PaymentHistory = () => {
     },
   ]
 
-  const dataTable = map(rows, (row) => ({
+  const dataTable = map(get(historyState, "data.data", []), (row, i) => ({
     ...row,
     amount: `$ ${get(row, "amount")}`,
     voucher: <IconButton aria-label="download" size="small"><DownloadIcon fontSize="inherit" /></IconButton>
   }))
+
+  const onChangePagination = (e, page) => {
+    getData(page)
+  }
 
   return (
     <Layout
@@ -82,9 +113,18 @@ const PaymentHistory = () => {
         toolbar={<Toolbar __={__} module={module} />}
         dataTable={dataTable}
         __={__}
-        module="payment" sizeFilters={125}
+        module="payment"
+        sizeFilters={125}
+        loading={get(historyState, "isLoading", false)}
       />
-      {/* <Table headTable={headTable} dataTale={dataTable} __={__} module={module} sizeFilters={125} /> */}
+      <Stack sx={{ mt: 2 }} alignItems="flex-end">
+        <Pagination
+          count={get(historyState, "totalPage", 1)}
+          page={get(historyState, "currentPage", 1)}
+          onChange={onChangePagination}
+          color="primary"
+        />
+      </Stack>
     </Layout>
   )
 }

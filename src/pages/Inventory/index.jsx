@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace, toString } from "lodash";
+import { get, map, replace, toString, find } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Divider,
@@ -11,7 +11,8 @@ import {
   MenuItem,
   Popover,
   Pagination,
-  Stack
+  Stack,
+  Chip
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
@@ -26,27 +27,13 @@ import NewInventaryAlert from "./component/NewInventaryAlert";
 
 import { getInventary } from "../../store/inventary/thunk/getInventary";
 
-
-// function createData(code, create_at, quantity, status, counts, file, onHand, counted, difference) {
-//   return { code, create_at, quantity, status, counts, file, onHand, counted, difference };
-// }
-
-// const ∂∂ = [
-//   createData('19283', "04/09/22", 100, "Creado", 10, "Example.csv", 5, 6, 7),
-//   createData('19283', "04/09/22", 40, "Activo", 5, "Example.csv", 5, 6, 7),
-//   createData('19283', "04/09/22", 100, "Pagado", 10, "Example.csv", 5, 6, 7),
-//   createData('19283', "04/09/22", 40, "Creado", 5, "Example.csv", 5, 6, 7),
-//   createData('19283', "04/09/22", 100, "Finalizado", 10, "Example.csv", 5, 6, 7),
-// ];
-
 const ActiveInventory = () => {
   const navegate = useNavigate();
   const dispatch = useDispatch();
 
   const [__] = useTranslation("inve");
   const module = "inventaries"
-  const code = "#Asq937614"
-  
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState({});
   const [showNoti, setShowNoti] = useState({ open: false, variant: "", msg: "" })
@@ -55,10 +42,9 @@ const ActiveInventory = () => {
   const [openAlert, setOpenAlert] = useState(false);
 
   const titles = __(`${module}.table`, { returnObjects: true });
+  const status = __(`${module}.status`, { returnObjects: true });
 
-  const inventaryState = useSelector(state => state.inventary.inventary.data.data);
-  const state = useSelector(state => state);
-
+  const inventaryState = useSelector(state => state.inventary.inventary);
 
   const getData = (page) => {
     dispatch(getInventary({ page }))
@@ -103,48 +89,48 @@ const ActiveInventory = () => {
     },
     {
       key: "name",
-      label: "Nombre",
+      label: get(titles, "[1]"),
       align: "left",
       width: 200,
     },
     {
       key: "create_at",
-      label: get(titles, "[1]"),
-      align: "center"
-    },
-    {
-      key: "itemsQty",
       label: get(titles, "[2]"),
       align: "center"
     },
     {
-      key: "status",
+      key: "itemsQty",
       label: get(titles, "[3]"),
       align: "center"
     },
     {
-      key: "countsUsers",
+      key: "status",
       label: get(titles, "[4]"),
       align: "center"
     },
     {
-      key: "file",
+      key: "countsUsers",
       label: get(titles, "[5]"),
       align: "center"
     },
     {
-      key: "onHand",
+      key: "file",
       label: get(titles, "[6]"),
       align: "center"
     },
     {
-      key: "counted",
+      key: "onHand",
       label: get(titles, "[7]"),
       align: "center"
     },
     {
-      key: "difference",
+      key: "counted",
       label: get(titles, "[8]"),
+      align: "center"
+    },
+    {
+      key: "difference",
+      label: get(titles, "[9]"),
       align: "center"
     },
     {
@@ -154,22 +140,26 @@ const ActiveInventory = () => {
     },
   ]
 
-  const dataTable = map(get(inventaryState, "data", []), (row) => ({
-    ...row,
-    create_at: moment(row.date).format("DD-MM-YYYY"),
-    options: (
-      <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? 'long-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick(row)}
-      >
-        <MoreVertIcon />
-      </IconButton>
-    )
-  }))
+  const dataTable = map(get(inventaryState, "data.data.data", []), (row) => {
+    const s = find(status, { statusId: get(row, "statusId") });
+    return ({
+      ...row,
+      create_at: moment(row.date).format("DD-MM-YYYY"),
+      status: <Chip label={<Typography variant="bodyXtraSmall">{get(s, "description")}</Typography>} color={get(s, "color")} />,
+      options: (
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? 'long-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleClick(row)}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      )
+    })
+  })
 
   // ---------- Menu ---------------
 
@@ -197,10 +187,10 @@ const ActiveInventory = () => {
     const finish = <MenuItem onClick={onFinish}><Typography className='text-center w-full ' variant="bodySmall" color="primary.main"><strong>{__(`${module}.menu.finish`)}</strong></Typography></MenuItem>
 
     switch (status) {
-      case "Creado": return <>{detail}{divider}{edit}{divider}{deleteIt}</>;
-      case "Pagado": return <>{detail}{divider}{edit}{divider}{start}</>;
-      case "Finalizado": return <>{detail}</>;
-      case "Activo": return <>{detail}{divider}{finish}</>;
+      case 1: return <>{detail}{divider}{edit}{divider}{deleteIt}</>;
+      case 2: return <>{detail}{divider}{edit}{divider}{start}</>;
+      case 3: return <>{detail}{divider}{finish}</>;
+      case 4: return <>{detail}</>;
       default: return <>{detail}</>
     }
   }
@@ -209,7 +199,7 @@ const ActiveInventory = () => {
     <Layout
       propsToolbar={{
         title: __(`${module}.header.title`),
-        label: replace(__(`${module}.header.sub-title`), "[[code]]", code),
+        label: __(`${module}.header.sub-title`),
         btnLabel: __(`${module}.btn`),
         btnFunc: () => setOpenNew(true),
         color: "primary"
@@ -222,11 +212,12 @@ const ActiveInventory = () => {
         __={__}
         module={module}
         sizeFilters={125}
+        loading={get(inventaryState, "isLoading", false)}
       />
       <Stack sx={{ mt: 2 }} alignItems="flex-end">
         <Pagination
-          count={get(inventaryState, "totalPage", 1)}
-          page={get(inventaryState, "currentPage", 1)}
+          count={get(inventaryState, "data.data.totalPage", 1)}
+          page={get(inventaryState, "data.data.currentPage", 1)}
           onChange={onChangePagination}
           color="primary"
         />
@@ -243,7 +234,7 @@ const ActiveInventory = () => {
         elevation={1}
       >
         <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
-          {getOptions(get(selected, "status"))}
+          {getOptions(get(selected, "statusId"))}
         </MenuList>
       </Popover>
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
