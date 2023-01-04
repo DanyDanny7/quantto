@@ -150,7 +150,7 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                             </Typography>
                             <br />
                             <Typography variant="bodySmall">
-                                {get(dataUser, "userId")}
+                                {get(dataUser, "companyname")}
                             </Typography>
                         </Box>
                         <Box>

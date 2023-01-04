@@ -26,7 +26,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import NewInventaryDropZone from "./NewInventaryDropZone";
 import NewInventoryTable from "./NewInventoryTable";
-import NewInventaryAlert from "./NewInventaryAlert";
 
 
 const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
@@ -45,7 +44,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
         if (activeStep < 1) {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else {
-            onSubmit()
+            onSubmit({ name, counters: selected })
             handleClose()
         }
     };

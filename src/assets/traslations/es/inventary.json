@@ -41,13 +41,10 @@
             "Código",
             "Nombre",
             "Creación",
-            "Cantidad",
             "Estado",
-            "Contadores",
             "Archivo",
             "Teórico",
-            "Físicos",
-            "Diferencias"
+            "Físicos"
         ],
         "modal": {
             "title": "Creación de inventario",
@@ -101,45 +98,7 @@
             "delete-success": "Conteo eliminado con éxito"
         },
         "filters": {
-            "search": "Buscar",
-            "selects": [
-                {
-                    "title": "Categoria:",
-                    "options": [
-                        "Todos",
-                        "Téoricos",
-                        "Fisicos",
-                        "Diferencias"
-                    ]
-                },
-                {
-                    "title": "Teoricos:",
-                    "options": [
-                        "Todos",
-                        "Opción1",
-                        "Opción2",
-                        "Opción3"
-                    ]
-                },
-                {
-                    "title": "Fisicos:",
-                    "options": [
-                        "Todos",
-                        "Opción1",
-                        "Opción2",
-                        "Opción3"
-                    ]
-                },
-                {
-                    "title": "Diferencias:",
-                    "options": [
-                        "Todos",
-                        "Opción1",
-                        "Opción2",
-                        "Opción3"
-                    ]
-                }
-            ]
+            "search": "Buscar"
         },
         "table": [
             "Código",
@@ -179,6 +138,12 @@
                 "btn-1": "Ir al conteo activo",
                 "btn-2": "Entendido"
             }
+        },
+        "active": {
+            "title": "Redirección",
+            "subtitle": "Actualmente no hay ningun inventario activo, ¿Desea ir al historico de inventarios?",
+            "submit": "Ir",
+            "cancel": "Cancelar"
         }
     },
     "counts": {
@@ -187,33 +152,8 @@
             "sub-title": "Pudes ver los detalles de tu conteo"
         },
         "btn": "Finalizar conteo",
-        "menu": {
-            "recount": "Recontear",
-            "delete": "Eliminar",
-            "delete-success": "Conteo eliminado con éxito"
-        },
         "filters": {
-            "search": "Buscar",
-            "selects": [
-                {
-                    "title": "Categoria:",
-                    "options": [
-                        "Todos",
-                        "Téoricos",
-                        "Fisicos",
-                        "Diferencias"
-                    ]
-                },
-                {
-                    "title": "Estado:",
-                    "options": [
-                        "Creados",
-                        "Opción1",
-                        "Opción2",
-                        "Opción3"
-                    ]
-                }
-            ]
+            "search": "Buscar"
         },
         "table": [
             "Creación",
@@ -221,10 +161,26 @@
             "Producto",
             "Contador",
             "Ubicación",
-            "Cantidad"
+            "Cantidad",
+            "Recontar"
         ],
-        "notification-1": "Reconteo enviado al contador \"[[name]]\"",
-        "notification-2": "Eliminado satisfactoriamente",
-        "notification-3": ""
+        "modal": {
+            "recount": {
+                "title": "Envíar a reconteo",
+                "submit": "Recontar",
+                "cancel": "Cancelar",
+                "confirm1": "¿Desea enviarle al contador \"[[name]]\" el producto \"[[product]]\" para reconteo?",
+                "confirm2": "¿Desea enviar a reconteo [[number]] productos?",
+                "success1": "Se envió el producto \"[[product]]\" al contador \"[[name]]\" para reconteo",
+                "success2": "Se enviaron a reconteo \"[[number]]\" productos"
+            },
+            "delete": {
+                "title": "Eliminar conteo",
+                "submit": "Eliminar",
+                "cancel": "Cancelar",
+                "confirm1": "¿Desea eliminar el conteo del producto \"[[product]]\"?",
+                "success1": "Se eliminó con éxito el conteo del producto \"[[product]]\""
+            }
+        }
     }
 }

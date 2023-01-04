@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace, toString, find } from "lodash";
+import { get, map, join, toString, find, split, last } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Divider,
@@ -12,7 +12,8 @@ import {
   Popover,
   Pagination,
   Stack,
-  Chip
+  Chip,
+  Link
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +27,7 @@ import NewInventory from "./component/NewInventory";
 import NewInventaryAlert from "./component/NewInventaryAlert";
 
 import { getInventary } from "../../store/inventary/thunk/getInventary";
+import { postInventary } from "../../store/inventary/thunk/getInventary/postInventary"
 
 const ActiveInventory = () => {
   const navegate = useNavigate();
@@ -40,19 +42,22 @@ const ActiveInventory = () => {
   const open = Boolean(anchorEl);
   const [openNew, setOpenNew] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
+  const [filterSearch, setFilterSearch] = useState("")
 
   const titles = __(`${module}.table`, { returnObjects: true });
   const status = __(`${module}.status`, { returnObjects: true });
 
   const inventaryState = useSelector(state => state.inventary.inventary);
+  const userState = useSelector(state => state.auth.login.dataUser);
 
-  const getData = (page) => {
-    dispatch(getInventary({ page }))
+  const getData = ({ page, filterSearch }) => {
+    const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
+    dispatch(getInventary(filters))
   }
 
   useEffect(() => {
-    getData(1)
-  }, [dispatch])
+    getData({ page: 1, filterSearch })
+  }, [dispatch, filterSearch])
 
   const handleClick = (item) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,10 +68,27 @@ const ActiveInventory = () => {
     setAnchorEl(null);
   };
 
-  const onSubmit = () => {
-    setTimeout(() => {
-      setOpenAlert(true)
-    }, 500);
+  const onSubmit = (values) => {
+    console.log({
+      userid: get(userState, "userId"),
+      companyid: get(userState, "companyId"),
+      language: get(userState, "language"),
+      inventoryname: get(values, "name"),
+      counters: join(get(values, "counters"), ","),
+      // template
+    })
+    dispatch(postInventary({
+      userid: get(userState, "userId"),
+      companyid: get(userState, "companyId"),
+      language: get(userState, "language"),
+      inventoryname: get(values, "name"),
+      counters: join(get(values, "counters"), ","),
+      // template
+    }))
+    // dispatch(postInventary())
+    // setTimeout(() => {
+    //   setOpenAlert(true)
+    // }, 500);
   }
 
   const onActivePay = () => {
@@ -77,7 +99,7 @@ const ActiveInventory = () => {
   }
 
   const onChangePagination = (e, page) => {
-    getData(page)
+    getData({ page: 1, filterSearch })
   }
 
   // ---------- Table ---------------
@@ -85,52 +107,37 @@ const ActiveInventory = () => {
     {
       key: "inventoryId",
       label: get(titles, "[0]"),
-      align: "left",
+      align: "center",
     },
     {
       key: "name",
       label: get(titles, "[1]"),
       align: "left",
-      width: 200,
     },
     {
       key: "create_at",
       label: get(titles, "[2]"),
-      align: "center"
+      align: "center",
+      width: 200,
     },
     {
-      key: "itemsQty",
+      key: "status",
       label: get(titles, "[3]"),
       align: "center"
     },
     {
-      key: "status",
+      key: "file",
       label: get(titles, "[4]"),
       align: "center"
     },
     {
-      key: "countsUsers",
+      key: "theoretical",
       label: get(titles, "[5]"),
       align: "center"
     },
     {
-      key: "file",
+      key: "physical",
       label: get(titles, "[6]"),
-      align: "center"
-    },
-    {
-      key: "onHand",
-      label: get(titles, "[7]"),
-      align: "center"
-    },
-    {
-      key: "counted",
-      label: get(titles, "[8]"),
-      align: "center"
-    },
-    {
-      key: "difference",
-      label: get(titles, "[9]"),
       align: "center"
     },
     {
@@ -142,10 +149,12 @@ const ActiveInventory = () => {
 
   const dataTable = map(get(inventaryState, "data.data.data", []), (row) => {
     const s = find(status, { statusId: get(row, "statusId") });
+    console.log(get(row, "templateUrl"))
     return ({
       ...row,
       create_at: moment(row.date).format("DD-MM-YYYY"),
       status: <Chip label={<Typography variant="bodyXtraSmall">{get(s, "description")}</Typography>} color={get(s, "color")} />,
+      file: <Link color="secondary" href={get(row, "templateUrl")} download>{last(split(get(row, "templateUrl"), "/"))}</Link>,
       options: (
         <IconButton
           aria-label="more"
@@ -206,7 +215,7 @@ const ActiveInventory = () => {
       }}
     >
       <Table
-        toolbar={<Toolbar __={__} module={module} />}
+        toolbar={<Toolbar setFilterSearch={setFilterSearch} />}
         headTable={headTable}
         dataTable={dataTable}
         __={__}

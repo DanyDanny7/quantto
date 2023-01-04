@@ -2,6 +2,7 @@ import React from 'react'
 import { styled } from '@mui/material/styles';
 import { get } from "lodash";
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 
 import { Box, Typography, Toolbar as ToolbarUi, Button, IconButton, Stack } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,13 +17,14 @@ const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
 
 const Toolbar = ({
     toolbarHeight,
-    propsToolbar = { label: "", btnLabel: "", btnFunc: () => { }, color: "primary" },
+    propsToolbar = { title: "Quanto", label: "", btnLabel: "", btnFunc: () => { }, color: "primary" },
     goBack
 }) => {
     const navigate = useNavigate();
 
     return (
         <StyledToolbar sx={{ height: toolbarHeight }} >
+            <Helmet><title>{get(propsToolbar, "title")}</title></Helmet>
             <Box className='flex flex-col' sx={{ flexGrow: 1 }}>
                 <Stack direction="row" spacing={3} alignItems="center">
                     {!!goBack &&

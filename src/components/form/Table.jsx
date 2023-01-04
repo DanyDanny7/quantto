@@ -10,42 +10,12 @@ import {
     Typography,
     Box
 } from "@mui/material"
-import CircularProgress, {
-    circularProgressClasses,
-} from '@mui/material/CircularProgress';
+
 import { get, map } from "lodash";
 
-const TableComponent = ({ headTable, dataTable, __, module, filter, loading, toolbar, propsTable = {}, propsTableCell = {} }) => {
+import CircularProgress from "./CircularProgress"
 
-    const CircularProgressCustom = (props) => (
-        <Box sx={{ position: 'relative' }}>
-            <CircularProgress
-                variant="determinate"
-                sx={{
-                    color: (theme) =>
-                        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-                }}
-                size={40}
-                thickness={4}
-                {...props}
-                value={100}
-            />
-            <CircularProgress
-                variant="indeterminate"
-                disableShrink
-                sx={{
-                    color: "secondary",
-                    animationDuration: '750ms',
-                    position: 'absolute',
-                    left: 0,
-                    [`& .${circularProgressClasses.circle}`]: { strokeLinecap: 'round', }
-                }}
-                size={40}
-                thickness={4}
-                {...props}
-            />
-        </Box>
-    );
+const TableComponent = ({ headTable, dataTable, __, module, filter, loading, toolbar, propsTable = {}, propsTableCell = {} }) => {
 
     return (
         <Paper>
@@ -93,7 +63,7 @@ const TableComponent = ({ headTable, dataTable, __, module, filter, loading, too
                         justifyContent: "center",
                         alignItems: "center"
                     }}>
-                        <CircularProgressCustom />
+                        <CircularProgress />
                     </Box>
                 }
             </TableContainer>

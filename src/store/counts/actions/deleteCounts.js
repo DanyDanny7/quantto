@@ -13,10 +13,11 @@ export const deleteCountSuccess = (payload) => ({ type: DELETE_COUNT_SUCCESS, pa
 export const deleteCountReject = (payload) => ({ type: DELETE_COUNT_REJECT, payload });
 
 //* REQUEST SERVICE ---------------------------------------
-export const deleteCountRequest = async (params = {}, getState) => {
+export const deleteCountRequest = async (data, getState) => {
+    console.log(getState)
     const options = await withToken({
         method: Methods.DELETE,
-        params,
+        data,
     }, getState);
     return request(`/api/web/deletecounters`, options);
 };

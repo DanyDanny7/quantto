@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace } from "lodash";
+import { get, isNull, map, replace, isEmpty } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Divider,
     IconButton,
@@ -12,30 +13,34 @@ import {
     Typography,
     MenuList,
     MenuItem,
-    Popover
+    Popover,
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
+import moment from 'moment/moment';
 
+import CircularProgress from "../../../components/form/CircularProgress";
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
 import PieChart from "../component/PieChart";
 import BarChart from "../component/BarChart";
+import Toolbar from "../Inventory/Toolbar";
+import Alert from "../../../components/form/Alert";
+import AlertQuestion from "../../../components/form/AlertQuestion";
 
 import { getInventaryActive } from "../../../store/inventary/thunk/getInventaryActive";
 
-function createData(code, product, category, barcode, onHand, counted, difference) {
-    return { code, product, category, barcode, onHand, counted, difference };
-}
-
-const rows = [
-    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-    createData('AJHG623645', "Ejemplo 1", "Téoricos", "12947561498750928", 5, 6, 7),
-];
+const LoadingData = () => (
+    <Box sx={{
+        display: 'flex',
+        height: '100%',
+        width: '100%',
+        justifyContent: "center",
+        alignItems: "center"
+    }}>
+        <CircularProgress />
+    </Box>
+)
 
 const ActiveInventory = () => {
     const theme = useTheme();
@@ -43,60 +48,71 @@ const ActiveInventory = () => {
     const navegate = useNavigate();
     const [__] = useTranslation("inve");
     const module = "detail"
-    const code = "#Asq937614"
+    const code = 1
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [active, setActive] = useState({});
     const open = Boolean(anchorEl);
-
-
-    const inventaryActive = useSelector(state => state.inventary.inventaryActive);
-
-
-    const getData = (page) => {
-        dispatch(getInventaryActive({ page }))
-      }
-      
-      useEffect(() => {
-        getData(1)
-      }, [dispatch])
-
-
+    const [alertIsEmpty, setAlertIsEmpty] = useState({ open: false, title: "", subtitle: "" })
+    const [filterSearch, setFilterSearch] = useState("")
 
     const titles = __(`${module}.table`, { returnObjects: true });
 
+    const inventaryActive = useSelector(state => state.inventary.inventaryActive);
+
+    const getData = ({ page, filterSearch }) => {
+        const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
+        dispatch(getInventaryActive(filters))
+    }
+
+    useEffect(() => {
+        getData({ page: 1, filterSearch })
+    }, [dispatch, filterSearch])
+
+    useEffect(() => {
+        if (get(inventaryActive, "isSuccess") && isEmpty(get(inventaryActive, "data"))) {
+            setAlertIsEmpty({ open: true, title: __(`${module}.active.title`), subtitle: __(`${module}.active.subtitle`) })
+        }
+    }, [get(inventaryActive, "isSuccess")])
+
+    const onCancelAlertQuestion = () => {
+        setAlertIsEmpty({ open: false, title: "", subtitle: "" })
+    }
+
+    // ---------- Table ---------------
     const headTable = [
         {
-            key: "code",
+            key: "itemId",
             label: get(titles, "[0]"),
             align: "left",
         },
         {
-            key: "product",
+            key: "itemName",
             label: get(titles, "[1]"),
-            align: "center"
+            align: "left"
         },
+        // {
+        //   key: "category",
+        //   label: get(titles, "[2]"),
+        //   align: "center"
+        // },
         {
-            key: "category",
-            label: get(titles, "[2]"),
-            align: "center"
-        },
-        {
-            key: "barcode",
+            key: "barCode",
             label: get(titles, "[3]"),
             align: "center"
         },
         {
-            key: "onHand",
+            key: "inventory",
             label: get(titles, "[4]"),
             align: "center"
         },
         {
-            key: "counted",
+            key: "stock",
             label: get(titles, "[5]"),
             align: "center"
         },
         {
-            key: "difference",
+            key: "diference",
             label: get(titles, "[6]"),
             align: "center"
         },
@@ -108,26 +124,26 @@ const ActiveInventory = () => {
     ]
 
     const card1 = {
-        "count-name": "Nombre",
-        "start": "09/10/22 - 9:00 AM",
-        "end": "------",
-        "progress": "75%",
-        "units-counted": "100",
-        "elapsed-time": "8:00:00",
+        "count-name": get(inventaryActive, "data.data.name", "- -"),
+        "start": isNull(get(inventaryActive, "data.data.startDate")) ? "- -" : moment(get(inventaryActive, "data.data.startDate")).format("DD/MM/YY - HH:mm A"),
+        "end": isNull(get(inventaryActive, "data.data.endDate")) ? "- -" : moment(get(inventaryActive, "data.data.endDate")).format("DD/MM/YY - HH:mm A"),
+        "progress": get(inventaryActive, "data.data.percentage", "- -"),
+        "units-counted": get(inventaryActive, "data.data.itemsQty", "- -"),
+        "elapsed-time": get(inventaryActive, "data.data.time", "- -"),
     }
 
-
-    const handleClick = (event) => {
+    const handleClick = (e) => (event) => {
         setAnchorEl(event.currentTarget);
+        setActive(e)
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
     const showMore = () => {
-        navegate("AJHG623645")
+        navegate(`count/${get(active, "inventoryDetailId")}`)
     }
 
-    const dataTable = map(rows, (row) => ({
+    const dataTable = map(get(inventaryActive, "data.data.countsTemplate", []), (row) => ({
         ...row,
         options: (
             <IconButton
@@ -136,7 +152,7 @@ const ActiveInventory = () => {
                 aria-controls={open ? 'long-menu' : undefined}
                 aria-expanded={open ? 'true' : undefined}
                 aria-haspopup="true"
-                onClick={handleClick}
+                onClick={handleClick(row)}
             >
                 <MoreVertIcon />
             </IconButton>
@@ -156,38 +172,45 @@ const ActiveInventory = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} xl={3}>
                         <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
-                            <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
-                            <Box className='mb-3'>
-                                <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
-                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
-                            </Box>
-                            <Box className='my-3'>
-                                <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
-                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
-                            </Box>
-                            <Box className='my-3'>
-                                <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
-                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
-                            </Box>
-                            <Box className='my-3'>
-                                <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
-                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
-                            </Box>
-                            <Box className='my-3'>
-                                <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
-                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
-                            </Box>
-                            <Box className='my-3'>
-                                <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
-                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
-                            </Box>
+                            {get(inventaryActive, "isLoading", false)
+                                ? (
+                                    <LoadingData />
+                                ) : (
+                                    <>
+                                        <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
+                                        <Box className='mb-3'>
+                                            <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
+                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
+                                        </Box>
+                                        <Box className='my-3'>
+                                            <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
+                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
+                                        </Box>
+                                        <Box className='my-3'>
+                                            <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
+                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
+                                        </Box>
+                                        <Box className='my-3'>
+                                            <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
+                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
+                                        </Box>
+                                        <Box className='my-3'>
+                                            <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
+                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
+                                        </Box>
+                                        <Box className='my-3'>
+                                            <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
+                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
+                                        </Box>
+                                    </>
+                                )}
                         </Paper>
                     </Grid>
                     <Grid item xs={12} sm={6} xl={4}>
                         <Paper elevation={[1]} className='py-8 px-6 h-full'>
                             <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
                             <Box className='m-auto my-6' maxWidth={250} >
-                                <PieChart values={[90, 30]} />
+                                <PieChart values={[get(inventaryActive, "data.data.getCountsPieChart.counted", 0), get(inventaryActive, "data.data.getCountsPieChart.notCounted", 0)]} />
                             </Box>
                             <Box className='flex items-center justify-around'>
                                 <Box className='flex items-center'>
@@ -205,7 +228,7 @@ const ActiveInventory = () => {
                         <Paper elevation={[1]} className='py-8 px-6 h-full'>
                             <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
                             <Box className='m-auto my-6 px-6' overflow="auto">
-                                <BarChart minWidth={350} />
+                                <BarChart minWidth={350} countsBarChart={get(inventaryActive, "data.data.getCountsBarChart")} />
                             </Box>
                             <Box className='flex items-center justify-around'>
                                 <Box className='flex items-center'>
@@ -223,9 +246,18 @@ const ActiveInventory = () => {
                             </Box>
                         </Paper>
                     </Grid>
-                </Grid>
-            </Box>
-            <Table headTable={headTable} dataTable={dataTable} __={__} module={module} sizeFilters={125} />
+                </Grid >
+            </Box >
+
+            <Table
+                toolbar={<Toolbar setFilterSearch={setFilterSearch} />}
+                headTable={headTable}
+                dataTable={dataTable}
+                __={__}
+                module={module}
+                sizeFilters={125}
+                loading={get(inventaryActive, "isLoading", false)}
+            />
 
             <Popover
                 id={"menu-inventario-activo"}
@@ -234,9 +266,7 @@ const ActiveInventory = () => {
                 onClose={handleClose}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                elevation={1}
-                loading={get(inventaryActive, "isLoading", false)}
-
+                elevation={[1]}
             >
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
                     <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>
@@ -244,7 +274,22 @@ const ActiveInventory = () => {
                     <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
                 </MenuList>
             </Popover>
-        </Layout>
+            {/* <Alert
+                title={__(`${module}.alert.alert-1.title`)}
+                subtitle={__(`${module}.alert.alert-1.subtitle`)}
+                btn1={{ label: __(`${module}.alert.alert-1.btn-1`), func: () => { navegate("/inventory/active") } }}
+                btn2={{ label: __(`${module}.alert.alert-1.btn-2`), func: () => setAlertActive(false) }}
+                openAlert={alertActive}
+                closeAlert={() => setAlertActive(false)}
+            /> */}
+            <AlertQuestion
+                title={alertIsEmpty.title}
+                subtitle={alertIsEmpty.subtitle}
+                cancel={{ label: __(`${module}.active.cancel`), func: onCancelAlertQuestion }}
+                submit={{ label: __(`${module}.active.submit`), func: () => navegate(`/inventory`) }}
+                openAlert={alertIsEmpty.open}
+            />
+        </Layout >
     )
 }
 

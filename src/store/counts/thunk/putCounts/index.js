@@ -16,6 +16,6 @@ export const putCount = (formData) => async (dispatch, getState) => {
     }
     setTimeout(() => {
         dispatch(putCountReset())
-    }, 10000);
+    }, 3000);
     return Promise.resolve();
 };

@@ -56,7 +56,7 @@ const Profile = () => {
     initialValues: {
       name: get(dataUser, "username"),
       email: get(dataUser, "email"),
-      company: get(dataUser, "companyName"),
+      company: get(dataUser, "companyname"),
       password: "",
       confirmation: "",
     },
@@ -98,7 +98,7 @@ const Profile = () => {
               <Box className='flex'>
                 <Typography variant="bodyLarge">{get(dataUser, "email", "- -")}</Typography>
                 <Typography className='px-2' variant="bodyLarge" color="text.slite">|</Typography>
-                <Typography variant="bodyLarge">{get(dataUser, "companyName", "- -")}</Typography>
+                <Typography variant="bodyLarge">{get(dataUser, "companyname", "- -")}</Typography>
               </Box>
             </Box>
           </Box>

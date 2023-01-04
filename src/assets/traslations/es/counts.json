@@ -26,19 +26,24 @@
             "notification-2": "Contador actualizado con éxito",
             "input": [
                 {
+                    "name": "Correo",
+                    "placeholder": "Ingresa el correo del contador",
+                    "error": "Correo es requerido"
+                },
+                {
                     "name": "Nombre",
-                    "placeholder": "Ingresa tu nombre de usuario",
+                    "placeholder": "Ingresa el nombre del contador",
                     "error": "Nombre es requerido"
                 },
                 {
                     "name": "Contraseña",
-                    "placeholder": "Ingresa tu contraseña",
+                    "placeholder": "Ingresa la contraseña",
                     "error": "Contraseña es requerida",
                     "error-2": "Tus contraseñas no coinciden, inténtalo nuevamente."
                 },
                 {
                     "name": "Confirmar contraseña",
-                    "placeholder": "Ingresa tu contraseña",
+                    "placeholder": "Repite la contraseña",
                     "error": "Contraseña es requerida",
                     "error-2": "Tus contraseñas no coinciden, inténtalo nuevamente."
                 }
@@ -59,7 +64,9 @@
             "Estado"
         ],
         "msg": {
-            "success": "Contador creado con éxito"
+            "create": "Contador creado con éxito",
+            "update": "Contador actualizado con éxito"
+
         }
     }
 }

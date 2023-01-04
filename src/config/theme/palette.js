@@ -19,6 +19,10 @@ const palette = {
         main: success[300],
         contrastText: neutral[50]
     },
+    disabled: {
+        main: neutral[500],
+        contrastText: neutral[50]
+    },
     text: {
         sslite: neutral[200],
         slite: neutral[400],

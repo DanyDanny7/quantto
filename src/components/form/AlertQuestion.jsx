@@ -11,13 +11,16 @@ import {
 } from '@mui/material';
 import { get } from "lodash";
 import CloseIcon from '@mui/icons-material/Close';
+import { LoadingButton } from '@mui/lab';
 
-const Alert = ({
+
+const AlertQuestion = ({
     title,
     subtitle,
     cancel = { label: "", func: () => { } },
     submit = { label: "", func: () => { } },
     openAlert,
+    loading = false,
 }) => {
 
     return (
@@ -55,13 +58,13 @@ const Alert = ({
                     <Button variant="outlined" color="primary" onClick={get(cancel, "func")}>
                         {get(cancel, "label")}
                     </Button>
-                    <Button variant="contained" color="primary" onClick={get(submit, "func")} autoFocus>
+                    <LoadingButton variant="contained" color="primary" onClick={get(submit, "func")} autoFocus loading={loading}>
                         {get(submit, "label")}
-                    </Button>
+                    </LoadingButton>
                 </DialogActions>
             </Dialog>
         </div >
     );
 }
 
-export default Alert
+export default AlertQuestion

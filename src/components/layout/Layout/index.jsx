@@ -17,6 +17,7 @@ const Layout = ({ children, propsToolbar, goBack }) => {
                 position="fixed"
                 sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` } }}
                 elevation={0}
+                style={{ padding: "0 !important"}}
             >
                 <Toolbar toolbarHeight={toolbarHeight} propsToolbar={propsToolbar} goBack={goBack} />
             </AppBar>

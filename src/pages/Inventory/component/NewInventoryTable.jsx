@@ -1,29 +1,34 @@
-import React from 'react';
-import { map } from "lodash";
+import React, { useState } from 'react';
 import { Checkbox } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { get, map, replace, join } from "lodash";
+
+import { useDispatch, useSelector } from "react-redux";
 
 import Table from "../../../components/form/Table";
 import NewInventoryToolbar from "./NewInventoryToolbar"
+import NewCounters from "../../Counts/components/NewCounters";
 
-
-function createData(id, name) {
-    return { id, name };
-}
-
-const rows = [
-    createData("1", 'Jane Cooper'),
-    createData("2", 'Wade Warren'),
-    createData("3", 'Esther Howard'),
-    createData("4", 'Cameron Williamson'),
-    createData("5", 'Brooklyn Simmons'),
-];
 
 const NewInventoryTable = ({ __, module, selected, setSelected }) => {
+    const [__2] = useTranslation("count");
+    const module2 = "counts"
+    const [openNew, setOpenNew] = useState(false);
+
+    const countsState = useSelector(state => state.counts);
+
+    const closeNewCouter = () => {
+        setOpenNew(false)
+    }
+
+    const newCounter = () => {
+        setOpenNew(true)
+    }
 
     // ---------- Table ---------------
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
+            const newSelected = map(get(countsState, "data.data"), (n) => n.counterId);
             setSelected(newSelected);
             return;
         }
@@ -59,8 +64,8 @@ const NewInventoryTable = ({ __, module, selected, setSelected }) => {
             label: (
                 <Checkbox
                     color="secondary"
-                    indeterminate={selected.length > 0 && selected.length < rows.length}
-                    checked={rows.length > 0 && selected.length === rows.length}
+                    indeterminate={selected.length > 0 && selected.length < get(countsState, "data.data", []).length}
+                    checked={get(countsState, "data.data", []).length > 0 && selected.length === get(countsState, "data.data", []).length}
                     onChange={handleSelectAllClick}
                     inputProps={{
                         'aria-label': 'select all desserts',
@@ -68,30 +73,29 @@ const NewInventoryTable = ({ __, module, selected, setSelected }) => {
                 />
             ),
             align: "center",
-            width: 70
+            width: 70,
         },
         {
-            key: "name",
+            key: "userName",
             label: __(`${module}.modal.table-title`),
-            align: "left"
+            align: "left",
         },
     ]
 
-
-    const dataTable = map(rows, (row, i) => {
-
-        const isItemSelected = isSelected(row.id);
+    const dataTable = map(get(countsState, "data.data", []), (row, i) => {
+        const isItemSelected = isSelected(get(row, "counterId"));
         const labelId = `enhanced-table-checkbox-${i}`;
         return ({
+            id: get(row, "counterId"),
             ...row,
             checkbox: (
                 <Checkbox
                     color="secondary"
                     checked={isItemSelected}
-                    onChange={(e, v) => handleChecked(e, row.id)}
+                    onChange={(e, v) => handleChecked(e, get(row, "counterId"))}
                     inputProps={{ 'aria-labelledby': labelId, }}
                 />
-            )
+            ),
         })
     })
 
@@ -99,7 +103,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected }) => {
     return (
         <div>
             <Table
-                toolbar={<NewInventoryToolbar __={__} module={module} />}
+                toolbar={<NewInventoryToolbar __={__} module={module} newCounter={newCounter} />}
                 headTable={headTable}
                 dataTable={dataTable}
                 __={__}
@@ -107,6 +111,17 @@ const NewInventoryTable = ({ __, module, selected, setSelected }) => {
                 sizeFilters={125}
                 propsTableCell={{ padding: "checkbox" }}
             />
+            {openNew &&
+                <NewCounters
+                    open={openNew}
+                    onClose={closeNewCouter}
+                    isEdit={false}
+                    toEdit={{}}
+                    __={__2}
+                    module={module2}
+                    maxWidth="lg"
+                />
+            }
         </div>
     )
 }

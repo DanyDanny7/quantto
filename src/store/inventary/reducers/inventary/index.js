@@ -11,10 +11,31 @@ import {
 } from "../../actions/inventary/counts/getCounts";
 
 import {
+    PUT_INVENTARY_RECOUNT_RESET,
+    PUT_INVENTARY_RECOUNT_LOADING,
+    PUT_INVENTARY_RECOUNT_SUCCESS,
+    PUT_INVENTARY_RECOUNT_REJECT,
+} from "../../actions/inventary/counts/putReCounts";
+
+import {
+    DELETE_INVENTARY_COUNT_RESET,
+    DELETE_INVENTARY_COUNT_LOADING,
+    DELETE_INVENTARY_COUNT_SUCCESS,
+    DELETE_INVENTARY_COUNT_REJECT,
+} from "../../actions/inventary/counts/deleteCounts";
+
+import {
     GET_INVENTARY_DETAIL_LOADING,
     GET_INVENTARY_DETAIL_SUCCESS,
     GET_INVENTARY_DETAIL_REJECT,
 } from "../../actions/inventary/detail/getDetail";
+
+import {
+    POST_INVENTARY_RESET,
+    POST_INVENTARY_LOADING,
+    POST_INVENTARY_SUCCESS,
+    POST_INVENTARY_REJECT,
+} from "../../actions/inventary/postInventary";
 
 
 const stateInit = {
@@ -27,8 +48,26 @@ const stateInit = {
         isSuccess: false,
         isReject: false,
         data: [],
+        recount: {
+            isLoading: false,
+            isSuccess: false,
+            isReject: false,
+            data: {},
+        },
+        delete: {
+            isLoading: false,
+            isSuccess: false,
+            isReject: false,
+            data: {},
+        },
     },
     detail: {
+        isLoading: false,
+        isSuccess: false,
+        isReject: false,
+        data: [],
+    },
+    post: {
         isLoading: false,
         isSuccess: false,
         isReject: false,
@@ -93,6 +132,106 @@ const inventaryReducer = (state = stateInit, action) => {
             }
         }
 
+        // ------------- Inventary Counts delete --------------------
+        case DELETE_INVENTARY_COUNT_RESET: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                delete: {
+                    isLoading: false,
+                    isSuccess: false,
+                    isReject: false,
+                    data: {},
+                }
+            }
+        }
+        case DELETE_INVENTARY_COUNT_LOADING: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                delete: {
+                    isLoading: true,
+                    isSuccess: false,
+                    isReject: false,
+                    data: {},
+                }
+            }
+        }
+        case DELETE_INVENTARY_COUNT_SUCCESS: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                delete: {
+                    isLoading: false,
+                    isSuccess: true,
+                    isReject: false,
+                    data: action.payload,
+                }
+            }
+        }
+        case DELETE_INVENTARY_COUNT_REJECT: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                delete: {
+                    isLoading: false,
+                    isSuccess: false,
+                    isReject: true,
+                    data: {},
+                }
+            }
+        }
+
+        // ------------- Inventary Counts recount --------------------
+        case PUT_INVENTARY_RECOUNT_RESET: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                recount: {
+                    isLoading: false,
+                    isSuccess: false,
+                    isReject: false,
+                    data: {},
+                }
+            }
+        }
+        case PUT_INVENTARY_RECOUNT_LOADING: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                recount: {
+                    isLoading: true,
+                    isSuccess: false,
+                    isReject: false,
+                    data: {},
+                }
+            }
+        }
+        case PUT_INVENTARY_RECOUNT_SUCCESS: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                recount: {
+                    isLoading: false,
+                    isSuccess: true,
+                    isReject: false,
+                    data: action.payload,
+                }
+            }
+        }
+        case PUT_INVENTARY_RECOUNT_REJECT: return {
+            ...state,
+            counts: {
+                ...state.counts,
+                recount: {
+                    isLoading: false,
+                    isSuccess: false,
+                    isReject: true,
+                    data: {},
+                }
+            }
+        }
+
         // ------------- Inventary Detail --------------------
         case GET_INVENTARY_DETAIL_LOADING: return {
             ...state,
@@ -122,6 +261,44 @@ const inventaryReducer = (state = stateInit, action) => {
                 isSuccess: false,
                 isReject: true,
                 data: [],
+            }
+        }
+
+        // ------------- Inventary POST --------------------
+        case POST_INVENTARY_RESET: return {
+            ...state,
+            post: {
+                isLoading: false,
+                isSuccess: false,
+                isReject: false,
+                data: {},
+            }
+        }
+        case POST_INVENTARY_LOADING: return {
+            ...state,
+            post: {
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: {},
+            }
+        }
+        case POST_INVENTARY_SUCCESS: return {
+            ...state,
+            post: {
+                isLoading: false,
+                isSuccess: true,
+                isReject: false,
+                data: action.payload,
+            }
+        }
+        case POST_INVENTARY_REJECT: return {
+            ...state,
+            post: {
+                isLoading: false,
+                isSuccess: false,
+                isReject: true,
+                data: {},
             }
         }
 

@@ -13,20 +13,33 @@ import {
   Typography,
   MenuList,
   MenuItem,
-  Popover
+  Popover,
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
+import moment from 'moment/moment';
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
+import CircularProgress from "../../../components/form/CircularProgress";
 import Alert from "../../../components/form/Alert";
 import PieChart from "../component/PieChart";
 import BarChart from "../component/BarChart";
 import Toolbar from "./Toolbar";
 
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
-import moment from 'moment/moment';
+
+const LoadingData = () => (
+  <Box sx={{
+    display: 'flex',
+    height: '100%',
+    width: '100%',
+    justifyContent: "center",
+    alignItems: "center"
+  }}>
+    <CircularProgress />
+  </Box>
+)
 
 const ActiveInventory = () => {
   const theme = useTheme();
@@ -35,24 +48,28 @@ const ActiveInventory = () => {
   const params = useParams();
   const [__] = useTranslation("inve");
   const module = "detail"
-  const code = `#${get(params, "detailId") !== "0" ? get(params, "detailId") : 1}`
+  const code = `#${get(params, "detailId")}`
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [active, setActive] = useState({});
   const open = Boolean(anchorEl);
   const [alertActive, setAlertActive] = useState(false);
+  const [filterSearch, setFilterSearch] = useState("")
 
   const titles = __(`${module}.table`, { returnObjects: true });
 
   const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
 
-  const getData = (page) => {
-    dispatch(getInventaryDetail({ page, inventoryid: code }))
+
+  const getData = ({ page, filterSearch }) => {
+    const filters = { page, inventoryid: get(params, "detailId"), ...(!!filterSearch && { search: filterSearch }) }
+    dispatch(getInventaryDetail(filters))
   }
 
   useEffect(() => {
-    getData(1)
-  }, [dispatch])
+    getData({ page: 1, filterSearch })
+  }, [dispatch, filterSearch])
+
 
   // ---------- Table ---------------
 
@@ -105,7 +122,7 @@ const ActiveInventory = () => {
     "end": isNull(get(inventaryDetailState, "data.data.endDate")) ? "- -" : moment(get(inventaryDetailState, "data.data.endDate")).format("DD/MM/YY - HH:mm A"),
     "progress": get(inventaryDetailState, "data.data.percentage", "- -"),
     "units-counted": get(inventaryDetailState, "data.data.itemsQty", "- -"),
-    "elapsed-time": "- -",
+    "elapsed-time": get(inventaryDetailState, "data.data.time", "- -"),
   }
 
   const handleClick = (e) => (event) => {
@@ -151,31 +168,38 @@ const ActiveInventory = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} xl={3}>
             <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
-              <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
-              <Box className='mb-3'>
-                <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
-                <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
-              </Box>
-              <Box className='my-3'>
-                <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
-                <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
-              </Box>
-              <Box className='my-3'>
-                <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
-                <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
-              </Box>
-              <Box className='my-3'>
-                <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
-                <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
-              </Box>
-              <Box className='my-3'>
-                <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
-                <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
-              </Box>
-              <Box className='my-3'>
-                <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
-                <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
-              </Box>
+              {get(inventaryDetailState, "isLoading", false)
+                ? (
+                  <LoadingData />
+                ) : (
+                  <>
+                    <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
+                    <Box className='mb-3'>
+                      <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
+                      <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
+                    </Box>
+                    <Box className='my-3'>
+                      <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
+                      <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
+                    </Box>
+                    <Box className='my-3'>
+                      <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
+                      <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
+                    </Box>
+                    <Box className='my-3'>
+                      <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
+                      <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
+                    </Box>
+                    <Box className='my-3'>
+                      <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
+                      <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
+                    </Box>
+                    <Box className='my-3'>
+                      <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
+                      <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
+                    </Box>
+                  </>
+                )}
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} xl={4}>
@@ -218,11 +242,11 @@ const ActiveInventory = () => {
               </Box>
             </Paper>
           </Grid>
-        </Grid>
-      </Box>
+        </Grid >
+      </Box >
 
       <Table
-        toolbar={<Toolbar __={__} module={module} />}
+        toolbar={<Toolbar setFilterSearch={setFilterSearch} />}
         headTable={headTable}
         dataTable={dataTable}
         __={__}
@@ -254,7 +278,7 @@ const ActiveInventory = () => {
         openAlert={alertActive}
         closeAlert={() => setAlertActive(false)}
       />
-    </Layout>
+    </Layout >
   )
 }
 

@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import { get } from "lodash";
 import {
-    Typography,
     Toolbar,
-    Box,
-    Autocomplete,
-    TextField,
     Button,
     Stack
 } from "@mui/material";
 
 import InputSearch from "../../../components/form/InputSearch";
 
-const ToolbarComponent = ({ __, module }) => {
+const ToolbarComponent = ({ __, module, newCounter }) => {
 
     const [searchValue, setSearchValue] = useState("");
 
@@ -27,7 +22,7 @@ const ToolbarComponent = ({ __, module }) => {
         <Toolbar className='p-2' sx={{ borderBottomWidth: "1px", borderBottomColor: "text.sslite", borderBottomStyle: "solid" }}>
             <Stack className='w-full' direction={"row"} spacing={2}  >
                 <InputSearch className="flex-1" value={searchValue} onChange={onSearchChange} color="secondary" size="small" />
-                <Button variant="outlined" color="secondary" >
+                <Button variant="outlined" color="secondary" onClick={newCounter} >
                     {__(`${module}.modal.btn-4`)}
                 </Button>
             </Stack>

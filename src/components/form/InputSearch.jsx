@@ -1,20 +1,36 @@
 import React from 'react'
-import { TextField } from '@mui/material';
+import { TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from "react-i18next";
+import { useFormik } from 'formik';
+import { get } from "lodash";
 
-const InputSearch = (props) => {
+const InputSearch = ({ onSubmit, ...props }) => {
     const [__] = useTranslation("global");
 
+    const formik = useFormik({
+        initialValues: {
+            search: "",
+        },
+        onSubmit,
+    });
+
     return (
-        <TextField
-            label={__('layout.search')}
-            id="input-search"
-            InputProps={{
-                endAdornment: <SearchIcon />,
-            }}
-            {...props}
-        />
+        <Box component="form" onSubmit={get(formik, "handleSubmit")}>
+            <TextField
+                label={__('layout.search')}
+                id="input-search"
+                name="search"
+                InputProps={{
+                    endAdornment: <SearchIcon />,
+                }}
+                value={get(formik, "values.search")}
+                onChange={get(formik, "handleChange")}
+                error={get(formik, "touched.search") && Boolean(get(formik, "errors.search"))}
+                helperText={get(formik, "touched.search") && get(formik, "errors.search")}
+                {...props}
+            />
+        </Box>
     )
 }
 
