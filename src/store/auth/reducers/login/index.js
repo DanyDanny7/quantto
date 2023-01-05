@@ -24,6 +24,7 @@ const stateInit = {
     allResp: {}
 }
 
+
 const loginReducer = (state = stateInit, action) => {
     switch (action.type) {
         case LOGIN_LOADING: return {

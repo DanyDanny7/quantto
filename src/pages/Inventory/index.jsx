@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, join, toString, find, split, last } from "lodash";
+import { get, map, join, toString, find, split, last, trim } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Divider,
@@ -27,7 +27,7 @@ import NewInventory from "./component/NewInventory";
 import NewInventaryAlert from "./component/NewInventaryAlert";
 
 import { getInventary } from "../../store/inventary/thunk/getInventary";
-import { postInventary } from "../../store/inventary/thunk/getInventary/postInventary"
+import { postInventaryRequest } from "../../store/inventary/actions/inventary/postInventary"
 
 const ActiveInventory = () => {
   const navegate = useNavigate();
@@ -43,12 +43,14 @@ const ActiveInventory = () => {
   const [openNew, setOpenNew] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
   const [filterSearch, setFilterSearch] = useState("")
+  const [postLoading, setPostLoading] = useState(false);
 
   const titles = __(`${module}.table`, { returnObjects: true });
   const status = __(`${module}.status`, { returnObjects: true });
 
   const inventaryState = useSelector(state => state.inventary.inventary);
   const userState = useSelector(state => state.auth.login.dataUser);
+  const getState = useSelector(state => state);
 
   const getData = ({ page, filterSearch }) => {
     const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
@@ -68,27 +70,40 @@ const ActiveInventory = () => {
     setAnchorEl(null);
   };
 
-  const onSubmit = (values) => {
-    console.log({
+  const onSubmit = async (values) => {
+
+    const body = {
       userid: get(userState, "userId"),
-      companyid: get(userState, "companyId"),
+      companyId: get(userState, "companyId"),
       language: get(userState, "language"),
-      inventoryname: get(values, "name"),
+      inventoryname: trim(get(values, "name")),
       counters: join(get(values, "counters"), ","),
-      // template
-    })
-    dispatch(postInventary({
-      userid: get(userState, "userId"),
-      companyid: get(userState, "companyId"),
-      language: get(userState, "language"),
-      inventoryname: get(values, "name"),
-      counters: join(get(values, "counters"), ","),
-      // template
-    }))
-    // dispatch(postInventary())
-    // setTimeout(() => {
-    //   setOpenAlert(true)
-    // }, 500);
+      template: get(values, "file")
+    }
+
+    const formData = new URLSearchParams();
+    for (const key in body) {
+      if (Object.hasOwnProperty.call(body, key)) {
+        if (body[key] !== "") {
+          formData.append(`${key}`, body[key])
+        }
+      }
+    }
+    setPostLoading(true)
+    postInventaryRequest(formData, () => getState)
+      .then(({ data }) => {
+        getData({ page: 1, filterSearch })
+        values.handleClose()
+        setPostLoading(false)
+        setOpenAlert(true)
+
+      })
+      .catch(({ err }) => {
+        setPostLoading(false)
+        setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
+      })
+
+
   }
 
   const onActivePay = () => {
@@ -247,7 +262,16 @@ const ActiveInventory = () => {
         </MenuList>
       </Popover>
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
-      <NewInventory __={__} open={openNew} setOpen={setOpenNew} module={module} onSubmit={onSubmit} />
+      <NewInventory
+        __={__}
+        open={openNew}
+        setOpen={setOpenNew}
+        module={module}
+        onSubmit={onSubmit}
+        loading={postLoading}
+        showNoti={showNoti}
+        setShowNoti={setShowNoti}
+      />
       <NewInventaryAlert
         title={__(`${module}.modal.alert.title`)}
         subtitle={__(`${module}.modal.alert.sub-title`)}

@@ -1,4 +1,4 @@
-import request, { Methods, withToken } from "../../../../assets/util/request";
+import request, { Methods, withToken, RequestType } from "../../../../assets/util/request";
 
 //* ACTIONTYPES --------------------------------------------
 export const POST_INVENTARY_RESET = 'POST_INVENTARY_RESET';
@@ -15,7 +15,8 @@ export const postInventaryReject = (payload) => ({ type: POST_INVENTARY_REJECT, 
 //* REQUEST SERVICE ---------------------------------------
 export const postInventaryRequest = async (data, getState) => {
     const options = await withToken({
-        method: Methods.PATCH,
+        method: Methods.POST,
+        headers: RequestType.URLEncoded,
         data,
     }, getState);
     return request(`/api/web/addinventory`, options);

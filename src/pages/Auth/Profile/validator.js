@@ -13,7 +13,7 @@ const validators = (inputs) => (value) => {
                 // .matches(/^(?=.*[0-9])/, 'Ingrese al menos 1 número')
                 // .matches(/^(?=.*\W)/, 'Ingrese al menos 1 caracter especial')
                 // .min(8, 'Ingrese al menos 8 caracteres')
-                .required(get(inputs, "[3].error"))
+                // .required(get(inputs, "[3].error"))
                 .oneOf([yup.ref('confirmation'), null], get(inputs, "[3].error-2")),
             confirmation: yup.string()
                 // .matches(/^(?=.*[a-z])/, 'Ingrese al menos 1 minuscula')

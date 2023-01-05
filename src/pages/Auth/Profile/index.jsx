@@ -15,17 +15,20 @@ import {
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
-import { get, words, map, join, upperCase, slice } from "lodash";
+import { get, words, map, join, upperCase, slice, isEmpty } from "lodash";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import { useDispatch, useSelector } from "react-redux";
+import { LoadingButton } from '@mui/lab';
 
 import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
 import validator from "./validator";
+import Notification from "../../../components/form/Notification";
 
-import { logout } from "../../../store/auth/thunk/logout"
+import { logout } from "../../../store/auth/thunk/logout";
+import { putProfileRequest } from "../../../store/auth/actions/putProfile";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -33,11 +36,15 @@ const Profile = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+  const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "" });
 
   const dataUser = useSelector(state => state.auth.login.dataUser);
+  const getState = useSelector(state => state);
 
-  const inputs = __('profile.input', { returnObjects: true })
-  const sections = __('profile.section', { returnObjects: true })
+  const module = "profile"
+  const inputs = __(`${module}.input`, { returnObjects: true })
+  const sections = __(`${module}.section`, { returnObjects: true })
 
   const handleClickShowPassword = () => {
     setShowPass(state => !state)
@@ -55,6 +62,7 @@ const Profile = () => {
   const formik = useFormik({
     initialValues: {
       name: get(dataUser, "username"),
+      phone: get(dataUser, "phone"),
       email: get(dataUser, "email"),
       company: get(dataUser, "companyname"),
       password: "",
@@ -62,6 +70,32 @@ const Profile = () => {
     },
     validationSchema: validator(inputs),
     onSubmit: (values) => {
+      const body = {
+        companyId: Number(get(dataUser, "companyId")),
+        phone: get(values, "phone"),
+        username: get(values, "name"),
+        language: i18n.resolvedLanguage,
+        userid: get(dataUser, "userId"),
+        ...(!!get(values, "password") && { pass: get(values, "password") }),
+        // pass: "Raul.123"
+      }
+
+      if (isEdit) {
+        setLoadingEdit(true)
+        putProfileRequest(body, () => getState)
+          .then(({ data }) => {
+            setShowNoti({ open: true, msg: __(`${module}.msg.update`), variant: "success" })
+            setLoadingEdit(false)
+          })
+          .catch((err) => {
+            if (!isEmpty(get(err, "response"))) {
+              setShowNoti({ open: true, msg: get(err, "response.data.ErrorMessage"), variant: "error" })
+            } else {
+              setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
+            }
+            setLoadingEdit(false)
+          })
+      }
     }
   });
 
@@ -72,7 +106,6 @@ const Profile = () => {
   }
   const onLogout = () => {
     dispatch(logout())
-    // navigate("/login")
   }
 
   const short = (text) => {
@@ -82,10 +115,10 @@ const Profile = () => {
   return (
     <Layout
       propsToolbar={{
-        title: __("profile.name"),
-        label: __("profile.sub-title-1"),
+        title: __(`${module}.name`),
+        label: __(`${module}.sub-title-1`),
         code: null,
-        btnLabel: __("profile.button.language"),
+        btnLabel: __(`${module}.button.language`),
         btnFunc: onHeadBtn,
       }}
     >
@@ -103,10 +136,10 @@ const Profile = () => {
             </Box>
           </Box>
           <Button color="primary" startIcon={<CloseSession />} onClick={onLogout}>
-            <Typography variant="buttonMedium" >{__("profile.button.logout")}</Typography>
+            <Typography variant="buttonMedium" >{__(`${module}.button.logout`)}</Typography>
           </Button>
         </Paper>
-
+        {console.log(formik.errors)}
         <Paper className='w-full mb-8' elevation={3} >
           <Box component="form" onSubmit={get(formik, "handleSubmit")}>
             <Box className='py-6 px-8 w-full'>
@@ -117,6 +150,27 @@ const Profile = () => {
               <Divider />
 
               <Grid className='pt-4' container spacing={3}>
+              <Grid item xs={6} md={4}>
+                  <Box className='mb-8'>
+                    <FormControl fullWidth >
+                      <Typography className='pb-2' component="label" htmlFor="email" >
+                        {get(inputs, "[2].name")}
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        id="email"
+                        name="email"
+                        placeholder={get(inputs, "[2].placeholder")}
+                        value={get(formik, "values.email")}
+                        onChange={get(formik, "handleChange")}
+                        error={get(formik, "touched.email") && Boolean(get(formik, "errors.email"))}
+                        helperText={get(formik, "touched.email") && get(formik, "errors.email")}
+                        // disabled={!isEdit}
+                        disabled={true}
+                      />
+                    </FormControl>
+                  </Box>
+                </Grid>
                 <Grid item xs={6} md={4}>
                   <Box className='mb-8'>
                     <FormControl fullWidth  >
@@ -139,19 +193,19 @@ const Profile = () => {
                 </Grid>
                 <Grid item xs={6} md={4}>
                   <Box className='mb-8'>
-                    <FormControl fullWidth >
-                      <Typography className='pb-2' component="label" htmlFor="email" >
-                        {get(inputs, "[2].name")}
+                    <FormControl fullWidth  >
+                      <Typography className='pb-2' component="label" htmlFor="phone" >
+                        {get(inputs, "[5].name")}
                       </Typography>
                       <TextField
                         fullWidth
-                        id="email"
-                        name="email"
-                        placeholder={get(inputs, "[2].placeholder")}
-                        value={get(formik, "values.email")}
+                        id="phone"
+                        name="phone"
+                        placeholder={get(inputs, "[5].placeholder")}
+                        value={get(formik, "values.phone")}
                         onChange={get(formik, "handleChange")}
-                        error={get(formik, "touched.email") && Boolean(get(formik, "errors.email"))}
-                        helperText={get(formik, "touched.email") && get(formik, "errors.email")}
+                        error={get(formik, "touched.phone") && Boolean(get(formik, "errors.phone"))}
+                        helperText={get(formik, "touched.phone") && get(formik, "errors.phone")}
                         disabled={!isEdit}
                       />
                     </FormControl>
@@ -178,7 +232,8 @@ const Profile = () => {
                         onChange={get(formik, "handleChange")}
                         error={get(formik, "touched.company") && Boolean(get(formik, "errors.company"))}
                         helperText={get(formik, "touched.company") && get(formik, "errors.company")}
-                        disabled={!isEdit}
+                        // disabled={!isEdit}
+                        disabled={true}
                       />
                     </FormControl>
                   </Box>
@@ -273,21 +328,22 @@ const Profile = () => {
                     onClick={() => setIsEdit(false)}
                     sx={{ color: "text.main" }}
                   >
-                    {__("profile.button.cancel")}
+                    {__(`${module}.button.cancel`)}
                   </Button>
                 </Box>
               </Fade>
               {isEdit
                 ? (
-                  <Button
+                  <LoadingButton
                     color={"success"}
                     variant="contained"
                     type="submit"
                     size='large'
                     startIcon={<LockOpenIcon />}
+                    loading={loadingEdit}
                   >
-                    {__("profile.button.is-edit")}
-                  </Button>
+                    {__(`${module}.button.is-edit`)}
+                  </LoadingButton>
                 ) : (
                   <Button
                     color={"primary"}
@@ -297,13 +353,14 @@ const Profile = () => {
                     size='large'
                     startIcon={<LockIcon />}
                   >
-                    {__("profile.button.name")}
+                    {__(`${module}.button.name`)}
                   </Button>
                 )}
             </Box>
 
           </Box>
         </Paper>
+        <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
       </Box >
     </Layout >
   )

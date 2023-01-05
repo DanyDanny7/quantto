@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
 import { Checkbox } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { get, map, replace, join } from "lodash";
+import { get, map } from "lodash";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,13 +10,26 @@ import Table from "../../../components/form/Table";
 import NewInventoryToolbar from "./NewInventoryToolbar"
 import NewCounters from "../../Counts/components/NewCounters";
 
+import { getCounts } from "../../../store/counts/thunk/getCounts"
 
-const NewInventoryTable = ({ __, module, selected, setSelected }) => {
+
+const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setShowNoti }) => {
     const [__2] = useTranslation("count");
+    const dispatch = useDispatch();
+
     const module2 = "counts"
     const [openNew, setOpenNew] = useState(false);
 
     const countsState = useSelector(state => state.counts);
+
+    const getData = ({ page }) => {
+        const filters = { page }
+        dispatch(getCounts(filters))
+    }
+
+    useEffect(() => {
+        getData({ page: 1 })
+    }, [dispatch])
 
     const closeNewCouter = () => {
         setOpenNew(false)
@@ -110,6 +124,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected }) => {
                 module={module}
                 sizeFilters={125}
                 propsTableCell={{ padding: "checkbox" }}
+                loading={get(countsState, "isLoading", false)}
             />
             {openNew &&
                 <NewCounters
@@ -120,8 +135,12 @@ const NewInventoryTable = ({ __, module, selected, setSelected }) => {
                     __={__2}
                     module={module2}
                     maxWidth="lg"
+                    showNoti={showNoti}
+                    setShowNoti={setShowNoti}
+                    getData={() => getData({ page: 1 })}
                 />
             }
+
         </div>
     )
 }

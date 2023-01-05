@@ -2,222 +2,43 @@
 import React, { useCallback, useState } from 'react'
 import { isEmpty, get, includes, lowerCase } from 'lodash';
 import { useDropzone } from 'react-dropzone'
-// import { makeStyles } from '@material-ui/core/styles';
-// import * as XLSX from 'xlsx';
-// import Grid from '@material-ui/core/Grid';
 import {
-    Grid,
     Paper,
-    Container,
     Box,
-    Link as LinkUi,
     Typography,
     SvgIcon,
-    Stack,
     Divider,
     IconButton
-    // Modal
 } from '@mui/material';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Notification from "../../../components/form/Notification"
-// import { useTheme } from '@material-ui/core/styles';
-// import { useTheme } from '@mui/material';
 
-// import Swal from "sweetalert2";
-import { Form, Formik } from "formik";
-// import Paper from '@material-ui/core/Paper';
-// import Container from '@material-ui/core/Container';
-// import Box from '@material-ui/core/Box';
-
-// import Button, { DownloadPost } from "../../../../components/form/Button"
-// import Modal from "../../../../components/modal/standard/Modal";
-// import { isFulledDetail } from "../../../../utils/isFulled";
-// import { postUploadMasive } from "../../../../services/Operations/Guides";
-
-// const useStyles = makeStyles((theme) => ({
-//     rootModal: {
-//         '& .MuiDialog-paper': {
-//             overflowY: 'visible !important',
-//         },
-//         '& .MuiDialogContent-dividers': {
-//             overflowY: 'visible !important',
-//         }
-//     },
-//     root: {
-//         padding: theme.spacing(0, 2, 3)
-//     },
-//     contain: {
-//         height: 200,
-//         width: '100%',
-//         border: '3px dashed #ccc',
-//         borderRadius: 20,
-//         padding: theme.spacing(3),
-//         cursor: 'pointer',
-//         display: 'flex',
-//         flexDirection: 'column',
-//         justifyContent: 'center',
-//         alignItems: 'center'
-//     },
-//     icon: {
-//         height: 50,
-//         width: 50,
-//     }
-
-// }));
-
-// estos son los nombres del encabezado del xls
-
-const ENVIO = '*Codigo Viñeta';
-const DESTINATARIO = '*Destinatario';
-const DIRECCION_ENTREGA = '*Direccion';
-const TELEFONO = 'Telefonos';
-const DESCRIPCION = '*Descripcion';
-const CENTRO_COSTO = 'Centro Costo destino';
-
-const NewInventaryDropZone = ({ __, module }) => {
-    // const classes = useStyles();
-    // const theme = useTheme();
+const NewInventaryDropZone = ({ __, module, getFile }) => {
     const [file, setFile] = useState();
-    const [jsonArchive, setJsonArchive] = useState([]);
-    const [error, setError] = useState({ value: false, message: false, index: "" });
-    const [criticalError, setCriticalError] = useState(false);
-    const [guiasCreadas, setGuiasCreadas] = useState([])
-    const [nameFile] = useState([]);
-    const [loadingFile, setLoadingFile] = useState(false);
-
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "" })
 
-    // const errorMessage = (message = 'Surgió un error, intentelo más tarde') => {
-    //     Swal.fire({
-    //         title: message,
-    //         icon: "error",
-    //         confirmButtonColor: theme.palette.secondary.main,
-    //         confirmButtonText: "Aceptar",
-    //     });
-    // }
-
-
-    const uploadMasive = () => {
-        try {
-            const clientid = localStorage.getItem("client_id");
-            const storeid = localStorage.getItem("store_id");
-
-            const body = {
-                origin: "excel",
-                client_id: clientid,
-                store_id: storeid,
-                shipments: jsonArchive.map((item) => ({
-                    // base
-                    store_to_id: storeid,
-
-                    // obligatorios
-                    tracking_number: get(item, ENVIO).toString(),
-                    recipient_name: get(item, DESTINATARIO).toString(),
-                    recipient_address: get(item, DIRECCION_ENTREGA).toString(),
-                    description: get(item, DESCRIPCION).toString(),
-                    // opcionales
-                    ...(!!(get(item, TELEFONO, false)) ? { recipient_phone: get(item, TELEFONO).toString() } : {}),
-                    ...(!!(get(item, CENTRO_COSTO, false)) ? { store_to_code: get(item, CENTRO_COSTO).toString() } : {}),
-                }))
-            }
-
-            setLoadingFile(true)
-            // postUploadMasive(body)
-            //     .then(({ data: { data } }) => {
-            //         refrech()
-            //         setGuiasCreadas(data.map((guia) => guia.id))
-            //         setLoadingFile(false)
-            //     })
-            //     .catch((error) => {
-            //         // errorMessage(error.response?.data?.error)
-            //         onCancel()
-            //         setLoadingFile(false)
-            //     })
-
-        } catch (error) {
-            console.log("4", error)
-            // setCriticalError(true)
-            // setError({ value: true, message: "", index: "" })
-            // setJsonArchive([]);
-        }
-    }
-
-    const validateJson = (json) => {
-        try {
-            let flag = true
-
-            for (let index = 0; index < json.length; index++) {
-
-                // const validation = isFulledDetail(
-                //     json[index],
-                //     [
-                //         ENVIO,
-                //         DESTINATARIO,
-                //         DIRECCION_ENTREGA,
-                //         DESCRIPCION,
-                //     ]
-                // )
-
-                // if (validation.flag) {
-                //     flag = true;
-                // } else {
-                //     flag = false;
-                //     setError({ value: !validation.flag, message: validation.validate, index })
-                // }
-            }
-
-            if (flag) {
-                console.log(json)
-                setJsonArchive(json)
-            }
-
-        } catch (error) {
-            console.log("3", error)
-        }
-    }
 
     const onDrop = useCallback((acceptedFiles, e) => {
         try {
-
             const newFile = acceptedFiles[0];
-            console.log(newFile)
 
-            if (includes(get(newFile, "name"), ".xlsx") || includes(get(newFile, "name"), ".xls") || includes(get(newFile, "name"), ".csv")) {
+            if (includes(get(newFile, "name"), ".csv")) {
 
+                const binaryFile = new FileReader();
+                binaryFile.onload = () => {
+                    const resultFile = binaryFile.result;
+                    getFile(resultFile)
+                } 
+                binaryFile.readAsBinaryString(newFile);
                 setFile(newFile)
 
-                // const fileReader = new FileReader();
-                // fileReader.readAsArrayBuffer(file);
-
-                // fileReader.onload = (e) => {
-
-                //     try {
-                //         const bufferArray = e.target.result;
-                //         const wb = XLSX.read(bufferArray, { type: 'buffer' });
-                //         const wsname = wb.SheetNames[0];
-                //         const ws = wb.Sheets[wsname];
-                //         const data = XLSX.utils.sheet_to_json(ws);
-                //         validateJson(data)
-                //     } catch (error) {
-                //         fileReader.onerror = (error) => {
-                //             console.log(error)
-                //         };
-                //         console.log("1", error)
-
-                //     }
-                // };
-
-                // setCriticalError(false)
-                // setError({ value: false, message: "", index: "" })
             } else {
                 setShowNoti({ open: true, msg: __(`${module}.modal.error.file`), variant: "error" })
             }
         } catch (error) {
-            // setCriticalError(true)
-            // setError({ value: true, message: "", index: "" })
-            // console.log("2", error)
+            console.log(error)
+            setShowNoti({ open: true, msg: __(`${module}.modal.error.file`), variant: "error" })
         }
     }, [])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })

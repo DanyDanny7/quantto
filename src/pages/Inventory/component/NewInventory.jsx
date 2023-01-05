@@ -23,15 +23,17 @@ import {
 
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { LoadingButton } from '@mui/lab';
 
 import NewInventaryDropZone from "./NewInventaryDropZone";
 import NewInventoryTable from "./NewInventoryTable";
 
 
-const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
+const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti }) => {
     const [activeStep, setActiveStep] = useState(0);
     const [name, setName] = useState("");
     const [selected, setSelected] = useState([]);
+    const [file, setFile] = useState([]);
 
 
     const handleClose = () => {
@@ -40,12 +42,11 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
         setActiveStep(0)
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (activeStep < 1) {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else {
-            onSubmit({ name, counters: selected })
-            handleClose()
+            onSubmit({ name, counters: selected, file, handleClose })
         }
     };
 
@@ -154,7 +155,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
                                         </FormControl>
                                         <Divider orientation="vertical" flexItem fullWidth />
                                         <Box flex={1} >
-                                            <NewInventaryDropZone __={__} module={module} />
+                                            <NewInventaryDropZone __={__} module={module} getFile={setFile} />
                                         </Box>
                                     </Stack>
                                 </Stack>
@@ -171,13 +172,14 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
                                             module={module}
                                             selected={selected}
                                             setSelected={setSelected}
+                                            showNoti={showNoti}
+                                            setShowNoti={setShowNoti}
                                         />
                                     </Box>
                                 </Stack>
                             </Collapse>
                         </Box>
                     </Box>
-
                 </DialogContent>
                 <DialogActions>
                     <Stack direction="row" spacing={2}>
@@ -189,18 +191,18 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module }) => {
                         >
                             {activeStep > 0 ? __(`${module}.modal.btn-2`) : __(`${module}.modal.btn-3`)}
                         </Button>
-                        <Button
+                        <LoadingButton
                             variant="contained"
                             color="primary"
                             onClick={handleNext}
                             disabled={!name || (isEmpty(selected) && activeStep === 1)}
-                        // sx={{ bgcolor: (theme) => theme.palette.color.neutral[600], color: "common.white", "&:hover": { bgcolor: (theme) => theme.palette.color.neutral[700] } }}
+                            loading={loading}
                         >
                             {activeStep < 1
                                 ? __(`${module}.modal.btn-1`)
                                 : __(`${module}.modal.btn-5`)
                             }
-                        </Button>
+                        </LoadingButton>
                     </Stack>
                 </DialogActions>
             </Dialog>
