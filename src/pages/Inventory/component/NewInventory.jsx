@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, replace } from "lodash";
 
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -29,17 +29,17 @@ import NewInventaryDropZone from "./NewInventaryDropZone";
 import NewInventoryTable from "./NewInventoryTable";
 
 
-const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti }) => {
-    const [activeStep, setActiveStep] = useState(0);
+const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti, edit, setEdit }) => {
+    const [activeStep, setActiveStep] = useState(get(edit, "value", false) ? 1 : 0);
     const [name, setName] = useState("");
     const [selected, setSelected] = useState([]);
     const [file, setFile] = useState([]);
-
 
     const handleClose = () => {
         setOpen(false);
         setName("")
         setActiveStep(0)
+        setEdit({ item: {}, value: false })
     };
 
     const handleNext = async () => {
@@ -91,37 +91,42 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                     >
                         <CloseIcon />
                     </IconButton>
-                    {__(`${module}.modal.title`)}
+                    {get(edit, "value")
+                        ? replace(__(`${module}.modal.title-edit`), "[[name]]", get(edit, "item.name"))
+                        : __(`${module}.modal.title`)
+                    }
                 </DialogTitle>
                 <DialogContent dividers sx={{ m: 0, p: 0 }}>
                     <Box className='flex'>
-                        <Box className='w-40 p-6'>
-                            <Stack direction="row" alignItems="center" spacing={1}>
-                                <Avatar sx={{ bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 }} >
-                                    {get(steps, "[0]key") === activeStep
-                                        ? <CheckIcon fontSize='inhert' />
-                                        : <Typography variant="bodySmall">{get(steps, "[0]key")}</Typography>
-                                    }
-                                </Avatar>
-                                <Typography variant="bodyMedium" {...(get(steps, "[0]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })}>{get(steps, "[0]label")}</Typography>
-                            </Stack>
-                            <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9, color: "secondary.main" }} />
-                            <Stack direction="row" alignItems="center" spacing={1}>
-                                <Avatar
-                                    {...(get(steps, "[1]key") > activeStep + 1
-                                        ? { sx: { bgcolor: "common.white", color: "text.lite", border: "1px solid", width: 32, height: 32 } }
-                                        : { sx: { bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 } }
-                                    )}
-                                >
-                                    {get(steps, "[1]key") === activeStep
-                                        ? <CheckIcon fontSize='inhert' />
-                                        : <Typography variant="bodySmall">{get(steps, "[1]key")}</Typography>
-                                    }
-                                </Avatar>
-                                <Typography variant="bodyMedium" {...(get(steps, "[1]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })} >{get(steps, "[1]label")}</Typography>
-                            </Stack>
-                        </Box>
-                        <Divider orientation="vertical" flexItem fullWidth />
+                        {!get(edit, "value", false) &&
+                            <Box className='w-40 p-6'>
+                                <Stack direction="row" alignItems="center" spacing={1}>
+                                    <Avatar sx={{ bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 }} >
+                                        {get(steps, "[0]key") === activeStep
+                                            ? <CheckIcon fontSize='inhert' />
+                                            : <Typography variant="bodySmall">{get(steps, "[0]key")}</Typography>
+                                        }
+                                    </Avatar>
+                                    <Typography variant="bodyMedium" {...(get(steps, "[0]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })}>{get(steps, "[0]label")}</Typography>
+                                </Stack>
+                                <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9, color: "secondary.main" }} />
+                                <Stack direction="row" alignItems="center" spacing={1}>
+                                    <Avatar
+                                        {...(get(steps, "[1]key") > activeStep + 1
+                                            ? { sx: { bgcolor: "common.white", color: "text.lite", border: "1px solid", width: 32, height: 32 } }
+                                            : { sx: { bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 } }
+                                        )}
+                                    >
+                                        {get(steps, "[1]key") === activeStep
+                                            ? <CheckIcon fontSize='inhert' />
+                                            : <Typography variant="bodySmall">{get(steps, "[1]key")}</Typography>
+                                        }
+                                    </Avatar>
+                                    <Typography variant="bodyMedium" {...(get(steps, "[1]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })} >{get(steps, "[1]label")}</Typography>
+                                </Stack>
+                            </Box>
+                        }
+                        <Divider orientation="vertical" flexItem />
                         <Box className='p-4 flex-1'>
                             <Collapse in={activeStep === 0}>
                                 <Stack direction="column" spacing={3} >
@@ -132,7 +137,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             endIcon={<ArrowDropDownIcon />}
                                             component={Link}
                                             href={`/files/example.xlsx`}
-                                            download={`${__(`${module}.modal.download-file-name`)}.xlsx`}
+                                            download={`${__(`${module}.modal.download-file-name`)}.csv`}
                                         >
                                             <Typography variant="bodyMedium">{__(`${module}.modal.download-file`)}</Typography>
                                         </Button>
@@ -153,7 +158,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                                 color="secondary"
                                             />
                                         </FormControl>
-                                        <Divider orientation="vertical" flexItem fullWidth />
+                                        <Divider orientation="vertical" flexItem />
                                         <Box flex={1} >
                                             <NewInventaryDropZone __={__} module={module} getFile={setFile} />
                                         </Box>
@@ -174,6 +179,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             setSelected={setSelected}
                                             showNoti={showNoti}
                                             setShowNoti={setShowNoti}
+                                            edit={edit}
                                         />
                                     </Box>
                                 </Stack>
@@ -181,30 +187,32 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                         </Box>
                     </Box>
                 </DialogContent>
-                <DialogActions>
-                    <Stack direction="row" spacing={2}>
-                        <Button
-                            variant="text"
-                            color="inherit"
-                            onClick={handleBack}
-                            sx={{ color: (theme) => theme.palette.color.neutral[800] }}
-                        >
-                            {activeStep > 0 ? __(`${module}.modal.btn-2`) : __(`${module}.modal.btn-3`)}
-                        </Button>
-                        <LoadingButton
-                            variant="contained"
-                            color="primary"
-                            onClick={handleNext}
-                            disabled={!name || (isEmpty(selected) && activeStep === 1)}
-                            loading={loading}
-                        >
-                            {activeStep < 1
-                                ? __(`${module}.modal.btn-1`)
-                                : __(`${module}.modal.btn-5`)
-                            }
-                        </LoadingButton>
-                    </Stack>
-                </DialogActions>
+                {!get(edit, "value", false) &&
+                    <DialogActions>
+                        <Stack direction="row" spacing={2}>
+                            <Button
+                                variant="text"
+                                color="inherit"
+                                onClick={handleBack}
+                                sx={{ color: (theme) => theme.palette.color.neutral[800] }}
+                            >
+                                {activeStep > 0 ? __(`${module}.modal.btn-2`) : __(`${module}.modal.btn-3`)}
+                            </Button>
+                            <LoadingButton
+                                variant="contained"
+                                color="primary"
+                                onClick={handleNext}
+                                disabled={!name || (isEmpty(selected) && activeStep === 1)}
+                                loading={loading}
+                            >
+                                {activeStep < 1
+                                    ? __(`${module}.modal.btn-1`)
+                                    : __(`${module}.modal.btn-5`)
+                                }
+                            </LoadingButton>
+                        </Stack>
+                    </DialogActions>
+                }
             </Dialog>
         </div >
     );

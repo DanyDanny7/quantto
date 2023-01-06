@@ -53,9 +53,11 @@
                 "submit": "Eliminar",
                 "cancel": "Cancelar",
                 "confirm1": "¿Desea eliminar el contador [[name]]?",
-                "confirm2": "¿Desea eliminar [[number]] Contadores?",
+                "confirm2": "¿Desea eliminar [[number]] contadores?",
+                "confirm3": "¿Desea eliminar el contador?",
                 "success1": "Se eliminó con éxito el contador [[name]]",
-                "success2": "Se eliminó con éxito [[number]] contadores"
+                "success2": "Se eliminó con éxito [[number]] contadores",
+                "success3": "Se eliminó con éxito el contador"
             }
         },
         "table": [

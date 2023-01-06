@@ -71,13 +71,12 @@ const Profile = () => {
     validationSchema: validator(inputs),
     onSubmit: (values) => {
       const body = {
-        companyId: Number(get(dataUser, "companyId")),
+        companyid: Number(get(dataUser, "companyId")),
         phone: get(values, "phone"),
         username: get(values, "name"),
         language: i18n.resolvedLanguage,
         userid: get(dataUser, "userId"),
         ...(!!get(values, "password") && { pass: get(values, "password") }),
-        // pass: "Raul.123"
       }
 
       if (isEdit) {
@@ -105,7 +104,12 @@ const Profile = () => {
     }
   }
   const onLogout = () => {
-    dispatch(logout())
+    const body = {
+      companyid: Number(get(dataUser, "companyId")),
+      userid: get(dataUser, "userId"),
+      language: get(dataUser, "language"),
+    }
+    dispatch(logout(body))
   }
 
   const short = (text) => {
@@ -150,7 +154,7 @@ const Profile = () => {
               <Divider />
 
               <Grid className='pt-4' container spacing={3}>
-              <Grid item xs={6} md={4}>
+                <Grid item xs={6} md={4}>
                   <Box className='mb-8'>
                     <FormControl fullWidth >
                       <Typography className='pb-2' component="label" htmlFor="email" >

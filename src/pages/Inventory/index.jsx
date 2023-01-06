@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, join, toString, find, split, last, trim } from "lodash";
+import { get, map, join, toString, find, split, last, trim, replace } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Divider,
@@ -25,9 +25,11 @@ import Notification from "../../components/form/Notification";
 import Toolbar from "./component/Toolbar"
 import NewInventory from "./component/NewInventory";
 import NewInventaryAlert from "./component/NewInventaryAlert";
+import AlertDelete from "../../components/form/AlertQuestion";
 
 import { getInventary } from "../../store/inventary/thunk/getInventary";
 import { postInventaryRequest } from "../../store/inventary/actions/inventary/postInventary"
+import { deleteInventaryRequest } from "../../store/inventary/actions/inventary/deleteInventary"
 
 const ActiveInventory = () => {
   const navegate = useNavigate();
@@ -44,6 +46,9 @@ const ActiveInventory = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [filterSearch, setFilterSearch] = useState("")
   const [postLoading, setPostLoading] = useState(false);
+  const [edit, setEdit] = useState({ item: {}, value: false });
+  const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
+  const [loadDelete, setLoadDelete] = useState(false)
 
   const titles = __(`${module}.table`, { returnObjects: true });
   const status = __(`${module}.status`, { returnObjects: true });
@@ -66,15 +71,14 @@ const ActiveInventory = () => {
     setSelected(item)
   };
 
-  const handleClose = () => {
+  const closePoop = () => {
     setAnchorEl(null);
   };
 
   const onSubmit = async (values) => {
-
     const body = {
       userid: get(userState, "userId"),
-      companyId: get(userState, "companyId"),
+      companyid: get(userState, "companyId"),
       language: get(userState, "language"),
       inventoryname: trim(get(values, "name")),
       counters: join(get(values, "counters"), ","),
@@ -102,8 +106,6 @@ const ActiveInventory = () => {
         setPostLoading(false)
         setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
       })
-
-
   }
 
   const onActivePay = () => {
@@ -115,6 +117,37 @@ const ActiveInventory = () => {
 
   const onChangePagination = (e, page) => {
     getData({ page: 1, filterSearch })
+  }
+
+  //  --------- Delete -------------
+  const onDeleteConfirm = () => {
+    const msg = __(`${module}.modal.delete.confirm3`)
+    setAlertDelete({ open: true, title: __(`${module}.modal.delete.title`), subtitle: msg })
+  }
+  const onDeleteElement = () => {
+    setAlertDelete({ open: false, title: "", subtitle: "" })
+    const body = {
+      userid: get(userState, "userId"),
+      companyid: Number(get(userState, "companyId")),
+      language: get(userState, "language"),
+      inventoryid: get(selected, "inventoryId")
+    }
+    setLoadDelete(true)
+    deleteInventaryRequest(body, () => getState)
+      .then(({ data }) => {
+        const msg = __(`${module}.modal.delete.success3`);
+        setShowNoti({ open: true, msg, variant: "success" })
+        setSelected([])
+        getData({ page: 1, filterSearch })
+        setLoadDelete(false)
+      })
+      .catch((err) => {
+        setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
+        setLoadDelete(false)
+      })
+  }
+  const onDeleteCancel = () => {
+    setAlertDelete({ open: false, title: "", subtitle: "" })
   }
 
   // ---------- Table ---------------
@@ -164,7 +197,6 @@ const ActiveInventory = () => {
 
   const dataTable = map(get(inventaryState, "data.data.data", []), (row) => {
     const s = find(status, { statusId: get(row, "statusId") });
-    console.log(get(row, "templateUrl"))
     return ({
       ...row,
       create_at: moment(row.date).format("DD-MM-YYYY"),
@@ -190,15 +222,20 @@ const ActiveInventory = () => {
   const onDetail = () => navegate(toString(get(selected, "inventoryId")))
 
   const onEdit = () => {
+    setEdit({ item: selected, value: true });
+    closePoop()
     // setShowNoti({ open: true, variant: "success", msg: "" })
   }
   const onStart = () => {
+    closePoop()
     setShowNoti({ open: true, variant: "success", msg: "Inventario Inicializado" })
   }
   const onDelete = () => {
-    setShowNoti({ open: true, variant: "success", msg: "Inventario Eliminado" })
+    closePoop()
+    onDeleteConfirm()
   }
   const onFinish = () => {
+    closePoop()
     setShowNoti({ open: true, variant: "success", msg: "Inventario Finalizado" })
   }
 
@@ -252,7 +289,7 @@ const ActiveInventory = () => {
         id={"menu-inventario-activo"}
         open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
+        onClose={closePoop}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         elevation={1}
@@ -262,16 +299,20 @@ const ActiveInventory = () => {
         </MenuList>
       </Popover>
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
-      <NewInventory
-        __={__}
-        open={openNew}
-        setOpen={setOpenNew}
-        module={module}
-        onSubmit={onSubmit}
-        loading={postLoading}
-        showNoti={showNoti}
-        setShowNoti={setShowNoti}
-      />
+      {(openNew || get(edit, "value")) &&
+        <NewInventory
+          __={__}
+          open={openNew || get(edit, "value")}
+          setOpen={setOpenNew}
+          module={module}
+          onSubmit={onSubmit}
+          loading={postLoading}
+          showNoti={showNoti}
+          setShowNoti={setShowNoti}
+          edit={edit}
+          setEdit={setEdit}
+        />
+      }
       <NewInventaryAlert
         title={__(`${module}.modal.alert.title`)}
         subtitle={__(`${module}.modal.alert.sub-title`)}
@@ -279,6 +320,14 @@ const ActiveInventory = () => {
         btn2={{ label: __(`${module}.modal.alert.btn-2`), func: () => setOpenAlert(false) }}
         openAlert={openAlert}
         closeAlert={() => setOpenAlert(false)}
+      />
+      <AlertDelete
+        title={alertDelete.title}
+        subtitle={alertDelete.subtitle}
+        cancel={{ label: __(`${module}.modal.delete.cancel`), func: onDeleteCancel }}
+        submit={{ label: __(`${module}.modal.delete.submit`), func: onDeleteElement }}
+        openAlert={alertDelete.open}
+        loading={loadDelete}
       />
     </Layout>
   )

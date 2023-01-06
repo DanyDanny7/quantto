@@ -15,13 +15,13 @@ import { get, map } from "lodash";
 
 import CircularProgress from "./CircularProgress"
 
-const TableComponent = ({ headTable, dataTable, __, module, filter, loading, toolbar, propsTable = {}, propsTableCell = {} }) => {
+const TableComponent = ({ headTable, dataTable, __, module, filter, loading, toolbar, propsTable = {}, propsContainer = {}, propsTableCell = {} }) => {
 
     return (
         <Paper>
             {toolbar}
-            <TableContainer >
-                <Table sx={{ minWidth: 650 }} aria-label="simple table" {...propsTable}>
+            <TableContainer {...propsContainer} >
+                <Table aria-label="table" {...propsTable}>
                     <TableHead>
                         <TableRow >
                             {map(headTable, ({ key, label, align, width = "auto" }, i) => (

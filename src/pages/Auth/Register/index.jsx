@@ -27,11 +27,12 @@ import { register } from "../../../store/auth/thunk/register"
 const Register = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const registerState = useSelector(state => state.auth.login);
     const [showPass, setShowPass] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
 
-    const [__] = useTranslation("auth");
+    const registerState = useSelector(state => state.auth.login);
+
+    const [__, i18n] = useTranslation("auth");
     const inputs = __('register.input', { returnObjects: true })
     const links = __('register.link', { returnObjects: true })
 
@@ -50,6 +51,10 @@ const Register = () => {
         }
     }, [registerState, navigate])
 
+    const onSubmit = (values) => {
+        dispatch(register(values))
+    }
+
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -58,10 +63,10 @@ const Register = () => {
             pass: '',
             confirmation: '',
             phone: "",
-            language: "es"
+            language: i18n.resolvedLanguage
         },
         validationSchema: validator(inputs),
-        onSubmit: (values) => { console.log(values); dispatch(register(values)) }
+        onSubmit
     });
 
     return (

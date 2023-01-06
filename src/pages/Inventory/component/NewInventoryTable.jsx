@@ -1,35 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Checkbox } from "@mui/material";
+import { Checkbox, Stack, Box, Typography, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { get, map } from "lodash";
-
+import { get, map, isEmpty, join } from "lodash";
+import { LoadingButton } from '@mui/lab';
 import { useDispatch, useSelector } from "react-redux";
 
 import Table from "../../../components/form/Table";
 import NewInventoryToolbar from "./NewInventoryToolbar"
+import Counters from "./Counters"
 import NewCounters from "../../Counts/components/NewCounters";
 
 import { getCounts } from "../../../store/counts/thunk/getCounts"
+import { postInventaryCounterRequest } from "../../../store/inventary/actions/inventary/detail/postInventaryCounter"
 
 
-const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setShowNoti }) => {
+const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setShowNoti, edit }) => {
     const [__2] = useTranslation("count");
     const dispatch = useDispatch();
 
     const module2 = "counts"
     const [openNew, setOpenNew] = useState(false);
+    const [filterSearch, setFilterSearch] = useState("")
+    const [loadAddCounter, setLoadAddCounter] = useState(false);
 
     const countsState = useSelector(state => state.counts);
+    const userState = useSelector(state => state.auth.login.dataUser);
+    const getState = useSelector(state => state);
 
-    const getData = ({ page }) => {
-        const filters = { page }
+    const getData = ({ page, filterSearch }) => {
+        const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
         dispatch(getCounts(filters))
     }
 
     useEffect(() => {
-        getData({ page: 1 })
-    }, [dispatch])
+        getData({ page: 1, filterSearch })
+    }, [dispatch, filterSearch])
 
     const closeNewCouter = () => {
         setOpenNew(false)
@@ -38,6 +44,32 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
     const newCounter = () => {
         setOpenNew(true)
     }
+
+
+    // ---------- Agregar contador ---------------
+
+    const addCounter = () => {
+        const body = {
+            inventoryid: get(edit, "item.inventoryId"),
+            counterid: join(selected, ","),
+            userid: get(userState, "userId"),
+            companyid: get(userState, "companyId"),
+            language: get(userState, "language"),
+        }
+        setLoadAddCounter(true)
+        postInventaryCounterRequest(body, () => getState)
+            .then(({ data }) => {
+                console.log(data)
+                setSelected([])
+                setLoadAddCounter(false)
+            })
+            .catch((err) => {
+                setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
+                setLoadAddCounter(false)
+            })
+    }
+
+
 
     // ---------- Table ---------------
     const handleSelectAllClick = (event) => {
@@ -113,19 +145,48 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
         })
     })
 
-
     return (
         <div>
-            <Table
-                toolbar={<NewInventoryToolbar __={__} module={module} newCounter={newCounter} />}
-                headTable={headTable}
-                dataTable={dataTable}
-                __={__}
-                module={module}
-                sizeFilters={125}
-                propsTableCell={{ padding: "checkbox" }}
-                loading={get(countsState, "isLoading", false)}
-            />
+            <Stack direction="row" spacing={2} >
+                {get(edit, "value", false) &&
+                    <Box flex={1}>
+                        <Typography className='text-center' component={Box} variant="heading3" pb={2} >Contadores</Typography>
+                        <Counters inventory={get(edit, "item")} />
+                    </Box>
+                }
+                {get(edit, "value", false) &&
+                    <Divider orientation="vertical" flexItem />
+                }
+                <Box flex={1}>
+                    {get(edit, "value", false) &&
+                        <Stack direction="row" justifyContent="flex-end" mb={2}>
+                            <LoadingButton
+                                variant="contained"
+                                color="primary"
+                                onClick={addCounter}
+                                disabled={isEmpty(selected)}
+                                loading={loadAddCounter}
+                            >
+                                Agregar contador
+                            </LoadingButton>
+                        </Stack>
+                    }
+                    <Table
+                        toolbar={<NewInventoryToolbar __={__} module={module} newCounter={newCounter} setFilterSearch={setFilterSearch} />}
+                        headTable={headTable}
+                        dataTable={dataTable}
+                        __={__}
+                        module={module}
+                        sizeFilters={125}
+                        propsTableCell={{ padding: "checkbox" }}
+                        loading={get(countsState, "isLoading", false)}
+                        propsTable={{ stickyHeader: true }}
+                        propsContainer={{ sx: { height: 350, overflow: "auto" } }}
+                    />
+
+                </Box>
+            </Stack>
+
             {openNew &&
                 <NewCounters
                     open={openNew}
@@ -137,7 +198,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                     maxWidth="lg"
                     showNoti={showNoti}
                     setShowNoti={setShowNoti}
-                    getData={() => getData({ page: 1 })}
+                    getData={() => getData({ page: 1, filterSearch })}
                 />
             }
 

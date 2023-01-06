@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
 import { get } from "lodash";
 
-const InputSearch = ({ onSubmit, ...props }) => {
+const InputSearch = ({ onSubmit, propsContainer = {}, ...props }) => {
     const [__] = useTranslation("global");
 
     const formik = useFormik({
@@ -16,7 +16,7 @@ const InputSearch = ({ onSubmit, ...props }) => {
     });
 
     return (
-        <Box component="form" onSubmit={get(formik, "handleSubmit")}>
+        <Box component="form" onSubmit={get(formik, "handleSubmit")} {...propsContainer}>
             <TextField
                 label={__('layout.search')}
                 id="input-search"

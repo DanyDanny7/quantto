@@ -48,12 +48,13 @@
         ],
         "modal": {
             "title": "Creación de inventario",
+            "title-edit": "Editar contadores de inventario | [[name]]",
             "option-1": "Archivos",
             "option-2": "Usuarios",
             "sub-title-1": "Completa los campos y adjunta el archivo para continuar",
             "sub-title-2": "Selecciona los usuarios para asignarlos a tu conteo",
             "download-file": "Descargar plantilla",
-            "download-file-name": "Plantilla",
+            "download-file-name": "ejemplo-plantilla",
             "table-title": "Contadores",
             "btn-1": "Siguiente paso",
             "btn-2": "Paso anterior",
@@ -61,7 +62,7 @@
             "btn-4": "Nuevo contador",
             "btn-5": "Crear inventario",
             "dropzone": {
-                "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv o  xlsx",
+                "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv",
                 "text-active": "Suelta tu plantilla aquí",
                 "complement": "Opcional",
                 "text-head": "Archivo"

@@ -1,4 +1,4 @@
-import request, { Methods, withToken } from "../../../assets/util/request";
+import request, { Methods, withToken } from "../../../../assets/util/request";
 
 //* ACTIONTYPES --------------------------------------------
 export const DELETE_INVENTARY_RESET = 'DELETE_INVENTARY_RESET';
@@ -19,7 +19,8 @@ export const deleteInventaryRequest = async (data, getState) => {
         method: Methods.DELETE,
         data,
     }, getState);
-    return request(`/api/web/deletecounters`, options);
+    // return request(`/api/web/deletecounters`, options);
+    return request(`/api/web/deleteinventory`, options);
 };
 
 
