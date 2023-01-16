@@ -20,6 +20,7 @@ import Layout from "../../../../components/layout/Layout"
 import Table from "../../../../components/form/Table";
 import Notification from "../../../../components/form/Notification";
 import AlertQuestion from "../../../../components/form/AlertQuestion";
+import Alert from "../../../../components/form/Alert";
 
 import Toolbar from "./components/Toolbar"
 
@@ -48,6 +49,7 @@ const ActiveInventory = () => {
     const [itemsDelete, setItemsDelete] = useState([]);
     const [loadingReCount, setLoadingReCount] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
+    const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
 
     const titles = __(`${module}.table`, { returnObjects: true });
 
@@ -104,14 +106,29 @@ const ActiveInventory = () => {
                 getData({ page: 1, filterSearch })
                 setLoadingReCount(false)
             })
-            .catch((err) => {
-                setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
-                setLoadingReCount(false)
-            })
+            .catch((err) => { setError(err); setLoadingReCount(false) })
     }
 
     const onReCountCancel = () => {
         setAlertReCount({ open: false, title: "", subtitle: "" })
+    }
+
+    const setError = (err) => {
+        if (!!get(err, "response.data")) {
+            setAlert({
+                open: true,
+                title: get(err, "response.data.Message", ""),
+                subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+                type: "error",
+                btn: __(`${module}.button.close`),
+                func: closeAlert
+            })
+        } else {
+            setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
+        }
+    }
+    const closeAlert = () => {
+        setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
     }
 
     //  --------- Delete -------------
@@ -140,10 +157,7 @@ const ActiveInventory = () => {
                 getData({ page: 1, filterSearch })
                 setLoadingDelete(false)
             })
-            .catch((err) => {
-                setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
-                setLoadingDelete(false)
-            })
+            .catch((err) => { setError(err); setLoadingDelete(false) })
     }
     const onDeleteCancel = () => {
         setAlertDelete({ open: false, title: "", subtitle: "" })
@@ -338,6 +352,15 @@ const ActiveInventory = () => {
                 submit={{ label: __(`${module}.modal.delete.submit`), func: onDelete }}
                 openAlert={alertDelete.open}
                 loading={loadingDelete}
+            />
+            <Alert
+                title={get(alert, "title")}
+                subtitle={get(alert, "subtitle")}
+                btn1={{ label: get(alert, "btn"), func: get(alert, "func") }}
+                btn2={{ label: "", func: () => { } }}
+                type={get(alert, "type")}
+                openAlert={get(alert, "open")}
+                closeAlert={closeAlert}
             />
         </Layout>
     )

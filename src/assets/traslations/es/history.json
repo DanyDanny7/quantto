@@ -15,6 +15,10 @@
             "Monto",
             "Tarjeta de pago",
             "Comprobante"
-        ]
+        ],
+        "empty": {
+            "title": "No hay datos que mostrar",
+            "description": ""
+        }
     }
 }

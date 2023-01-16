@@ -2,18 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { Checkbox, Stack, Box, Typography, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { get, map, isEmpty, join } from "lodash";
+import { get, map, isEmpty, join, filter, find } from "lodash";
 import { LoadingButton } from '@mui/lab';
 import { useDispatch, useSelector } from "react-redux";
 
 import Table from "../../../components/form/Table";
 import NewInventoryToolbar from "./NewInventoryToolbar"
 import Counters from "./Counters"
-import NewCounters from "../../Counts/components/NewCounters";
+import NewCounters from "../../Counters/components/NewCounters";
 
 import { getCounts } from "../../../store/counts/thunk/getCounts"
 import { postInventaryCounterRequest } from "../../../store/inventary/actions/inventary/detail/postInventaryCounter"
-
+import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
 
 const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setShowNoti, edit }) => {
     const [__2] = useTranslation("count");
@@ -25,6 +25,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
     const [loadAddCounter, setLoadAddCounter] = useState(false);
 
     const countsState = useSelector(state => state.counts);
+    const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
     const userState = useSelector(state => state.auth.login.dataUser);
     const getState = useSelector(state => state);
 
@@ -36,6 +37,17 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
     useEffect(() => {
         getData({ page: 1, filterSearch })
     }, [dispatch, filterSearch])
+
+
+    const getInventariDetail = () => {
+        const filters = { inventoryid: get(edit, "item.inventoryId") }
+        // const filters = { inventoryid: 1 }
+        dispatch(getInventaryDetail(filters))
+    }
+
+    useEffect(() => {
+        getInventariDetail()
+    }, [dispatch])
 
     const closeNewCouter = () => {
         setOpenNew(false)
@@ -59,9 +71,9 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
         setLoadAddCounter(true)
         postInventaryCounterRequest(body, () => getState)
             .then(({ data }) => {
-                console.log(data)
                 setSelected([])
                 setLoadAddCounter(false)
+                getInventariDetail()
             })
             .catch((err) => {
                 setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
@@ -128,7 +140,11 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
         },
     ]
 
-    const dataTable = map(get(countsState, "data.data", []), (row, i) => {
+    const counterAdded = map(get(inventaryDetailState, "data.data.countsUsers", []), (counter) => get(counter, "counterId"))
+    const counterAll = get(countsState, "data.data", [])
+    const counterFilterd = filter(counterAll, ({ counterId }) => !(find(counterAdded, (id) => id === counterId)))
+
+    const dataTable = map(counterFilterd, (row, i) => {
         const isItemSelected = isSelected(get(row, "counterId"));
         const labelId = `enhanced-table-checkbox-${i}`;
         return ({
@@ -151,7 +167,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                 {get(edit, "value", false) &&
                     <Box flex={1}>
                         <Typography className='text-center' component={Box} variant="heading3" pb={2} >Contadores</Typography>
-                        <Counters inventory={get(edit, "item")} />
+                        <Counters getInventariDetail={getInventariDetail} filterSearch={filterSearch} />
                     </Box>
                 }
                 {get(edit, "value", false) &&
@@ -179,11 +195,10 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                         module={module}
                         sizeFilters={125}
                         propsTableCell={{ padding: "checkbox" }}
-                        loading={get(countsState, "isLoading", false)}
+                        loading={get(countsState, "isLoading", false) || get(inventaryDetailState, "isLoading", false)}
                         propsTable={{ stickyHeader: true }}
                         propsContainer={{ sx: { height: 350, overflow: "auto" } }}
                     />
-
                 </Box>
             </Stack>
 

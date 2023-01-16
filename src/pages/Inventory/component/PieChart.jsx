@@ -5,7 +5,7 @@ import { get } from "lodash";
 import Chart from 'chart.js/auto'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const PieChart = ({ values }) => {
+const PieChart = ({ values, loading }) => {
     const theme = useTheme();
     const chartRef = useRef(null);
 
@@ -48,7 +48,7 @@ const PieChart = ({ values }) => {
         return () => {
             myChart.destroy()
         }
-    }, [])
+    }, [loading])
 
 
 

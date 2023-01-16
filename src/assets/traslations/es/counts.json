@@ -5,6 +5,9 @@
             "sub-title": "Puedes editar, eliminar o crear nuevos contadores"
         },
         "btn": "Crear contador",
+        "button": {
+            "close": "Cerrar"
+        },
         "filters": {
             "search": "Buscar"
         },
@@ -65,10 +68,13 @@
             "Fecha de creación",
             "Estado"
         ],
+        "empty": {
+            "title": "No hay datos que mostrar",
+            "description": "Puedes agregar contadores desde el siguiente botón."
+        },
         "msg": {
             "create": "Contador creado con éxito",
             "update": "Contador actualizado con éxito"
-
         }
     }
 }

@@ -6,7 +6,7 @@ import Chart from 'chart.js/auto'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Box } from '@mui/material';
 
-const PieChart = ({ values, countsBarChart, ...restProps }) => {
+const PieChart = ({ values, countsBarChart, loading, ...restProps }) => {
     const theme = useTheme();
     const chartRef = useRef(null);
 
@@ -54,9 +54,7 @@ const PieChart = ({ values, countsBarChart, ...restProps }) => {
         return () => {
             myChart.destroy()
         }
-    }, [])
-
-
+    }, [loading])
 
     return (
         <Box className="chart-container" {...restProps}>

@@ -9,7 +9,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const Notification = ({ showNoti, setShowNoti, timer = 5000 }) => {
-
     useEffect(() => {
       const time = setTimeout(() => {
         setShowNoti({ open: false, msg: undefined, variant: "" })

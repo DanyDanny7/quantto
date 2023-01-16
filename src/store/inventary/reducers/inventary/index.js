@@ -37,6 +37,12 @@ import {
     POST_INVENTARY_REJECT,
 } from "../../actions/inventary/postInventary";
 
+import {
+    GET_INVENTARY_DETAIL_PAYING_LOADING,
+    GET_INVENTARY_DETAIL_PAYING_SUCCESS,
+    GET_INVENTARY_DETAIL_PAYING_REJECT,
+} from "../../actions/inventary/detail/getDetailPaying";
+
 
 const stateInit = {
     isLoading: false,
@@ -65,13 +71,19 @@ const stateInit = {
         isLoading: false,
         isSuccess: false,
         isReject: false,
-        data: [],
+        data: {},
+    },
+    paying: {
+        isLoading: false,
+        isSuccess: false,
+        isReject: false,
+        data: {},
     },
     post: {
         isLoading: false,
         isSuccess: false,
         isReject: false,
-        data: [],
+        data: {},
     },
 }
 
@@ -257,6 +269,38 @@ const inventaryReducer = (state = stateInit, action) => {
             ...state,
             detail: {
                 ...state.detail,
+                isLoading: false,
+                isSuccess: false,
+                isReject: true,
+                data: [],
+            }
+        }
+
+        // ------------- Inventary Detail Paying --------------------
+        case GET_INVENTARY_DETAIL_PAYING_LOADING: return {
+            ...state,
+            paying: {
+                ...state.paying,
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: [],
+            }
+        }
+        case GET_INVENTARY_DETAIL_PAYING_SUCCESS: return {
+            ...state,
+            paying: {
+                ...state.paying,
+                isLoading: false,
+                isSuccess: true,
+                isReject: false,
+                data: action.payload,
+            }
+        }
+        case GET_INVENTARY_DETAIL_PAYING_REJECT: return {
+            ...state,
+            paying: {
+                ...state.paying,
                 isLoading: false,
                 isSuccess: false,
                 isReject: true,

@@ -23,11 +23,17 @@ import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
 import CircularProgress from "../../../components/form/CircularProgress";
 import Alert from "../../../components/form/Alert";
+import AlertQuestion from "../../../components/form/AlertQuestion";
 import PieChart from "../component/PieChart";
 import BarChart from "../component/BarChart";
 import Toolbar from "./Toolbar";
+import Notification from "../../../components/form/Notification";
+import Paying from "../component/Paying";
+import NewInventory from "../component/NewInventory";
 
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
+import { putInventaryEndRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryEnd";
+import { putInventaryStartRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryStart";
 
 const LoadingData = () => (
   <Box sx={{
@@ -48,18 +54,30 @@ const ActiveInventory = () => {
   const params = useParams();
   const [__] = useTranslation("inve");
   const module = "detail"
-  const code = `#${get(params, "detailId")}`
+  const detailId = get(params, "detailId")
+  const code = `#${detailId}`
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [active, setActive] = useState({});
   const open = Boolean(anchorEl);
   const [alertActive, setAlertActive] = useState(false);
   const [filterSearch, setFilterSearch] = useState("")
+  const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
+  const [openPay, setOpenPay] = useState(false)
+
+  const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
+  const [loadStart, setLoadStart] = useState(false)
+  const [alertPay, setAlertPay] = useState({ open: false, title: "", subtitle: "" })
+  const [alertFinish, setAlertFinish] = useState({ open: false, title: "", subtitle: "" })
+  const [loadFinish, setLoadFinish] = useState(false)
+  const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
+  const [edit, setEdit] = useState({ item: {}, value: false });
 
   const titles = __(`${module}.table`, { returnObjects: true });
 
   const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
-
+  const userState = useSelector(state => state.auth.login.dataUser);
+  const getState = useSelector(state => state);
 
   const getData = ({ page, filterSearch }) => {
     const filters = { page, inventoryid: get(params, "detailId"), ...(!!filterSearch && { search: filterSearch }) }
@@ -152,15 +170,111 @@ const ActiveInventory = () => {
     )
   }))
 
+  // ---------- Actions ---------------
+
+
+  const closeAlert = () => {
+    setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
+  }
+
+  const setError = (err) => {
+    if (!!get(err, "response.data")) {
+      setAlert({
+        open: true,
+        title: get(err, "response.data.Message", ""),
+        subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+        type: "error",
+        btn: __(`${module}.actions.close`),
+        func: closeAlert
+      })
+    } else {
+      setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
+    }
+  }
+
+  const setSuccess = (success) => {
+    setAlert({
+      open: true,
+      title: get(success, "title", ""),
+      subtitle: get(success, "subtitle"),
+      type: "success",
+      btn: get(success, "btn", ""),
+      btn2: get(success, "btn2", ""),
+      func: get(success, "func", () => { }),
+      func2: get(success, "func2", () => { }),
+    })
+  }
+
+  const onStart = () => { handleClose(); setAlertStart({ open: true, title: __(`${module}.actions.start.title`), subtitle: replace(__(`${module}.actions.start.question`), "[[number]]", code) }) }
+  const onStartCancel = () => setAlertStart({ open: false, title: "", subtitle: "" })
+  const onStartSubmit = () => {
+    onStartCancel();
+    const body = {
+      inventoryid: detailId,
+      language: get(userState, "language", "es"),
+      userid: get(userState, "userId"),
+      companyid: Number(get(userState, "companyId")),
+    }
+    setLoadStart(true)
+    putInventaryStartRequest(body, () => getState)
+      .then(({ data }) => {
+        setLoadStart(false)
+        setShowNoti({ open: true, msg: __(`${module}.actions.start.success`), variant: "success" })
+        onStartCancel()
+        getData({ page: 1, filterSearch })
+      })
+      .catch((err) => { setError(err); setLoadStart(false) })
+  }
+
+  const onFinish = () => { handleClose(); setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(__(`${module}.actions.finish.question`), "[[number]]", code) }) }
+  const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
+  const onFinishSubmit = () => {
+    onStartCancel();
+    const body = {
+      inventoryid: detailId,
+      language: get(userState, "language", "es"),
+      userid: get(userState, "userId"),
+      companyid: Number(get(userState, "companyId")),
+    }
+    setLoadFinish(true)
+    putInventaryEndRequest(body, () => getState)
+      .then(({ data }) => {
+        setShowNoti({ open: true, msg: __(`${module}.actions.finish.success`), variant: "success" })
+        setLoadFinish(false)
+        onFinishCancel()
+        getData({ page: 1, filterSearch })
+      })
+      .catch((err) => { setError(err); setLoadFinish(false) })
+  }
+
+  // const onPay = () => setAlertPay({ open: true, title: __(`${module}.actions.pay.title`), subtitle: replace(__(`${module}.actions.pay.question`), "[[number]]", code) })
+  const onPay = () => { handleClose(); onPaySubmit() }
+  const onPayCancel = () => setAlertPay({ open: false, title: "", subtitle: "" })
+  const onPaySubmit = () => {
+    onStartCancel();
+    setOpenPay(true)
+    onPayCancel()
+  }
+
+  const onEdit = () => { handleClose(); setEdit({ item: get(inventaryDetailState, "data.data", {}), value: true }); }
+
+  const getOptions = (status) => {
+    const edit = { btnLabel2: __(`${module}.actions.edit.title`), btnFunc2: onEdit, color2: "info" }
+
+    switch (status) {
+      case 1: return ({ btnLabel: __(`${module}.actions.pay.title`), btnFunc: onPay, color: "warning", ...edit })
+      case 2: return ({ btnLabel: __(`${module}.actions.start.title`), btnFunc: onStart, color: "success", ...edit })
+      case 3: return ({ btnLabel: __(`${module}.actions.finish.title`), btnFunc: onFinish, color: "primary", ...edit })
+      default: return ({})
+    }
+  }
+
   return (
     <Layout
       propsToolbar={{
         title: replace(__(`${module}.header.title-1`), "[[code]]", code),
         label: replace(__(`${module}.header.sub-title-1`), "[[code]]", code),
-        btnLabel: __(`${module}.btn-3`),
-        btnFunc: () => { setAlertActive(true) },
-        // color: "warning"
-        color: "success"
+        ...getOptions(get(inventaryDetailState, "data.data.statusId")),
       }}
       goBack
     >
@@ -206,7 +320,7 @@ const ActiveInventory = () => {
             <Paper elevation={[1]} className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
               <Box className='m-auto my-6' maxWidth={250} >
-                <PieChart values={[get(inventaryDetailState, "data.data.getCountsPieChart.counted", 0), get(inventaryDetailState, "data.data.getCountsPieChart.notCounted", 0)]} />
+                <PieChart loading={get(inventaryDetailState, "isLoading", false)} values={[get(inventaryDetailState, "data.data.getCountsPieChart.counted", 0), get(inventaryDetailState, "data.data.getCountsPieChart.notCounted", 0)]} />
               </Box>
               <Box className='flex items-center justify-around'>
                 <Box className='flex items-center'>
@@ -224,7 +338,7 @@ const ActiveInventory = () => {
             <Paper elevation={[1]} className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
               <Box className='m-auto my-6 px-6' overflow="auto">
-                <BarChart minWidth={350} countsBarChart={get(inventaryDetailState, "data.data.getCountsBarChart")} />
+                <BarChart loading={get(inventaryDetailState, "isLoading", false)} minWidth={350} countsBarChart={get(inventaryDetailState, "data.data.getCountsBarChart")} />
               </Box>
               <Box className='flex items-center justify-around'>
                 <Box className='flex items-center'>
@@ -255,6 +369,33 @@ const ActiveInventory = () => {
         loading={get(inventaryDetailState, "isLoading", false)}
       />
 
+      {openPay &&
+        <Paying
+          open={openPay}
+          setOpen={setOpenPay}
+          __={__}
+          module={module}
+          inventaryId={detailId}
+          setError={setError}
+          setSuccess={setSuccess}
+          getData={() => getData({ page: 1, filterSearch })}
+        />
+      }
+      {get(edit, "value") &&
+        <NewInventory
+          __={__}
+          open={get(edit, "value")}
+          setOpen={() => { }}
+          module={module}
+          onSubmit={() => { }}
+          loading={false}
+          showNoti={showNoti}
+          setShowNoti={setShowNoti}
+          edit={edit}
+          setEdit={setEdit}
+        />
+      }
+
       <Popover
         id={"menu-inventario-activo"}
         open={open}
@@ -278,6 +419,40 @@ const ActiveInventory = () => {
         openAlert={alertActive}
         closeAlert={() => setAlertActive(false)}
       />
+      <AlertQuestion
+        title={alertStart.title}
+        subtitle={alertStart.subtitle}
+        cancel={{ label: __(`${module}.actions.cancel`), func: onStartCancel }}
+        submit={{ label: __(`${module}.actions.start.title`), func: onStartSubmit }}
+        openAlert={alertStart.open}
+        loading={loadStart}
+      />
+      <AlertQuestion
+        title={alertPay.title}
+        subtitle={alertPay.subtitle}
+        cancel={{ label: __(`${module}.actions.cancel`), func: onPayCancel }}
+        submit={{ label: __(`${module}.actions.pay.title`), func: onPaySubmit }}
+        openAlert={alertPay.open}
+        loading={false}
+      />
+      <AlertQuestion
+        title={alertFinish.title}
+        subtitle={alertFinish.subtitle}
+        cancel={{ label: __(`${module}.actions.cancel`), func: onFinishCancel }}
+        submit={{ label: __(`${module}.actions.finish.title`), func: onFinishSubmit }}
+        openAlert={alertFinish.open}
+        loading={loadFinish}
+      />
+      <Alert
+        title={get(alert, "title")}
+        subtitle={get(alert, "subtitle")}
+        btn1={{ label: get(alert, "btn"), func: get(alert, "func") }}
+        btn2={{ label: get(alert, "btn2", ""), func: get(alert, "func2", () => { }) }}
+        type={get(alert, "type")}
+        openAlert={get(alert, "open")}
+        closeAlert={closeAlert}
+      />
+      <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
     </Layout >
   )
 }

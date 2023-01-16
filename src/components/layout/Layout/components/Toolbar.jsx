@@ -17,7 +17,16 @@ const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
 
 const Toolbar = ({
     toolbarHeight,
-    propsToolbar = { title: "Quanto", label: "", btnLabel: "", btnFunc: () => { }, color: "primary" },
+    propsToolbar = {
+        title: "Quanto",
+        label: "",
+        btnLabel: "",
+        btnFunc: () => { },
+        color: "primary",
+        btnLabel2: "",
+        btnFunc2: () => { },
+        color2: "primary"
+    },
     goBack
 }) => {
     const navigate = useNavigate();
@@ -40,11 +49,18 @@ const Toolbar = ({
                     {get(propsToolbar, "label")}
                 </Typography>
             </Box>
-            {get(propsToolbar, "btnLabel", false) &&
-                <Button color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
-                    {get(propsToolbar, "btnLabel")}
-                </Button>
-            }
+            <Stack direction="row" spacing={2} alignItems="right">
+                {get(propsToolbar, "btnLabel2", false) &&
+                    <Button color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
+                        {get(propsToolbar, "btnLabel2")}
+                    </Button>
+                }
+                {get(propsToolbar, "btnLabel", false) &&
+                    <Button color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
+                        {get(propsToolbar, "btnLabel")}
+                    </Button>
+                }
+            </Stack>
         </StyledToolbar>
     )
 }

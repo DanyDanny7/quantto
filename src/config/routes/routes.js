@@ -1,7 +1,6 @@
 import { concat, get, map } from "lodash";
 import { Navigate } from "react-router-dom";
 
-// import Home from "../../pages/Home";
 /* ---------- Auth ---------- */
 import Login from "../../pages/Auth/Login";
 import Register from "../../pages/Auth/Register";
@@ -11,7 +10,7 @@ import RecoveryPassReceive from "../../pages/Auth/RecoveryPassReceive";
 import ValidatEmail from "../../pages/Auth/ValidatEmail";
 import Profile from "../../pages/Auth/Profile";
 
-import Counts from "../../pages/Counts";
+import Counts from "../../pages/Counters";
 import PaymentHistory from "../../pages/History/PaymentHistory";
 
 /* ---------- Inventary ---------- */
@@ -24,11 +23,6 @@ import InventoryDetailCounts from "../../pages/Inventory/Inventory/Counts";
 
 import PublicRouter from "./PublicRouter";
 import PrivateRoutes from "./PrivateRoutes";
-
-
-import App from "../../App"
-import Home from "../../pages/Home"
-
 
 const routesPublics = [
     /* ---------- Auth ---------- */
@@ -91,12 +85,12 @@ const routesInvent = [
     },
     {
         key: "active_inventory",
-        path: "/inventory/active",
+        path: "/inventory/active/",
         element: <ActiveInventory />,
     },
     {
         key: "active_inventory",
-        path: "/inventory/active/:id",
+        path: "/inventory/active/:detailId/count/:countId",
         element: <ActiveInventoryCounts />,
     },
 

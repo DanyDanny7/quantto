@@ -64,7 +64,6 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                     getData()
                 })
                 .catch(({ err }) => {
-                    console.log(err)
                     setPutCounter({ loading: false })
                     setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
                 })

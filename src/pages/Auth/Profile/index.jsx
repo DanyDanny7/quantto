@@ -270,7 +270,6 @@ const Profile = () => {
                               <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
-                                onMouseDown={handleClickShowPassword}
                                 edge="end"
                                 disabled={!isEdit}
                               >
@@ -293,7 +292,7 @@ const Profile = () => {
                           id="confirmation"
                           name="confirmation"
                           placeholder={get(inputs, "[4].placeholder")}
-                          type={showPass ? 'text' : 'confirmation'}
+                          type={showPass ? 'text' : 'password'}
                           value={get(formik, "values.confirmation")}
                           onChange={get(formik, "handleChange")}
                           error={get(formik, "touched.confirmation") && Boolean(get(formik, "errors.confirmation"))}

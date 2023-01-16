@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace, join, toString } from "lodash";
-import { Checkbox, IconButton, Typography, Chip } from "@mui/material";
+import { Checkbox, IconButton, Button } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { useDispatch, useSelector } from "react-redux";
@@ -165,16 +165,6 @@ const Counts = () => {
       align: "left",
     },
     {
-      key: "create_at",
-      label: get(titles, "[1]"),
-      align: "center"
-    },
-    {
-      key: "active",
-      label: get(titles, "[2]"),
-      align: "center"
-    },
-    {
       key: "edit",
       label: "",
       align: "center",
@@ -192,7 +182,6 @@ const Counts = () => {
     return ({
       id: get(row, "counterId"),
       ...row,
-      active: <Chip label={<Typography variant="bodyXtraSmall">{get(row, "active", false) ? __(`${module}.status.active`) : __(`${module}.status.inactive`)}</Typography>} color={get(row, "active") ? "success" : "error"} />,
       checkbox: (
         <Checkbox
           color="secondary"
@@ -220,10 +209,20 @@ const Counts = () => {
         toolbar={<Toolbar setFilterSearch={setFilterSearch} selected={selected} onDelete={onDeleteConfirm} />}
         dataTable={dataTable}
         __={__}
-        module="payment"
+        module={module}
         sizeFilters={125}
         propsTableCell={{ padding: "checkbox", height: 73 }}
         loading={get(countsState, "isLoading", false)}
+        action={
+          <Button
+            color="primary"
+            variant="contained"
+            size='large'
+            onClick={newCounter}
+          >
+            {__(`${module}.btn`)}
+          </Button>
+        }
       />
       {open &&
         <NewCounters

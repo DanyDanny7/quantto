@@ -18,21 +18,13 @@ const NewInventaryDropZone = ({ __, module, getFile }) => {
     const [file, setFile] = useState();
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "" })
 
-
     const onDrop = useCallback((acceptedFiles, e) => {
         try {
             const newFile = acceptedFiles[0];
 
             if (includes(get(newFile, "name"), ".csv")) {
-
-                const binaryFile = new FileReader();
-                binaryFile.onload = () => {
-                    const resultFile = binaryFile.result;
-                    getFile(resultFile)
-                } 
-                binaryFile.readAsBinaryString(newFile);
-                setFile(newFile)
-
+                getFile(newFile) // este llena el submit
+                setFile(newFile) // este llena la vista previa.
             } else {
                 setShowNoti({ open: true, msg: __(`${module}.modal.error.file`), variant: "error" })
             }
@@ -45,6 +37,7 @@ const NewInventaryDropZone = ({ __, module, getFile }) => {
 
     const deleteFile = () => {
         setFile(null)
+        getFile(null)
     }
 
     return (

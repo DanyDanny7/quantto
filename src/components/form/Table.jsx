@@ -8,14 +8,27 @@ import {
     TableRow,
     Paper,
     Typography,
-    Box
+    Box,
+    Stack
 } from "@mui/material"
 
-import { get, map } from "lodash";
+import { get, map, isEmpty } from "lodash";
 
 import CircularProgress from "./CircularProgress"
 
-const TableComponent = ({ headTable, dataTable, __, module, filter, loading, toolbar, propsTable = {}, propsContainer = {}, propsTableCell = {} }) => {
+const TableComponent = ({
+    headTable,
+    dataTable,
+    __,
+    module,
+    filter,
+    loading,
+    toolbar,
+    propsTable = {},
+    propsContainer = {},
+    propsTableCell = {},
+    action = <></>
+}) => {
 
     return (
         <Paper>
@@ -64,6 +77,23 @@ const TableComponent = ({ headTable, dataTable, __, module, filter, loading, too
                         alignItems: "center"
                     }}>
                         <CircularProgress />
+                    </Box>
+                }
+                {(isEmpty(dataTable) && !loading) &&
+                    <Box sx={{
+                        display: 'flex',
+                        height: 300,
+                        width: '100%',
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                        <Stack justifyContent="center" alignItems="center" spacing={1} >
+                            <Typography variant="heading2">{__(`${module}.empty.title`)}</Typography>
+                            <Typography variant="bodySmall">{__(`${module}.empty.description`)}</Typography>
+                            <Box pt={2}>
+                                {action}
+                            </Box>
+                        </Stack>
                     </Box>
                 }
             </TableContainer>

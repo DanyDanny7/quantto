@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, isNull, map, replace, isEmpty } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
     Divider,
     IconButton,
@@ -27,8 +27,10 @@ import BarChart from "../component/BarChart";
 import Toolbar from "../Inventory/Toolbar";
 import Alert from "../../../components/form/Alert";
 import AlertQuestion from "../../../components/form/AlertQuestion";
+import Notification from "../../../components/form/Notification";
 
 import { getInventaryActive } from "../../../store/inventary/thunk/getInventaryActive";
+import { putInventaryEndRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryEnd";
 
 const LoadingData = () => (
     <Box sx={{
@@ -48,17 +50,27 @@ const ActiveInventory = () => {
     const navegate = useNavigate();
     const [__] = useTranslation("inve");
     const module = "detail"
-    const code = 1
+
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [active, setActive] = useState({});
     const open = Boolean(anchorEl);
     const [alertIsEmpty, setAlertIsEmpty] = useState({ open: false, title: "", subtitle: "" })
     const [filterSearch, setFilterSearch] = useState("")
+    const [alertActive, setAlertActive] = useState(false);
+    const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
+
+    const [alertFinish, setAlertFinish] = useState({ open: false, title: "", subtitle: "" })
+    const [loadFinish, setLoadFinish] = useState(false)
+    const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
 
     const titles = __(`${module}.table`, { returnObjects: true });
 
     const inventaryActive = useSelector(state => state.inventary.inventaryActive);
+    const userState = useSelector(state => state.auth.login.dataUser);
+    const getState = useSelector(state => state);
+    const detailId = get(inventaryActive, "data.data.inventoryId", "--")
+    const code = `#${detailId}`
 
     const getData = ({ page, filterSearch }) => {
         const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
@@ -70,10 +82,12 @@ const ActiveInventory = () => {
     }, [dispatch, filterSearch])
 
     useEffect(() => {
-        if (get(inventaryActive, "isSuccess") && isEmpty(get(inventaryActive, "data"))) {
+        if (get(inventaryActive, "isSuccess") && isEmpty(get(inventaryActive, "data.data"))) {
             setAlertIsEmpty({ open: true, title: __(`${module}.active.title`), subtitle: __(`${module}.active.subtitle`) })
+        } else {
+            setAlertIsEmpty({ open: false, title: "", subtitle: "" })
         }
-    }, [get(inventaryActive, "isSuccess")])
+    }, [get(inventaryActive, "isSuccess"), get(inventaryActive, "isLoading")])
 
     const onCancelAlertQuestion = () => {
         setAlertIsEmpty({ open: false, title: "", subtitle: "" })
@@ -140,7 +154,7 @@ const ActiveInventory = () => {
         setAnchorEl(null);
     };
     const showMore = () => {
-        navegate(`count/${get(active, "inventoryDetailId")}`)
+        navegate(`${get(inventaryActive, "data.data.inventoryId")}/count/${get(active, "inventoryDetailId")}`)
     }
 
     const dataTable = map(get(inventaryActive, "data.data.countsTemplate", []), (row) => ({
@@ -159,13 +173,55 @@ const ActiveInventory = () => {
         )
     }))
 
+    // ---------- Actions ---------------
+
+    const closeAlert = () => {
+        setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
+    }
+
+    const setError = (err) => {
+        if (!!get(err, "response.data")) {
+            setAlert({
+                open: true,
+                title: get(err, "response.data.Message", ""),
+                subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+                type: "error",
+                btn: __(`${module}.button.close`),
+                func: closeAlert
+            })
+        } else {
+            setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
+        }
+    }
+
+    const onFinish = () => setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(__(`${module}.actions.finish.question`), "[[number]]", code) })
+    const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
+    const onFinishSubmit = () => {
+        const body = {
+            // inventoryid: detailId,
+            language: get(userState, "language", "es"),
+            userid: get(userState, "userId"),
+            companyid: Number(get(userState, "companyId")),
+        }
+        setLoadFinish(true)
+        putInventaryEndRequest(body, () => getState)
+            .then(({ data }) => {
+                setShowNoti({ open: true, msg: __(`${module}.actions.finish.success`), variant: "success" })
+                setLoadFinish(false)
+                onFinishCancel()
+                getData({ page: 1, filterSearch })
+            })
+            .catch((err) => { setError(err); setLoadFinish(false) })
+    }
+
     return (
         <Layout
             propsToolbar={{
                 title: replace(__(`${module}.header.title-2`), "[[code]]", code),
                 label: replace(__(`${module}.header.sub-title-2`), "[[code]]", code),
-                btnLabel: __(`${module}.btn-2`),
-                btnFunc: () => { },
+                btnLabel: __(`${module}.actions.finish.title`),
+                btnFunc: onFinish,
+                color: "primary"
             }}
         >
             <Box className='mb-6'>
@@ -274,20 +330,38 @@ const ActiveInventory = () => {
                     <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
                 </MenuList>
             </Popover>
-            {/* <Alert
+            <Alert
                 title={__(`${module}.alert.alert-1.title`)}
                 subtitle={__(`${module}.alert.alert-1.subtitle`)}
                 btn1={{ label: __(`${module}.alert.alert-1.btn-1`), func: () => { navegate("/inventory/active") } }}
                 btn2={{ label: __(`${module}.alert.alert-1.btn-2`), func: () => setAlertActive(false) }}
                 openAlert={alertActive}
                 closeAlert={() => setAlertActive(false)}
-            /> */}
+            />
             <AlertQuestion
                 title={alertIsEmpty.title}
                 subtitle={alertIsEmpty.subtitle}
                 cancel={{ label: __(`${module}.active.cancel`), func: onCancelAlertQuestion }}
                 submit={{ label: __(`${module}.active.submit`), func: () => navegate(`/inventory`) }}
                 openAlert={alertIsEmpty.open}
+            />
+            <AlertQuestion
+                title={alertFinish.title}
+                subtitle={alertFinish.subtitle}
+                cancel={{ label: __(`${module}.actions.cancel`), func: onFinishCancel }}
+                submit={{ label: __(`${module}.actions.finish.title`), func: onFinishSubmit }}
+                openAlert={alertFinish.open}
+                loading={loadFinish}
+            />
+            <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
+            <Alert
+                title={get(alert, "title")}
+                subtitle={get(alert, "subtitle")}
+                btn1={{ label: get(alert, "btn"), func: get(alert, "func") }}
+                btn2={{ label: "", func: () => { } }}
+                type={get(alert, "type")}
+                openAlert={get(alert, "open")}
+                closeAlert={closeAlert}
             />
         </Layout >
     )

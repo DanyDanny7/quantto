@@ -27,13 +27,15 @@ import { LoadingButton } from '@mui/lab';
 
 import NewInventaryDropZone from "./NewInventaryDropZone";
 import NewInventoryTable from "./NewInventoryTable";
-
+import AlertQuestion from "../../../components/form/AlertQuestion";
 
 const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti, edit, setEdit }) => {
     const [activeStep, setActiveStep] = useState(get(edit, "value", false) ? 1 : 0);
     const [name, setName] = useState("");
+    const [disabled, setDisabled] = useState(true);
     const [selected, setSelected] = useState([]);
-    const [file, setFile] = useState([]);
+    const [file, setFile] = useState(null);
+    const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
 
     const handleClose = () => {
         setOpen(false);
@@ -42,13 +44,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
         setEdit({ item: {}, value: false })
     };
 
-    const handleNext = async () => {
-        if (activeStep < 1) {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        } else {
-            onSubmit({ name, counters: selected, file, handleClose })
-        }
-    };
+
 
     const handleBack = () => {
         if (activeStep === 0) {
@@ -68,6 +64,42 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
             key: 2,
         },
     ];
+
+    const isDisabled = () => {
+        const inactive = isEmpty(file) || (isEmpty(selected) && activeStep === 1)
+        if (inactive !== disabled) {
+            setDisabled(inactive)
+        }
+        return !name
+    }
+
+    const submit = () => {
+        if (activeStep < 1) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        } else {
+            onSubmit({ name, counters: selected, file, handleClose })
+        }
+    }
+
+    const onAlertCancel = () => setAlertStart({ open: false, title: "", subtitle: "" })
+    const onAlertNoTempalte = () => setAlertStart({ open: true, title: __(`${module}.actions.alert.template.title`), subtitle: __(`${module}.actions.alert.template.question`) })
+    const onAlertNoCounter = () => setAlertStart({ open: true, title: __(`${module}.actions.alert.counter.title`), subtitle: __(`${module}.actions.alert.counter.question`) })
+    const onAlertSubmit = () => {
+        onAlertCancel()
+        submit()
+    }
+
+    const handleNext = async () => {
+        if (!disabled) {
+            submit()
+        } else {
+            if (activeStep < 1) {
+                onAlertNoTempalte()
+            } else {
+                onAlertNoCounter()
+            }
+        }
+    };
 
     return (
         <div>
@@ -202,7 +234,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                 variant="contained"
                                 color="primary"
                                 onClick={handleNext}
-                                disabled={!name || (isEmpty(selected) && activeStep === 1)}
+                                disabled={isDisabled()}
                                 loading={loading}
                             >
                                 {activeStep < 1
@@ -214,6 +246,14 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                     </DialogActions>
                 }
             </Dialog>
+            <AlertQuestion
+                title={alertStart.title}
+                subtitle={alertStart.subtitle}
+                cancel={{ label: __(`${module}.actions.cancel`), func: onAlertCancel }}
+                submit={{ label: __(`${module}.actions.acept`), func: onAlertSubmit }}
+                openAlert={alertStart.open}
+                loading={false}
+            />
         </div >
     );
 }

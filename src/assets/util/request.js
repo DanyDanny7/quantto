@@ -52,7 +52,6 @@ export const getOptions = ({
   userid,
   jwt,
 }) => {
-  console.log(token)
   const headers = {
     userid: userid,
     companyid: companyid,

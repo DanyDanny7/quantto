@@ -5,6 +5,12 @@ import {
 } from "../../actions/login";
 
 import {
+    POST_VALIDATE_EMAIL_LOADING,
+    POST_VALIDATE_EMAIL_SUCCESS,
+    POST_VALIDATE_EMAIL_REJECT,
+} from "../../actions/postValidate";
+
+import {
     REGISTER_LOADING,
     REGISTER_SUCCESS,
     REGISTER_REJECT,
@@ -21,7 +27,8 @@ const stateInit = {
     isLogged: false,
     token: null,
     dataUser: {},
-    allResp: {}
+    allResp: {},
+    validateFail: false
 }
 
 
@@ -57,6 +64,24 @@ const loginReducer = (state = stateInit, action) => {
             dataUser: {},
             allResp: action.payload
         }
+
+        // ------------- Validate user --------------------
+        case POST_VALIDATE_EMAIL_LOADING: return {
+            ...state,
+            validateFail: false,
+        }
+        case POST_VALIDATE_EMAIL_SUCCESS: {
+            return {
+            ...state,
+            ...action.payload,
+            validateFail: false,
+        }}
+        case POST_VALIDATE_EMAIL_REJECT: return {
+            ...state,
+            validateFail: true,
+        }
+
+        // ------------- Register --------------------
         case REGISTER_LOADING: return {
             ...state,
             isLoading: true,

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { lowerCase } from 'lodash';
 import i18next from "i18next";
 import { I18nextProvider } from "react-i18next";
 
@@ -19,7 +19,7 @@ import count_es from "../../assets/traslations/es/counts.json";
 const I18n = ({ children }) => {
 
     const getCurrentLang = () => {
-        let startLang = "es"
+        let startLang = lowerCase(process.env.REACT_APP_START_LANG || "en");
         const preSelect = localStorage.getItem("lang");
 
         if (!!preSelect) {

@@ -3,7 +3,6 @@ import {
     Box,
     Typography,
     TextField,
-    Button,
     Link as LinkUi,
     Divider,
     FormControl,
@@ -13,28 +12,33 @@ import {
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
-import { get } from "lodash";
+import { get, map } from "lodash";
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { LoadingButton } from '@mui/lab';
 
 import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
+import Alert from "../../../components/form/Alert";
 import validator from "./validator"
 
-import { register } from "../../../store/auth/thunk/register"
+import { registerRequest } from "../../../store/auth/actions/register"
 
 const Register = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [showPass, setShowPass] = useState(false);
+    const [loadRegister, setLoadRegister] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
+    const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
 
     const registerState = useSelector(state => state.auth.login);
+    const getState = useSelector(state => state);
+    const module = "register"
 
     const [__, i18n] = useTranslation("auth");
-    const inputs = __('register.input', { returnObjects: true })
-    const links = __('register.link', { returnObjects: true })
+    const inputs = __(`${module}.input`, { returnObjects: true })
+    const links = __(`${module}.link`, { returnObjects: true })
 
     const handleClickShowPassword = () => {
         setShowPass(state => !state)
@@ -43,16 +47,51 @@ const Register = () => {
     useEffect(() => {
         if (get(registerState, "isLoged")) {
             navigate("/")
-        } else if (get(registerState, "isReject")) {
-            const msg = `${get(registerState, "allResp.Message", "")} ${JSON.stringify(get(registerState, "allResp.ValidationError", ""), null, 2)}`
-            setShowNoti({ open: true, msg, variant: "error" })
-        } else {
-            setShowNoti({ open: false, msg: undefined, variant: "" })
         }
     }, [registerState, navigate])
 
+    const closeAlert = () => {
+        setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
+    }
+
+    const goLogin = () => {
+        closeAlert()
+        navigate("/login")
+    }
+
     const onSubmit = (values) => {
-        dispatch(register(values))
+        setLoadRegister(true)
+        registerRequest(values, () => getState)
+            .then(({ data }) => {
+                setAlert({
+                    open: true,
+                    title: __(`${module}.msg.success.title`),
+                    subtitle: __(`${module}.msg.success.subtitle`),
+                    type: "success",
+                    btn: __(`${module}.button.set-login`),
+                    func: goLogin,
+                })
+                setLoadRegister(false)
+            })
+            .catch((err) => {
+                if (!!get(err, "response.data")) {
+                    setAlert({
+                        open: true,
+                        title: get(err, "response.data.Message", ""),
+                        subtitle: (
+                            <ul>
+                                {map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}
+                            </ul>
+                        ),
+                        type: "error",
+                        btn: __(`${module}.button.close`),
+                        func: closeAlert
+                    })
+                } else {
+                    setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
+                }
+                setLoadRegister(false)
+            })
     }
 
     const formik = useFormik({
@@ -70,14 +109,13 @@ const Register = () => {
     });
 
     return (
-        <LayoutAuth title={__('register.name')} type="register">
+        <LayoutAuth title={__(`${module}.name`)} type="register">
             <Box className='flex-1 flex items-center justify-center'  >
                 <Box className='w-1/2'>
                     <Paper className='py-8 px-16 w-full' elevation={3} style={{ minWidth: 433 }} >
-                        <Box className='mb-2' ><Typography variant='heading1'>{__("register.title")}</Typography></Box>
-                        <Box className='mb-10' ><Typography variant='bodySmall'>{__("register.sub-title-1")}</Typography></Box>
+                        <Box className='mb-2' ><Typography variant='heading1'>{__(`${module}.title`)}</Typography></Box>
+                        <Box className='mb-10' ><Typography variant='bodySmall'>{__(`${module}.sub-title-1`)}</Typography></Box>
                         <Box component="form" onSubmit={get(formik, "handleSubmit")}>
-
                             <Box className='mb-8'>
                                 <FormControl fullWidth >
                                     <Typography className='pb-2' component="label" htmlFor="username" >
@@ -207,13 +245,13 @@ const Register = () => {
                                 </FormControl>
                             </Box>
 
-                            <Button color="primary" variant="contained" fullWidth type="submit" size='large'>
-                                {__("register.button.name")}
-                            </Button>
+                            <LoadingButton color="primary" variant="contained" fullWidth type="submit" size='large' loading={loadRegister}>
+                                {__(`${module}.button.name`)}
+                            </LoadingButton>
 
                             <Box className='my-6 text-center flex justify-between items-center' >
                                 <Divider className='flex-1' />
-                                <Typography className='px-2' variant='bodySmall'>{__("register.sub-title-2")}</Typography>
+                                <Typography className='px-2' variant='bodySmall'>{__(`${module}.sub-title-2`)}</Typography>
                                 <Divider className='flex-1' />
                             </Box>
 
@@ -227,7 +265,15 @@ const Register = () => {
                 </Box>
             </Box>
             <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
-
+            <Alert
+                title={get(alert, "title")}
+                subtitle={get(alert, "subtitle")}
+                btn1={{ label: get(alert, "btn"), func: get(alert, "func") }}
+                btn2={{ label: "", func: () => { } }}
+                type={get(alert, "type")}
+                openAlert={get(alert, "open")}
+                closeAlert={get(alert, "func")}
+            />
         </LayoutAuth>
     )
 }
