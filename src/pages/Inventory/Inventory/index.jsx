@@ -102,13 +102,13 @@ const ActiveInventory = () => {
       label: get(titles, "[1]"),
       align: "left"
     },
-    // {
-    //   key: "category",
-    //   label: get(titles, "[2]"),
-    //   align: "center"
-    // },
     {
       key: "barCode",
+      label: get(titles, "[2]"),
+      align: "center"
+    },
+    {
+      key: "stock",
       label: get(titles, "[3]"),
       align: "center"
     },
@@ -118,13 +118,8 @@ const ActiveInventory = () => {
       align: "center"
     },
     {
-      key: "stock",
-      label: get(titles, "[5]"),
-      align: "center"
-    },
-    {
       key: "diference",
-      label: get(titles, "[6]"),
+      label: get(titles, "[5]"),
       align: "center"
     },
     {

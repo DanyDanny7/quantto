@@ -19,6 +19,35 @@
         "empty": {
             "title": "No hay datos que mostrar",
             "description": ""
+        },
+        "voucher": {
+            "labels": {
+                "company": "Quantto Inc.",
+                "country": "United States",
+                "document": "Invoice",
+                "email": "Email:",
+                "terms": "Terms",
+                "billed": "Billed On",
+                "no": "Invoice #",
+                "billto": "Bill To",
+                "subtotal": "SubTotal",
+                "total": "Total",
+                "paid": "Paid",
+                "amount": "Amount Due",
+                "download": "Download"
+            },
+            "values": {
+                "email": "support@getquantto.com",
+                "paid": "PAID",
+                "terms": "On-Receipt"
+            },
+            "table": {
+                "date": "Date",
+                "description": "Description",
+                "quantity": "Qty",
+                "price": "Price",
+                "subtotal": "Subtotal"
+            }
         }
     }
 }

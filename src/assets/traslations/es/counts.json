@@ -75,6 +75,9 @@
         "msg": {
             "create": "Contador creado con éxito",
             "update": "Contador actualizado con éxito"
+        },
+        "actions": {
+            "close": "Cerrar"
         }
     }
 }

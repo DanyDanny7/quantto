@@ -251,7 +251,6 @@
         "table": [
             "Código",
             "Producto",
-            "Categoría",
             "Barcode",
             "Teórico",
             "Físicos",

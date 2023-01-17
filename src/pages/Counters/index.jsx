@@ -13,6 +13,7 @@ import Notification from "../../components/form/Notification";
 import Toolbar from "./Toolbar";
 import NewCounters from "./components/NewCounters";
 import AlertDelete from "../../components/form/AlertQuestion";
+import Alert from "../../components/form/Alert";
 
 import { getCounts } from "../../store/counts/thunk/getCounts"
 import { deleteCountRequest } from "../../store/counts/actions/deleteCounts"
@@ -31,6 +32,7 @@ const Counts = () => {
   const [loadDelete, setLoadDelete] = useState(false)
   const [toEdit, setToEdit] = useState({});
   const [filterSearch, setFilterSearch] = useState("")
+  const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
 
   const titles = __(`${module}.table`, { returnObjects: true })
 
@@ -66,6 +68,26 @@ const Counts = () => {
 
   //  --------- Delete -------------
 
+  const closeAlert = () => {
+    setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
+  }
+
+  const setError = (err) => {
+    if (!!get(err, "response.data")) {
+      setAlert({
+        open: true,
+        title: get(err, "response.data.Message", ""),
+        subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+        type: "error",
+        btn: __(`${module}.actions.close`),
+        func: closeAlert
+      })
+    } else {
+      setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
+    }
+  }
+
+
   const onDeleteConfirm = (items, inRow) => {
     const msg = inRow ? replace(__(`${module}.modal.delete.confirm1`), "[[name]]", get(items, "[0].userName")) : replace(__(`${module}.modal.delete.confirm2`), "[[number]]", items?.length)
     setItemsDelete({ items, inRow })
@@ -88,14 +110,12 @@ const Counts = () => {
         getData({ page: 1, filterSearch })
         setLoadDelete(false)
       })
-      .catch((err) => {
-        setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
-        setLoadDelete(false)
-      })
+      .catch((err) => { setError(err); setLoadDelete(false) })
   }
   const onDeleteCancel = () => {
     setAlertDelete({ open: false, title: "", subtitle: "" })
   }
+  
 
   //  --------- Tabla -------------
 
@@ -107,17 +127,6 @@ const Counts = () => {
     }
     setSelected([]);
   };
-
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-  // const handleDelete = () => {
-  //   setShowNoti({ open: open, msg: __(`${module}.menu.delete-success`), variant: "success" })
-  //   handleClose()
-  // }
 
   const isSelected = (id) => {
     return selected.indexOf(id) !== -1
@@ -245,6 +254,15 @@ const Counts = () => {
         submit={{ label: __(`${module}.modal.delete.submit`), func: onDelete }}
         openAlert={alertDelete.open}
         loading={loadDelete}
+      />
+      <Alert
+        title={get(alert, "title")}
+        subtitle={get(alert, "subtitle")}
+        btn1={{ label: get(alert, "btn"), func: get(alert, "func") }}
+        btn2={{ label: get(alert, "btn2", ""), func: get(alert, "func2", () => { }) }}
+        type={get(alert, "type")}
+        openAlert={get(alert, "open")}
+        closeAlert={closeAlert}
       />
     </Layout>
   )

@@ -15,7 +15,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
-import Modal from "../../../components/form/Modal";
+import Modal from "./components/Modal";
 import Toolbar from "./Toolbar";
 
 import { getHistoryPayment } from "../../../store/history/thunk/historyPayment"
@@ -26,6 +26,7 @@ const PaymentHistory = () => {
   const dispatch = useDispatch();
   const [filterSearch, setFilterSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState({})
 
   const module = "payment"
   const titles = __(`${module}.table`, { returnObjects: true })
@@ -91,7 +92,7 @@ const PaymentHistory = () => {
     ...row,
     date: moment(get(row, "paydate")).format("DD/MM/YYYY"),
     amount: `$ ${get(row, "amount")}`,
-    voucher: <IconButton aria-label="download" size="small" onClick={() => setOpen(true)}><RemoveRedEyeIcon fontSize="inherit" /></IconButton>,
+    voucher: <IconButton aria-label="download" size="small" onClick={() => { setOpen(true); setSelected(row) }}><RemoveRedEyeIcon fontSize="inherit" /></IconButton>,
     creditcard: <Stack direction="row" alignItems="center" justifyContent="center" spacing={2} ><Box>{selectImgCard(get(row, "cardType"))}</Box><Box>{get(row, "creditcard")}</Box></Stack>
   }))
 
@@ -126,9 +127,12 @@ const PaymentHistory = () => {
       </Stack>
       <Modal
         open={open}
-        cancel={() => setOpen(false)}
+        cancel={() => { setOpen(false); setSelected({}) }}
         maxWidth="md"
         fullWidth
+        selected={selected}
+        __={__}
+        module={module}
       />
     </Layout>
   )
