@@ -34,6 +34,7 @@ import NewInventory from "../component/NewInventory";
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
 import { putInventaryEndRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryEnd";
 import { putInventaryStartRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryStart";
+import { deleteInventaryProductRequest } from "../../../store/inventary/actions/inventary/deleteInventaryProduct"
 
 const LoadingData = () => (
   <Box sx={{
@@ -64,6 +65,8 @@ const ActiveInventory = () => {
   const [filterSearch, setFilterSearch] = useState("")
   const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
   const [openPay, setOpenPay] = useState(false)
+  const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
+  const [loadDelete, setLoadDelete] = useState(false)
 
   const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
   const [loadStart, setLoadStart] = useState(false)
@@ -165,15 +168,49 @@ const ActiveInventory = () => {
     )
   }))
 
-  // ---------- Actions ---------------
+  //  --------- Delete -------------
 
+  const onDeleteConfirm = () => {
+    const msg = replace(__(`${module}.actions.delete.question`), "[[number]]", `#${get(active, "itemId")}`)
+    setAlertDelete({ open: true, title: __(`${module}.actions.delete.title`), subtitle: msg })
+  }
+  const onDeleteElement = () => {
+    setAlertDelete({ open: false, title: "", subtitle: "" })
+    const body = {
+      userid: get(userState, "userId"),
+      companyid: Number(get(userState, "companyId")),
+      language: get(userState, "language"),
+      inventoryid: Number(detailId),
+      templatelineid: get(active, "inventoryDetailId")
+    }
+    setLoadDelete(true)
+    deleteInventaryProductRequest(body, () => getState)
+      .then(({ data }) => {
+        const msg = __(`${module}.actions.delete.success`);
+        setShowNoti({ open: true, msg, variant: "success" })
+        setActive({})
+        getData({ page: 1, filterSearch })
+        setLoadDelete(false)
+      })
+      .catch((err) => { setError(err); setLoadDelete(false) })
+  }
+  const onDeleteCancel = () => {
+    setAlertDelete({ open: false, title: "", subtitle: "" })
+  }
+
+  const onDelete = () => {
+    handleClose()
+    onDeleteConfirm()
+  }
+
+  // ---------- Actions ---------------
 
   const closeAlert = () => {
     setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
   }
 
   const setError = (err) => {
-    if (!!get(err, "response.data")) {
+    if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
       setAlert({
         open: true,
         title: get(err, "response.data.Message", ""),
@@ -403,7 +440,7 @@ const ActiveInventory = () => {
         <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
           <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>
           <Divider />
-          <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
+          <MenuItem onClick={onDelete}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
         </MenuList>
       </Popover>
       <Alert
@@ -421,6 +458,14 @@ const ActiveInventory = () => {
         submit={{ label: __(`${module}.actions.start.title`), func: onStartSubmit }}
         openAlert={alertStart.open}
         loading={loadStart}
+      />
+      <AlertQuestion
+        title={alertDelete.title}
+        subtitle={alertDelete.subtitle}
+        cancel={{ label: __(`${module}.actions.cancel`), func: onDeleteCancel }}
+        submit={{ label: __(`${module}.actions.delete.title`), func: onDeleteElement }}
+        openAlert={alertDelete.open}
+        loading={loadDelete}
       />
       <AlertQuestion
         title={alertPay.title}

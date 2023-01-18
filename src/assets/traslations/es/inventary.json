@@ -179,6 +179,11 @@
             "edit": {
                 "title": "Editar"
             },
+            "delete": {
+                "title": "Eliminar Producto",
+                "question": "¿Desea eliminar el producto [[number]]?",
+                "success": "Producto eliminado con éxito"
+            },
             "start": {
                 "title": "Activar Inventario",
                 "question": "¿Desea activar el inventario [[number]]?",

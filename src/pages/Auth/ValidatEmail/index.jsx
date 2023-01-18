@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -6,8 +7,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { get, replace } from "lodash"
-import { useParams, useLocation } from 'react-router-dom';
+import { get } from "lodash"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
@@ -22,11 +22,8 @@ const Profile = () => {
   const [__] = useTranslation("auth");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token, ...rest } = useParams();
-  const location = useLocation()
 
   const userState = useSelector(state => state.auth.login.dataUser);
-  const getState = useSelector(state => state);
   // const navegate = useNavigate();
   const [showNoti, setShowNoti] = useState({ open: false, variant: "", msg: "" })
 

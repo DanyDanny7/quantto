@@ -1,10 +1,18 @@
+import React, { useEffect } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from "./config/theme";
 import RouterApp from "./config/routes/Provider";
 import ProviderI18n from "./config/i18n";
+import * as GA from "./config/GA/stat";
 
 const App = () => {
+
+  useEffect(() => {
+    GA.initGA();
+    GA.logPageView();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <ProviderI18n>

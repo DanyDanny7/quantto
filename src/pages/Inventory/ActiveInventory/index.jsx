@@ -31,6 +31,7 @@ import Notification from "../../../components/form/Notification";
 
 import { getInventaryActive } from "../../../store/inventary/thunk/getInventaryActive";
 import { putInventaryEndRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryEnd";
+import { deleteInventaryProductRequest } from "../../../store/inventary/actions/inventary/deleteInventaryProduct"
 
 const LoadingData = () => (
     <Box sx={{
@@ -51,7 +52,6 @@ const ActiveInventory = () => {
     const [__] = useTranslation("inve");
     const module = "detail"
 
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [active, setActive] = useState({});
     const open = Boolean(anchorEl);
@@ -59,6 +59,8 @@ const ActiveInventory = () => {
     const [filterSearch, setFilterSearch] = useState("")
     const [alertActive, setAlertActive] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
+    const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
+    const [loadDelete, setLoadDelete] = useState(false)
 
     const [alertFinish, setAlertFinish] = useState({ open: false, title: "", subtitle: "" })
     const [loadFinish, setLoadFinish] = useState(false)
@@ -168,6 +170,42 @@ const ActiveInventory = () => {
         )
     }))
 
+
+    //  --------- Delete -------------
+
+    const onDeleteConfirm = () => {
+        const msg = replace(__(`${module}.actions.delete.question`), "[[number]]", `#${get(active, "itemId")}`)
+        setAlertDelete({ open: true, title: __(`${module}.actions.delete.title`), subtitle: msg })
+    }
+    const onDeleteElement = () => {
+        setAlertDelete({ open: false, title: "", subtitle: "" })
+        const body = {
+            userid: get(userState, "userId"),
+            companyid: Number(get(userState, "companyId")),
+            language: get(userState, "language"),
+            inventoryid: Number(detailId),
+            templatelineid: get(active, "inventoryDetailId")
+        }
+        setLoadDelete(true)
+        deleteInventaryProductRequest(body, () => getState)
+            .then(({ data }) => {
+                const msg = __(`${module}.actions.delete.success`);
+                setShowNoti({ open: true, msg, variant: "success" })
+                setActive({})
+                getData({ page: 1, filterSearch })
+                setLoadDelete(false)
+            })
+            .catch((err) => { setError(err); setLoadDelete(false) })
+    }
+    const onDeleteCancel = () => {
+        setAlertDelete({ open: false, title: "", subtitle: "" })
+    }
+
+    const onDelete = () => {
+        handleClose()
+        onDeleteConfirm()
+    }
+
     // ---------- Actions ---------------
 
     const closeAlert = () => {
@@ -175,13 +213,13 @@ const ActiveInventory = () => {
     }
 
     const setError = (err) => {
-        if (!!get(err, "response.data")) {
+        if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
             setAlert({
                 open: true,
                 title: get(err, "response.data.Message", ""),
                 subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
                 type: "error",
-                btn: __(`${module}.button.close`),
+                btn: __(`${module}.actions.close`),
                 func: closeAlert
             })
         } else {
@@ -322,7 +360,7 @@ const ActiveInventory = () => {
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
                     <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
+                    <MenuItem onClick={onDelete}><Typography className='text-center w-full ' variant="bodySmall" color="error.main"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
                 </MenuList>
             </Popover>
             <Alert
@@ -332,6 +370,14 @@ const ActiveInventory = () => {
                 btn2={{ label: __(`${module}.alert.alert-1.btn-2`), func: () => setAlertActive(false) }}
                 openAlert={alertActive}
                 closeAlert={() => setAlertActive(false)}
+            />
+            <AlertQuestion
+                title={alertDelete.title}
+                subtitle={alertDelete.subtitle}
+                cancel={{ label: __(`${module}.actions.cancel`), func: onDeleteCancel }}
+                submit={{ label: __(`${module}.actions.delete.title`), func: onDeleteElement }}
+                openAlert={alertDelete.open}
+                loading={loadDelete}
             />
             <AlertQuestion
                 title={alertIsEmpty.title}

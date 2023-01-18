@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 import Quanto from "../../../../assets/icons/Quanto";
-import InputSearch from "../../../../components/form/InputSearch";
+// import InputSearch from "../../../../components/form/InputSearch";
 import { orange } from "../../../../config/theme/colors"
 
 import routes from "../../../../config/routes/routes";
@@ -106,7 +106,7 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                 <Box height={toolbarHeight}>
                     <Quanto sx={{ width: "100%", height: '100%' }} />
                 </Box>
-                <InputSearch sx={{ ml: 5, mr: 3, mb: 2 }} size="small" color="secondary" />
+                {/* <InputSearch sx={{ ml: 5, mr: 3, mb: 2 }} size="small" color="secondary" /> */}
                 <List>
                     {options.map((item, index) => (
                         <Fragment key={get(item, "key")}>

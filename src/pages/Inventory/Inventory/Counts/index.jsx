@@ -114,7 +114,7 @@ const ActiveInventory = () => {
     }
 
     const setError = (err) => {
-        if (!!get(err, "response.data")) {
+        if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
             setAlert({
                 open: true,
                 title: get(err, "response.data.Message", ""),
