@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Typography,
     TextField,
     Link as LinkUi,
-    // Divider,
     FormControl,
-    // InputAdornment,
-    // IconButton,
     Paper,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -15,18 +12,13 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
 import { get, replace } from "lodash";
 import { Link, useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
 
 import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
 import validator from "./validator";
 
-// import { login } from "../../../store/actions/auth/loginAction"
-
 const ForgotPass = () => {
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
-    // const loginReducer = useSelector(state =>  state.auth.login);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" });
     const [type, setType] = useState(0);
     const [rejectEmail, setRejectEmail] = useState();
@@ -35,15 +27,6 @@ const ForgotPass = () => {
     const inputs = __('forgot_pass.input', { returnObjects: true });
     const links = __('forgot_pass.link', { returnObjects: true });
     const variant = __('forgot_pass.variant', { returnObjects: true });
-
-
-    // useEffect(() => {
-    // if (get(loginReducer, "isLoged")) {
-    //     navigate("/")
-    // } else if (get(loginReducer, "isReject")) {
-    //     setShowNoti({ open: true, msg: "Usuario o contraseña inválida", variant: "error" })
-    // }
-    // }, [loginReducer, navigate])
 
     const formik = useFormik({
         initialValues: {
@@ -57,7 +40,6 @@ const ForgotPass = () => {
                 setType(1)
                 setRejectEmail(email);
                 formik.setFieldError("email", "Correo invalido, inténtalo nuevamente")
-                // dispatch(login(values))
             }
         }
     });
@@ -95,7 +77,6 @@ const ForgotPass = () => {
                             type="submit"
                             size='large'
                             loadingPosition="end"
-                        // loading={get(loginReducer, "isLoading")}
                         >
                             {__("forgot_pass.button.name")}
                         </LoadingButton>

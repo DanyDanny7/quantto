@@ -1,4 +1,4 @@
-import { get, isEmpty } from "lodash";
+import { get } from "lodash";
 
 import {
     postValidateEmailLoading,
@@ -10,7 +10,7 @@ import {
 export const postValidateEmail = (formData) => async (dispatch, getState) => {
     dispatch(postValidateEmailLoading());
     try {
-        const { data } = await postValidateEmailRequest(formData, getState);
+        await postValidateEmailRequest(formData, getState);
         // unicamente se actualiza el estado para identificar que ya se valido
         const dataUser = get(getState(), "auth.login.dataUser")
         dataUser.active = "True"

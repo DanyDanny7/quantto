@@ -16,7 +16,7 @@ export const postInventaryReject = (payload) => ({ type: POST_INVENTARY_REJECT, 
 export const postInventaryRequest = async (data, getState) => {
     const options = await withToken({
         method: Methods.POST,
-        headers: RequestType.URLEncoded,
+        headers: RequestType.Multipart,
         data,
     }, getState);
     return request(`/api/web/addinventory`, options);

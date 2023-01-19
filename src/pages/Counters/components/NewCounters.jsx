@@ -88,7 +88,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
         initialValues: {
             email: get(toEdit, "email", ""),
             username: get(toEdit, "userName", ""),
-            active: get(toEdit, "active", false),
+            // active: get(toEdit, "active", false),
             userpass: get(toEdit, "userPass", ""),
             confirmation: get(toEdit, "userPass", ""),
             language: get(toEdit, "language", "es"),
@@ -145,7 +145,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                                         <Button color={get(formik, "values.language", "es") === "es" ? "primary" : "disabled"} onClick={() => formik.setFieldValue("language", "es")} sx={{ width: 40 }}>ES</Button>
                                         <Button color={get(formik, "values.language", "es") === "en" ? "primary" : "disabled"} onClick={() => formik.setFieldValue("language", "en")} sx={{ width: 40 }}>EN</Button>
                                     </ButtonGroup>
-                                    <ButtonGroup
+                                    {/* <ButtonGroup
                                         disableElevation
                                         variant="contained"
                                         aria-label="selected-active"
@@ -154,7 +154,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                                     >
                                         <Button className='whitespace-nowrap' color={!get(formik, "values.active", true) ? "error" : "disabled"} onClick={() => formik.setFieldValue("active", false)} sx={{ width: 80 }}>{__(`${module}.status.active`)}</Button>
                                         <Button className='whitespace-nowrap' color={get(formik, "values.active", false) ? "success" : "disabled"} onClick={() => formik.setFieldValue("active", true)} sx={{ width: 80 }}>{__(`${module}.status.inactive`)}</Button>
-                                    </ButtonGroup>
+                                    </ButtonGroup> */}
                                 </Stack>
                             </Stack>
                             <Divider />

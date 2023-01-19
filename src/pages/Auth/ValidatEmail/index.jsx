@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { get } from "lodash"
+import { get, replace } from "lodash"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ import Layout from "../../../components/layout/Layout";
 import ValidateEmail from "../../../assets/icons/ValidateEmail"
 import Notification from "../../../components/form/Notification";
 
-// import { postValidateEmailRequest } from "../../../store/auth/actions/postValidate"
+import { getValidateEmailRequest } from "../../../store/auth/actions/getValidateResend"
 import { postValidateEmail } from "../../../store/auth/thunk/validate-email"
 
 const Profile = () => {
@@ -24,27 +24,13 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const userState = useSelector(state => state.auth.login.dataUser);
-  // const navegate = useNavigate();
+  const getState = useSelector(state => state);
+
   const [showNoti, setShowNoti] = useState({ open: false, variant: "", msg: "" })
 
   if (get(userState, "active") === "True") {
     navigate("/")
   }
-
-  // const onFocus = () => {
-  //   var answer = window.confirm("Esto se detonará al hacer foco de nuevo. y acá me falta endpoint con respuesta identica a login para refrescar la data interna y saber que ya se validó, pendiente back");
-  //   if (answer) {
-  //     navegate("/profile")
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener('focus', onFocus);
-  //   return () => {
-  //     window.removeEventListener('focus', onFocus);
-  //   };
-  // }, [])
-
 
   const validateToken = (token) => {
     dispatch(postValidateEmail({ token }))
@@ -63,13 +49,13 @@ const Profile = () => {
 
 
   const handleClick = () => {
-    //   postValidateEmailRequest({}, () => getState)
-    //     .then(({ data }) => {
-    //       setShowNoti({ open: true, msg: replace(__("validate_email.resend"), "[[email]]", get(userState, "email")), variant: "success" })
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
+    getValidateEmailRequest({}, () => getState)
+        .then(({ data }) => {
+          setShowNoti({ open: true, msg: replace(__("validate_email.resend"), "[[email]]", get(userState, "email")), variant: "success" })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
   }
 
   return (

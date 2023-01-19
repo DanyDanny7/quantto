@@ -29,6 +29,10 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
     const userState = useSelector(state => state.auth.login.dataUser);
     const getState = useSelector(state => state);
 
+    const counterAdded = map(get(inventaryDetailState, "data.data.countsUsers", []), (counter) => get(counter, "counterId"))
+    const counterAll = get(countsState, "data.data", [])
+    const counterFilterd = filter(counterAll, ({ counterId }) => !(find(counterAdded, (id) => id === counterId)))
+
     const getData = ({ page, filterSearch }) => {
         const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
         dispatch(getCounts(filters))
@@ -81,13 +85,13 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
             })
     }
 
-
-
     // ---------- Table ---------------
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelected = map(get(countsState, "data.data"), (n) => n.counterId);
+            const newSelected = map(counterFilterd, (n) => n.counterId);
+            // const newSelected = map(get(countsState, "data.data"), (n) => n.counterId);
             setSelected(newSelected);
+            console.log(newSelected)
             return;
         }
         setSelected([]);
@@ -122,8 +126,8 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
             label: (
                 <Checkbox
                     color="secondary"
-                    indeterminate={selected.length > 0 && selected.length < get(countsState, "data.data", []).length}
-                    checked={get(countsState, "data.data", []).length > 0 && selected.length === get(countsState, "data.data", []).length}
+                    indeterminate={selected.length > 0 && selected.length < counterFilterd.length}
+                    checked={counterFilterd.length > 0 && selected.length === counterFilterd.length}
                     onChange={handleSelectAllClick}
                     inputProps={{
                         'aria-label': 'select all desserts',
@@ -140,9 +144,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
         },
     ]
 
-    const counterAdded = map(get(inventaryDetailState, "data.data.countsUsers", []), (counter) => get(counter, "counterId"))
-    const counterAll = get(countsState, "data.data", [])
-    const counterFilterd = filter(counterAll, ({ counterId }) => !(find(counterAdded, (id) => id === counterId)))
+
 
     const dataTable = map(counterFilterd, (row, i) => {
         const isItemSelected = isSelected(get(row, "counterId"));
