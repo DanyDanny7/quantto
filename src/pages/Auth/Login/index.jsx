@@ -9,6 +9,7 @@ import {
     InputAdornment,
     IconButton,
     Paper,
+    Stack
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useTranslation } from "react-i18next";
@@ -20,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
+import BtnLanguage from "../../../components/form/BtnLanguage";
 import validator from "./validator";
 
 import { login } from "../../../store/auth/thunk/login";
@@ -27,13 +29,19 @@ import { login } from "../../../store/auth/thunk/login";
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loginState = useSelector(state =>  state.auth.login);
+    const loginState = useSelector(state => state.auth.login);
     const [showPass, setShowPass] = useState(false);
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
 
-    const [__] = useTranslation("auth");
+    const [__, i18n] = useTranslation("auth");
     const inputs = __('login.input', { returnObjects: true })
     const links = __('login.link', { returnObjects: true })
+
+    const onHeadBtn = (lang) => {
+        let selectLanguage = lang;
+        i18n.changeLanguage(selectLanguage);
+        localStorage.setItem("lang", selectLanguage)
+    }
 
     const handleClickShowPassword = () => {
         setShowPass(state => !state)
@@ -62,9 +70,12 @@ const Login = () => {
     return (
         <LayoutAuth title={__('login.name')} type="login">
             <Box className='flex flex-col justify-center items-center h-full'>
-                <Paper className='py-8 px-16 w-1/2' elevation={3} style={{ minWidth: 433 }} >
+                <Paper className='py-8 px-16 w-1/2 relative' elevation={3} style={{ minWidth: 433 }} >
                     <Box className='mb-2' ><Typography variant='heading1'>{__("login.title")}</Typography></Box>
-                    <Box className='mb-10' ><Typography variant='bodySmall'>{__("login.sub-title-1")}</Typography></Box>
+                    <Box className='mb-4' ><Typography variant='bodySmall'>{__("login.sub-title-1")}</Typography></Box>
+                    <Stack direction="row" justifyContent="flex-end">
+                        <BtnLanguage active={i18n.resolvedLanguage} onClickEn={() => onHeadBtn("en")} onClickEs={() => onHeadBtn("es")} />
+                    </Stack>
                     <Box component="form" onSubmit={get(formik, "handleSubmit")}>
                         <Box className='mb-8'>
                             <FormControl fullWidth >
@@ -115,7 +126,6 @@ const Login = () => {
                                 />
                             </FormControl>
                         </Box>
-
                         <Box className='mb-8'>
                             <LinkUi underline="always" color="text.main">
                                 <Link to={get(links, "[0].href")}>

@@ -15,7 +15,6 @@ import {
     FormControl,
     TextField,
     InputAdornment,
-    ButtonGroup,
 } from '@mui/material';
 import { get } from "lodash";
 import { useFormik } from 'formik';
@@ -25,6 +24,7 @@ import { LoadingButton } from '@mui/lab';
 
 import validator from "./validator"
 import Notification from "../../../components/form/Notification";
+import BtnLanguage from "../../../components/form/BtnLanguage";
 
 import { postCountRequest } from "../../../store/counts/actions/postCounts"
 import { putCountRequest } from "../../../store/counts/actions/putCounts"
@@ -135,26 +135,11 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                             <Stack direction="row" justifyContent="space-between" alignItems="center" >
                                 <Typography variant="bodyMedium">{__(`${module}.modal.sub-title-1`)}</Typography>
                                 <Stack direction="row" spacing={2}>
-                                    <ButtonGroup
-                                        disableElevation
-                                        variant="contained"
-                                        aria-label="selected-active"
-                                        name="active"
-                                        color="primary"
-                                    >
-                                        <Button color={get(formik, "values.language", "es") === "es" ? "primary" : "disabled"} onClick={() => formik.setFieldValue("language", "es")} sx={{ width: 40 }}>ES</Button>
-                                        <Button color={get(formik, "values.language", "es") === "en" ? "primary" : "disabled"} onClick={() => formik.setFieldValue("language", "en")} sx={{ width: 40 }}>EN</Button>
-                                    </ButtonGroup>
-                                    {/* <ButtonGroup
-                                        disableElevation
-                                        variant="contained"
-                                        aria-label="selected-active"
-                                        name="active"
-                                        color="disabled"
-                                    >
-                                        <Button className='whitespace-nowrap' color={!get(formik, "values.active", true) ? "error" : "disabled"} onClick={() => formik.setFieldValue("active", false)} sx={{ width: 80 }}>{__(`${module}.status.active`)}</Button>
-                                        <Button className='whitespace-nowrap' color={get(formik, "values.active", false) ? "success" : "disabled"} onClick={() => formik.setFieldValue("active", true)} sx={{ width: 80 }}>{__(`${module}.status.inactive`)}</Button>
-                                    </ButtonGroup> */}
+                                    <BtnLanguage
+                                        active={get(formik, "values.language", "es")}
+                                        onClickEs={() => formik.setFieldValue("language", "es")}
+                                        onClickEn={() => formik.setFieldValue("language", "en")}
+                                    />
                                 </Stack>
                             </Stack>
                             <Divider />

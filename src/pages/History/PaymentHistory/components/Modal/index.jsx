@@ -95,8 +95,6 @@ const AlertQuestion = ({
                                                 <Stack spacing={0.5}>
                                                     <Typography variant="bodyXtraSmall">{__(`${module}.voucher.labels.billto`)}</Typography>
                                                     <Typography variant="bodyLarge">{upperCase(get(historyDetailState, "data.billto"))}</Typography>
-                                                    <Typography variant="bodySmall">0000000</Typography>
-                                                    <Typography variant="bodySmall">El Salvador</Typography>
                                                 </Stack>
                                             </Stack>
                                             <Stack>
@@ -180,8 +178,6 @@ const AlertQuestion = ({
                                                 <Stack spacing={0.5}>
                                                     <Typography variant="bodyXtraSmall">{__(`${module}.voucher.labels.billto`)}</Typography>
                                                     <Typography variant="bodyLarge">{upperCase(get(historyDetailState, "data.billto"))}</Typography>
-                                                    <Typography variant="bodySmall">0000000</Typography>
-                                                    <Typography variant="bodySmall">El Salvador</Typography>
                                                 </Stack>
                                             </Stack>
                                             <Stack>

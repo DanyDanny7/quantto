@@ -8,7 +8,8 @@ import {
     FormControl,
     InputAdornment,
     IconButton,
-    Paper
+    Paper,
+    Stack
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
@@ -21,6 +22,7 @@ import { LoadingButton } from '@mui/lab';
 import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
 import Alert from "../../../components/form/Alert";
+import BtnLanguage from "../../../components/form/BtnLanguage";
 import validator from "./validator"
 
 import { registerRequest } from "../../../store/auth/actions/register"
@@ -40,6 +42,12 @@ const Register = () => {
     const inputs = __(`${module}.input`, { returnObjects: true })
     const links = __(`${module}.link`, { returnObjects: true })
 
+    const onHeadBtn = (lang) => {
+        let selectLanguage = lang;
+        i18n.changeLanguage(selectLanguage);
+        localStorage.setItem("lang", selectLanguage)
+    }
+    
     const handleClickShowPassword = () => {
         setShowPass(state => !state)
     }
@@ -114,7 +122,10 @@ const Register = () => {
                 <Box className='w-1/2'>
                     <Paper className='py-8 px-16 w-full' elevation={3} style={{ minWidth: 433 }} >
                         <Box className='mb-2' ><Typography variant='heading1'>{__(`${module}.title`)}</Typography></Box>
-                        <Box className='mb-10' ><Typography variant='bodySmall'>{__(`${module}.sub-title-1`)}</Typography></Box>
+                        <Box className='mb-4' ><Typography variant='bodySmall'>{__(`${module}.sub-title-1`)}</Typography></Box>
+                        <Stack direction="row" justifyContent="flex-end">
+                            <BtnLanguage active={i18n.resolvedLanguage} onClickEn={() => onHeadBtn("en")} onClickEs={() => onHeadBtn("es")} />
+                        </Stack>
                         <Box component="form" onSubmit={get(formik, "handleSubmit")}>
                             <Box className='mb-8'>
                                 <FormControl fullWidth >

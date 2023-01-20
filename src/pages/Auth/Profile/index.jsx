@@ -26,6 +26,7 @@ import CloseSession from "../../../assets/icons/CloseSession"
 import Layout from "../../../components/layout/Layout";
 import validator from "./validator";
 import Notification from "../../../components/form/Notification";
+import BtnLanguage from "../../../components/form/BtnLanguage";
 
 import { logout } from "../../../store/auth/thunk/logout";
 import { putProfileRequest } from "../../../store/auth/actions/putProfile";
@@ -50,11 +51,8 @@ const Profile = () => {
     setShowPass(state => !state)
   }
 
-  const onHeadBtn = () => {
-    let selectLanguage = "es";
-    if (i18n.resolvedLanguage === "es") {
-      selectLanguage = "en"
-    }
+  const onHeadBtn = (lang) => {
+    let selectLanguage = lang;
     i18n.changeLanguage(selectLanguage);
     localStorage.setItem("lang", selectLanguage)
   }
@@ -119,11 +117,12 @@ const Profile = () => {
   return (
     <Layout
       propsToolbar={{
-        title: __(`${module}.name`),
-        label: __(`${module}.sub-title-1`),
-        code: null,
-        btnLabel: __(`${module}.button.language`),
-        btnFunc: onHeadBtn,
+        // title: __(`${module}.name`),
+        // label: __(`${module}.sub-title-1`),
+        // code: null,
+        // btnLabel: __(`${module}.button.language`),
+        // btnFunc: onHeadBtn,
+        customBtn: <BtnLanguage active={i18n.resolvedLanguage} onClickEn={() => onHeadBtn("en")} onClickEs={() => onHeadBtn("es")} />
       }}
     >
       <Box>

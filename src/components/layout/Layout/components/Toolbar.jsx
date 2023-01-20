@@ -25,7 +25,8 @@ const Toolbar = ({
         color: "primary",
         btnLabel2: "",
         btnFunc2: () => { },
-        color2: "primary"
+        color2: "primary",
+        customBtn: null
     },
     goBack
 }) => {
@@ -49,18 +50,23 @@ const Toolbar = ({
                     {get(propsToolbar, "label")}
                 </Typography>
             </Box>
-            <Stack direction="row" spacing={2} alignItems="right">
-                {get(propsToolbar, "btnLabel2", false) &&
-                    <Button color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
-                        {get(propsToolbar, "btnLabel2")}
-                    </Button>
-                }
-                {get(propsToolbar, "btnLabel", false) &&
-                    <Button color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
-                        {get(propsToolbar, "btnLabel")}
-                    </Button>
-                }
-            </Stack>
+            {!!get(propsToolbar, "customBtn")
+                ? (
+                    get(propsToolbar, "customBtn")
+                ) : (
+                    <Stack direction="row" spacing={2} alignItems="right">
+                        {get(propsToolbar, "btnLabel2", false) &&
+                            <Button color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
+                                {get(propsToolbar, "btnLabel2")}
+                            </Button>
+                        }
+                        {get(propsToolbar, "btnLabel", false) &&
+                            <Button color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
+                                {get(propsToolbar, "btnLabel")}
+                            </Button>
+                        }
+                    </Stack>
+                )}
         </StyledToolbar>
     )
 }
