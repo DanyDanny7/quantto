@@ -14,10 +14,17 @@ import {
     MenuList,
     MenuItem,
     Popover,
+    Collapse,
+    Button,
+    Stack,
+    Tooltip
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment/moment';
+
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import PanToolIcon from '@mui/icons-material/PanTool';
 
 import CircularProgress from "../../../components/form/CircularProgress";
 import Layout from "../../../components/layout/Layout"
@@ -61,6 +68,7 @@ const ActiveInventory = () => {
     const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "error" })
     const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
     const [loadDelete, setLoadDelete] = useState(false)
+    const [empty, setEmpty] = useState(0)
 
     const [alertFinish, setAlertFinish] = useState({ open: false, title: "", subtitle: "" })
     const [loadFinish, setLoadFinish] = useState(false)
@@ -84,11 +92,21 @@ const ActiveInventory = () => {
     }, [dispatch, filterSearch])
 
     useEffect(() => {
-        if (get(inventaryActive, "isSuccess") && isEmpty(get(inventaryActive, "data.data"))) {
-            setAlertIsEmpty({ open: true, title: __(`${module}.active.title`), subtitle: __(`${module}.active.subtitle`) })
+        if (get(inventaryActive, "isSuccess")) {
+            if (isEmpty(get(inventaryActive, "data.data"))) {
+                // cargó sin datos y el colapse se desactivará en cada loading
+                setEmpty(0)
+            } else {
+                // cargó con datos ponemos 2 y no volveremos a desactivar el collapse
+                setEmpty(2)
+            }
         } else {
-            setAlertIsEmpty({ open: false, title: "", subtitle: "" })
+            // solo si no ha cargado con datos.
+            if (empty < 2) {
+                setEmpty(1)
+            }
         }
+        setAlertIsEmpty({ open: false, title: "", subtitle: "" })
     }, [get(inventaryActive, "isSuccess"), get(inventaryActive, "isLoading")])
 
     const onCancelAlertQuestion = () => {
@@ -156,6 +174,18 @@ const ActiveInventory = () => {
 
     const dataTable = map(get(inventaryActive, "data.data.countsTemplate", []), (row) => ({
         ...row,
+        itemId: (
+            <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
+                <Box>{get(row, "itemId")}</Box>
+                <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
+            </ Stack>
+        ),
+        inventory: (
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+                <Box minWidth={0.5}>{get(row, "inventory")}</Box>
+                <Collapse in={get(row, "recount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>
+            </ Stack>
+        ),
         options: (
             <IconButton
                 aria-label="more"
@@ -254,89 +284,94 @@ const ActiveInventory = () => {
                 label: replace(__(`${module}.header.sub-title-2`), "[[code]]", code),
                 btnLabel: __(`${module}.actions.finish.title`),
                 btnFunc: onFinish,
-                color: "primary"
+                color: "primary",
+                btnLabel2: __(`${module}.actions.reload`),
+                btnFunc2: () => getData({ page: 1, filterSearch }),
+                color2: "success"
             }}
         >
-            <Box className='mb-6'>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6} xl={3}>
-                        <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
-                            {get(inventaryActive, "isLoading", false)
-                                ? (
-                                    <LoadingData />
-                                ) : (
-                                    <>
-                                        <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
-                                        <Box className='mb-3'>
-                                            <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
-                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
-                                        </Box>
-                                        <Box className='my-3'>
-                                            <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
-                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
-                                        </Box>
-                                        <Box className='my-3'>
-                                            <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
-                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
-                                        </Box>
-                                        <Box className='my-3'>
-                                            <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
-                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
-                                        </Box>
-                                        <Box className='my-3'>
-                                            <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
-                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
-                                        </Box>
-                                        <Box className='my-3'>
-                                            <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
-                                            <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
-                                        </Box>
-                                    </>
-                                )}
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} sm={6} xl={4}>
-                        <Paper elevation={[1]} className='py-8 px-6 h-full'>
-                            <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
-                            <Box className='m-auto my-6' maxWidth={250} >
-                                <PieChart values={[get(inventaryActive, "data.data.getCountsPieChart.counted", 0), get(inventaryActive, "data.data.getCountsPieChart.notCounted", 0)]} />
-                            </Box>
-                            <Box className='flex items-center justify-around'>
-                                <Box className='flex items-center'>
-                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.skyblue[500]} />
-                                    <Typography variant="bodySmall">{__(`${module}.cards.card-2.counted`)}</Typography>
+            <Collapse in={empty > 1}>
+                <Box className='mb-6'>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6} xl={3}>
+                            <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
+                                {get(inventaryActive, "isLoading", false)
+                                    ? (
+                                        <LoadingData />
+                                    ) : (
+                                        <>
+                                            <Typography className='pb-8' component={Box} variant="heading4">{__(`${module}.cards.card-1.title`)}</Typography>
+                                            <Box className='mb-3'>
+                                                <Typography variant="heading4">{__(`${module}.cards.card-1.count-name`)}</Typography>
+                                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "count-name")}</Typography>
+                                            </Box>
+                                            <Box className='my-3'>
+                                                <Typography variant="heading4">{__(`${module}.cards.card-1.start`)}</Typography>
+                                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "start")}</Typography>
+                                            </Box>
+                                            <Box className='my-3'>
+                                                <Typography variant="heading4">{__(`${module}.cards.card-1.end`)}</Typography>
+                                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "end")}</Typography>
+                                            </Box>
+                                            <Box className='my-3'>
+                                                <Typography variant="heading4">{__(`${module}.cards.card-1.progress`)}</Typography>
+                                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "progress")}</Typography>
+                                            </Box>
+                                            <Box className='my-3'>
+                                                <Typography variant="heading4">{__(`${module}.cards.card-1.units-counted`)}</Typography>
+                                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "units-counted")}</Typography>
+                                            </Box>
+                                            <Box className='my-3'>
+                                                <Typography variant="heading4">{__(`${module}.cards.card-1.elapsed-time`)}</Typography>
+                                                <Typography className='pl-2' variant="bodyMedium">{get(card1, "elapsed-time")}</Typography>
+                                            </Box>
+                                        </>
+                                    )}
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} sm={6} xl={4}>
+                            <Paper elevation={[1]} className='py-8 px-6 h-full'>
+                                <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
+                                <Box className='m-auto my-6' maxWidth={250} >
+                                    <PieChart values={[get(inventaryActive, "data.data.getCountsPieChart.counted", 0), get(inventaryActive, "data.data.getCountsPieChart.notCounted", 0)]} />
                                 </Box>
-                                <Box className='flex items-center'>
-                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.purplelight[300]} />
-                                    <Typography variant="bodySmall">{__(`${module}.cards.card-2.not-counted`)}</Typography>
+                                <Box className='flex items-center justify-around'>
+                                    <Box className='flex items-center'>
+                                        <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.skyblue[500]} />
+                                        <Typography variant="bodySmall">{__(`${module}.cards.card-2.counted`)}</Typography>
+                                    </Box>
+                                    <Box className='flex items-center'>
+                                        <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.purplelight[300]} />
+                                        <Typography variant="bodySmall">{__(`${module}.cards.card-2.not-counted`)}</Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} xl={5}>
-                        <Paper elevation={[1]} className='py-8 px-6 h-full'>
-                            <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
-                            <Box className='m-auto my-6 px-6' overflow="auto">
-                                <BarChart minWidth={350} countsBarChart={get(inventaryActive, "data.data.getCountsBarChart")} />
-                            </Box>
-                            <Box className='flex items-center justify-around'>
-                                <Box className='flex items-center'>
-                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.greenlight[400]} />
-                                    <Typography variant="bodySmall">{__(`${module}.cards.card-3.on-hand`)}</Typography>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} xl={5}>
+                            <Paper elevation={[1]} className='py-8 px-6 h-full'>
+                                <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
+                                <Box className='m-auto my-6 px-6' overflow="auto">
+                                    <BarChart minWidth={350} countsBarChart={get(inventaryActive, "data.data.getCountsBarChart")} />
                                 </Box>
-                                <Box className='flex items-center'>
-                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.orange[400]} />
-                                    <Typography variant="bodySmall">{__(`${module}.cards.card-3.counted-units`)}</Typography>
+                                <Box className='flex items-center justify-around'>
+                                    <Box className='flex items-center'>
+                                        <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.greenlight[400]} />
+                                        <Typography variant="bodySmall">{__(`${module}.cards.card-3.on-hand`)}</Typography>
+                                    </Box>
+                                    <Box className='flex items-center'>
+                                        <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.orange[400]} />
+                                        <Typography variant="bodySmall">{__(`${module}.cards.card-3.counted-units`)}</Typography>
+                                    </Box>
+                                    <Box className='flex items-center'>
+                                        <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.pink[300]} />
+                                        <Typography variant="bodySmall">{__(`${module}.cards.card-3.diference`)}</Typography>
+                                    </Box>
                                 </Box>
-                                <Box className='flex items-center'>
-                                    <Box className='h-4 w-4 rounded-full mr-2' bgcolor={theme.palette.color.pink[300]} />
-                                    <Typography variant="bodySmall">{__(`${module}.cards.card-3.diference`)}</Typography>
-                                </Box>
-                            </Box>
-                        </Paper>
-                    </Grid>
-                </Grid >
-            </Box >
+                            </Paper>
+                        </Grid>
+                    </Grid >
+                </Box >
+            </Collapse>
 
             <Table
                 toolbar={<Toolbar setFilterSearch={setFilterSearch} />}
@@ -346,6 +381,16 @@ const ActiveInventory = () => {
                 module={module}
                 sizeFilters={125}
                 loading={get(inventaryActive, "isLoading", false)}
+                action={
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        size='large'
+                        href="/inventory"
+                    >
+                        {__(`${module}.actions.link`)}
+                    </Button>
+                }
             />
 
             <Popover

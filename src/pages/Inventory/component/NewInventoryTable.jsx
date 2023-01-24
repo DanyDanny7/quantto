@@ -15,7 +15,7 @@ import { getCounts } from "../../../store/counts/thunk/getCounts"
 import { postInventaryCounterRequest } from "../../../store/inventary/actions/inventary/detail/postInventaryCounter"
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
 
-const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setShowNoti, edit }) => {
+const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setShowNoti, edit, setError }) => {
     const [__2] = useTranslation("count");
     const dispatch = useDispatch();
 
@@ -216,6 +216,8 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                     showNoti={showNoti}
                     setShowNoti={setShowNoti}
                     getData={() => getData({ page: 1, filterSearch })}
+                    setError={setError}
+
                 />
             }
 

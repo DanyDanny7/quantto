@@ -401,6 +401,7 @@ const ActiveInventory = () => {
           setShowNoti={setShowNoti}
           edit={edit}
           setEdit={setEdit}
+          setError={setError}
         />
       }
       <NewInventaryAlert

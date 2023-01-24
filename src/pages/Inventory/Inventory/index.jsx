@@ -14,10 +14,16 @@ import {
   MenuList,
   MenuItem,
   Popover,
+  Stack,
+  Collapse,
+  Tooltip
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment/moment';
+
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import PanToolIcon from '@mui/icons-material/PanTool';
 
 import Layout from "../../../components/layout/Layout"
 import Table from "../../../components/form/Table";
@@ -154,6 +160,18 @@ const ActiveInventory = () => {
 
   const dataTable = map(get(inventaryDetailState, "data.data.countsTemplate", []), (row) => ({
     ...row,
+    itemId: (
+      <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
+        <Box>{get(row, "itemId")}</Box>
+        <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
+      </ Stack>
+    ),
+    inventory: (
+      <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+        <Box minWidth={0.5}>{get(row, "inventory")}</Box>
+        <Collapse in={get(row, "recount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>
+      </ Stack>
+    ),
     options: (
       <IconButton
         aria-label="more"

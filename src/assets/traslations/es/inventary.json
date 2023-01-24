@@ -171,6 +171,7 @@
         "btn-3": "Activar Inventario",
         "menu": {
             "recount": "Recontear",
+            "manualrecord": "Creado manualmente",
             "details": "Ver conteos",
             "delete": "Eliminar",
             "delete-success": "Conteo eliminado con éxito"
@@ -232,6 +233,8 @@
             "submit": "Comensar Conteo",
             "title": "Completa todos los campos para comenzar tu conteo",
             "subtitle": "Completa todos los campos para comenzar tu conteo",
+            "link": "Ir a histórico de inventarios",
+            "reload": "Actualizar",
             "data": {
                 "title": "Confirma tus datos de conteo",
                 "name": "Nombre",

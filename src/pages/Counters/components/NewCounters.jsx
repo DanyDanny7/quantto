@@ -29,7 +29,7 @@ import BtnLanguage from "../../../components/form/BtnLanguage";
 import { postCountRequest } from "../../../store/counts/actions/postCounts"
 import { putCountRequest } from "../../../store/counts/actions/putCounts"
 
-const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl", showNoti, setShowNoti, getData }) => {
+const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl", showNoti, setShowNoti, getData, setError }) => {
     const [showPass, setShowPass] = useState(false);
     const [editPass, setEditPass] = useState(!isEdit);
     const [postCounter, setPostCounter] = useState({ loading: false })
@@ -63,10 +63,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                     handleClose()
                     getData()
                 })
-                .catch(({ err }) => {
-                    setPutCounter({ loading: false })
-                    setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
-                })
+                .catch((err) => { setError(err); setPutCounter({ loading: false }) })
         } else {
             setPostCounter({ loading: true })
             postCountRequest(body, () => getState)
@@ -76,11 +73,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                     handleClose()
                     getData()
                 })
-                .catch(({ err }) => {
-                    console.log(err)
-                    setPostCounter({ loading: false })
-                    setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
-                })
+                .catch((err) => { setError(err); setPostCounter({ loading: false }) })
         }
     };
 

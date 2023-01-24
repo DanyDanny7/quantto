@@ -29,7 +29,7 @@ import NewInventaryDropZone from "./NewInventaryDropZone";
 import NewInventoryTable from "./NewInventoryTable";
 import AlertQuestion from "../../../components/form/AlertQuestion";
 
-const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti, edit, setEdit }) => {
+const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti, edit, setEdit, setError }) => {
     const [activeStep, setActiveStep] = useState(get(edit, "value", false) ? 1 : 0);
     const [name, setName] = useState("");
     const [disabled, setDisabled] = useState(true);
@@ -43,8 +43,6 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
         setActiveStep(0)
         setEdit({ item: {}, value: false })
     };
-
-
 
     const handleBack = () => {
         if (activeStep === 0) {
@@ -212,6 +210,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             showNoti={showNoti}
                                             setShowNoti={setShowNoti}
                                             edit={edit}
+                                            setError={setError}
                                         />
                                     </Box>
                                 </Stack>

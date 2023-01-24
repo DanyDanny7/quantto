@@ -244,6 +244,7 @@ const Counts = () => {
           showNoti={showNoti}
           setShowNoti={setShowNoti}
           getData={() => getData({ page: 1, filterSearch })}
+          setError={setError}
         />
       }
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
