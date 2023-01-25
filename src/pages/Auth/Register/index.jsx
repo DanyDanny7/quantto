@@ -109,7 +109,7 @@ const Register = () => {
             email: '',
             pass: '',
             confirmation: '',
-            phone: "",
+            // phone: "",
             language: i18n.resolvedLanguage
         },
         validationSchema: validator(inputs),
@@ -161,7 +161,7 @@ const Register = () => {
                                     />
                                 </FormControl>
                             </Box>
-                            <Box className='mb-8'>
+                            {/* <Box className='mb-8'>
                                 <FormControl fullWidth >
                                     <Typography className='pb-2' component="label" htmlFor="companyNombre" >
                                         {get(inputs, "[2].name")}
@@ -177,7 +177,7 @@ const Register = () => {
                                         helperText={get(formik, "touched.phone") && get(formik, "errors.phone")}
                                     />
                                 </FormControl>
-                            </Box>
+                            </Box> */}
                             <Box className='mb-8'>
                                 <FormControl fullWidth >
                                     <Typography className='pb-2' component="label" htmlFor="email" >
@@ -234,7 +234,7 @@ const Register = () => {
                                         id="confirmation"
                                         name="confirmation"
                                         placeholder={get(inputs, "[5].placeholder")}
-                                        type={showPass ? 'text' : 'confirmation'}
+                                        type={showPass ? 'text' : 'password'}
                                         value={get(formik, "values.confirmation")}
                                         onChange={get(formik, "handleChange")}
                                         error={get(formik, "touched.confirmation") && Boolean(get(formik, "errors.confirmation"))}

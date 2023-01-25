@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
-import { get, words, map, join, upperCase, slice, isEmpty } from "lodash";
+import { get, words, map, join, upperCase, slice } from "lodash";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
@@ -27,6 +27,7 @@ import Layout from "../../../components/layout/Layout";
 import validator from "./validator";
 import Notification from "../../../components/form/Notification";
 import BtnLanguage from "../../../components/form/BtnLanguage";
+import Alert from "../../../components/form/Alert";
 
 import { logout } from "../../../store/auth/thunk/logout";
 import { putProfileRequest } from "../../../store/auth/actions/putProfile";
@@ -39,6 +40,7 @@ const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [showNoti, setShowNoti] = useState({ open: false, msg: "", variant: "" });
+  const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
 
   const dataUser = useSelector(state => state.auth.login.dataUser);
   const getState = useSelector(state => state);
@@ -57,10 +59,30 @@ const Profile = () => {
     localStorage.setItem("lang", selectLanguage)
   }
 
+  const closeAlert = () => {
+    setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
+  }
+
+
+  const setError = (err) => {
+    if (!!get(err, "response.data")) {
+      setAlert({
+        open: true,
+        title: get(err, "response.data.Message", ""),
+        subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+        type: "error",
+        btn: __(`${module}.actions.close`),
+        func: closeAlert
+      })
+    } else {
+      setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       name: get(dataUser, "username"),
-      phone: get(dataUser, "phone"),
+      // phone: get(dataUser, "phone"),
       email: get(dataUser, "email"),
       company: get(dataUser, "companyname"),
       password: "",
@@ -70,7 +92,7 @@ const Profile = () => {
     onSubmit: (values) => {
       const body = {
         companyid: Number(get(dataUser, "companyId")),
-        phone: get(values, "phone"),
+        // phone: get(values, "phone"),
         username: get(values, "name"),
         language: i18n.resolvedLanguage,
         userid: get(dataUser, "userId"),
@@ -84,14 +106,7 @@ const Profile = () => {
             setShowNoti({ open: true, msg: __(`${module}.msg.update`), variant: "success" })
             setLoadingEdit(false)
           })
-          .catch((err) => {
-            if (!isEmpty(get(err, "response"))) {
-              setShowNoti({ open: true, msg: get(err, "response.data.ErrorMessage"), variant: "error" })
-            } else {
-              setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
-            }
-            setLoadingEdit(false)
-          })
+          .catch((err) => { setError(err); setLoadingEdit(false) })
       }
     }
   });
@@ -153,7 +168,7 @@ const Profile = () => {
               <Divider />
 
               <Grid className='pt-4' container spacing={3}>
-                <Grid item xs={6} md={4}>
+                <Grid item xs={6} md={6}>
                   <Box className='mb-8'>
                     <FormControl fullWidth >
                       <Typography className='pb-2' component="label" htmlFor="email" >
@@ -174,7 +189,7 @@ const Profile = () => {
                     </FormControl>
                   </Box>
                 </Grid>
-                <Grid item xs={6} md={4}>
+                <Grid item xs={6} md={6}>
                   <Box className='mb-8'>
                     <FormControl fullWidth  >
                       <Typography className='pb-2' component="label" htmlFor="name" >
@@ -194,7 +209,7 @@ const Profile = () => {
                     </FormControl>
                   </Box>
                 </Grid>
-                <Grid item xs={6} md={4}>
+                {/* <Grid item xs={6} md={4}>
                   <Box className='mb-8'>
                     <FormControl fullWidth  >
                       <Typography className='pb-2' component="label" htmlFor="phone" >
@@ -213,7 +228,7 @@ const Profile = () => {
                       />
                     </FormControl>
                   </Box>
-                </Grid>
+                </Grid> */}
               </Grid>
 
               <Typography className='py-3' component={Box} variant="bodySmall">{get(sections, "[1]")}</Typography>
@@ -363,6 +378,15 @@ const Profile = () => {
           </Box>
         </Paper>
         <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
+        <Alert
+          title={get(alert, "title")}
+          subtitle={get(alert, "subtitle")}
+          btn1={{ label: get(alert, "btn"), func: get(alert, "func") }}
+          btn2={{ label: get(alert, "btn2", ""), func: get(alert, "func2", () => { }) }}
+          type={get(alert, "type")}
+          openAlert={get(alert, "open")}
+          closeAlert={closeAlert}
+        />
       </Box >
     </Layout >
   )

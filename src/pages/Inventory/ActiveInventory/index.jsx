@@ -261,7 +261,7 @@ const ActiveInventory = () => {
     const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
     const onFinishSubmit = () => {
         const body = {
-            // inventoryid: detailId,
+            inventoryid: detailId,
             language: get(userState, "language", "es"),
             userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
@@ -282,12 +282,15 @@ const ActiveInventory = () => {
             propsToolbar={{
                 title: replace(__(`${module}.header.title-2`), "[[code]]", code),
                 label: replace(__(`${module}.header.sub-title-2`), "[[code]]", code),
-                btnLabel: __(`${module}.actions.finish.title`),
-                btnFunc: onFinish,
-                color: "primary",
-                btnLabel2: __(`${module}.actions.reload`),
-                btnFunc2: () => getData({ page: 1, filterSearch }),
-                color2: "success"
+                ...(detailId !== "--" && {
+                    btnLabel: __(`${module}.actions.finish.title`),
+                    btnFunc: onFinish,
+                    color: "primary",
+                    btnLabel2: __(`${module}.actions.reload`),
+                    btnFunc2: () => getData({ page: 1, filterSearch }),
+                    color2: "success"
+                }
+                )
             }}
         >
             <Collapse in={empty > 1}>

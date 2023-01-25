@@ -11,7 +11,9 @@
             "start": "Iniciar inventario",
             "delete": "Eliminar",
             "finish": "Finalizar conteo",
-            "pay": "Pagar inventario"
+            "pay": "Pagar inventario",
+            "download": "Descargar informe",
+            "report": "Reporte [[code]]"
         },
         "actions": {
             "start": {
@@ -174,7 +176,8 @@
             "manualrecord": "Creado manualmente",
             "details": "Ver conteos",
             "delete": "Eliminar",
-            "delete-success": "Conteo eliminado con éxito"
+            "delete-success": "Conteo eliminado con éxito",
+            "download": "Descargar informe"
         },
         "actions": {
             "edit": {

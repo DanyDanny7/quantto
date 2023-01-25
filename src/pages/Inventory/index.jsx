@@ -14,11 +14,15 @@ import {
   Stack,
   Chip,
   Link,
-  Button
+  Button,
+  Box,
+  Fade,
+  CircularProgress
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import axios from "axios";
 
 import Layout from "../../components/layout/Layout"
 import Table from "../../components/form/Table";
@@ -61,6 +65,7 @@ const ActiveInventory = () => {
   const [alertPay, setAlertPay] = useState({ open: false, title: "", subtitle: "" })
   const [alertFinish, setAlertFinish] = useState({ open: false, title: "", subtitle: "" })
   const [loadFinish, setLoadFinish] = useState(false)
+  const [loadReport, setLoadReport] = useState(false)
   const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
   const [openPay, setOpenPay] = useState(false)
 
@@ -317,6 +322,41 @@ const ActiveInventory = () => {
     onDeleteConfirm()
   }
 
+  const onDownload = () => {
+    setLoadReport(true)
+
+    const url = '/api/web/getinventoryreportbyid';
+
+    const options = {
+      baseURL: process.env.REACT_APP_API_URL,
+      responseType: 'blob',
+      headers: {
+        companyid: get(userState, "companyname"),
+        userid: get(userState, "userId"),
+        Authorization: `Bearer ${get(userState, "jwt")}`,
+      },
+      params: {
+        inventoryid: get(selected, "inventoryId"),
+        language: get(userState, "language", "es"),
+        userid: get(userState, "userId"),
+        companyid: Number(get(userState, "companyId")),
+      }
+    }
+
+    axios.get(url, options)
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.ms-excel' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${replace(__(`${module}.menu.report`), "[[code]]", get(selected, "inventoryId"))}.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        closePoop();
+        setLoadReport(false);
+      })
+      .catch((err) => { setError(err); setLoadReport(false); closePoop(); })
+
+  }
 
   const getOptions = (status) => {
     const divider = <Divider />
@@ -326,12 +366,22 @@ const ActiveInventory = () => {
     const deleteIt = <MenuItem onClick={onDelete}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
     const finish = <MenuItem onClick={onFinish}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.finish`)}</strong></Typography></MenuItem>
     const pay = <MenuItem onClick={onPay}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.pay`)}</strong></Typography></MenuItem>
+    const report = <MenuItem onClick={onDownload}>
+      <Box height={28} position="relative">
+        <Fade in={loadReport}>
+          <Box position="absolute" width="100%" height="100%" display="flex" alignItems="center" justifyContent="center">
+            <CircularProgress color="primary" size={20} />
+          </Box>
+        </Fade>
+        <Typography className='text-center w-full ' variant="bodySmall" color={loadReport ? "text.slite" : "text.main"}><strong>{__(`${module}.menu.download`)}</strong></Typography>
+      </Box >
+    </MenuItem>
 
     switch (status) {
       case 1: return <>{detail}{divider}{edit}{divider}{pay}{divider}{deleteIt}</>;
       case 2: return <>{detail}{divider}{edit}{divider}{start}</>;
       case 3: return <>{detail}{divider}{edit}{divider}{finish}</>;
-      case 4: return <>{detail}</>;
+      case 4: return <>{detail}{divider}{report}</>;
       default: return <>{detail}</>
     }
   }
@@ -340,7 +390,7 @@ const ActiveInventory = () => {
     <Layout
       propsToolbar={{
         title: __(`${module}.header.title`),
-        label: __(`${module}.header.sub-title`),
+        label: __(`${module}.header.sub - title`),
         // btn right
         btnLabel: __(`${module}.btn`),
         btnFunc: () => setOpenNew(true),
@@ -406,9 +456,9 @@ const ActiveInventory = () => {
       }
       <NewInventaryAlert
         title={__(`${module}.modal.alert.title`)}
-        subtitle={__(`${module}.modal.alert.sub-title`)}
-        btn1={{ label: __(`${module}.modal.alert.btn-1`), func: onActivePay }}
-        btn2={{ label: __(`${module}.modal.alert.btn-2`), func: () => setOpenAlert(false) }}
+        subtitle={__(`${module}.modal.alert.sub - title`)}
+        btn1={{ label: __(`${module}.modal.alert.btn - 1`), func: onActivePay }}
+        btn2={{ label: __(`${module}.modal.alert.btn - 2`), func: () => setOpenAlert(false) }}
         openAlert={openAlert}
         closeAlert={() => setOpenAlert(false)}
       />
