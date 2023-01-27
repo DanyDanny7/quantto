@@ -91,7 +91,7 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
 
     useEffect(() => {
         setMount(true)
-        dispatch(getInventaryDetailPaying({inventoryid: inventaryId}))
+        dispatch(getInventaryDetailPaying({ inventoryid: inventaryId }))
     }, [])
 
     const handleChange = (event) => {
@@ -128,7 +128,7 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
             tarjetacvv2: get(values, "cvv", ""),
             tarjetavigencia: get(values, "date", ""),
         }
-        setLoadPay()
+        setLoadPay(true)
         postInventaryPayRequest(body, () => getState)
             .then(({ data }) => {
                 if (get(data, "success")) {
@@ -136,7 +136,7 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                         title: __(`${module}.actions.pay.success.title`),
                         subtitle: __(`${module}.actions.pay.success.subtitle`),
                         btn: __(`${module}.actions.pay.success.btn-1`),
-                        func: navegate(`/inventory/${inventaryId}`),
+                        func: () => navegate(`/inventory/${inventaryId}`),
                         btn2: __(`${module}.actions.pay.success.btn-2`),
                         func2: closeAlert
                     }
@@ -158,7 +158,7 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                 }
 
             })
-            .catch((err) => { setError(err); setLoadPay(false) })
+            .catch((err) => { setError(err, "pay"); setLoadPay(false) })
     }
 
     const disabledBtn = () => {

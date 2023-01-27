@@ -65,7 +65,7 @@ const Profile = () => {
 
 
   const setError = (err) => {
-    if (!!get(err, "response.data")) {
+    if (!!get(err, "response.data") && (get(err, "response.status") !== 500)) {
       setAlert({
         open: true,
         title: get(err, "response.data.Message", ""),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { lowerCase } from 'lodash';
+import { lowerCase, get } from 'lodash';
 import i18next from "i18next";
 import { I18nextProvider } from "react-i18next";
 
@@ -18,18 +18,24 @@ import count_es from "../../assets/traslations/es/counts.json";
 
 const I18n = ({ children }) => {
 
+    const defaultLanguage = lowerCase(process.env.REACT_APP_START_LANG || "en");
+
     const getCurrentLang = () => {
-        let startLang = lowerCase(process.env.REACT_APP_START_LANG || "en");
+
+        let startLang = defaultLanguage
         const preSelect = localStorage.getItem("lang");
 
-        if (!!preSelect) {
-            startLang = preSelect;
-        } else {
-            const current = navigator.language || navigator.userLanguage
-            if (!!current) {
-                startLang = current;
+        try {
+            if (!!preSelect) {
+                startLang = preSelect;
+            } else {
+                const dataUser = get(JSON.parse(get(JSON.parse(window.localStorage.getItem("persist:quanto")), "auth", "")), "login.dataUser", "")
+                startLang = get(dataUser, "language", defaultLanguage)
             }
+        } catch (error) {
+            startLang = defaultLanguage
         }
+
         return startLang;
     }
 

@@ -234,16 +234,27 @@ const ActiveInventory = () => {
     setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
   }
 
-  const setError = (err) => {
-    if (!!get(err, "response.data")) {
-      setAlert({
-        open: true,
-        title: get(err, "response.data.Message", ""),
-        subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
-        type: "error",
-        btn: __(`${module}.actions.close`),
-        func: closeAlert
-      })
+  const setError = (err, type) => {
+    if (!!get(err, "response.data") && (get(err, "response.status") !== 500)) {
+      if (type === "pay") {
+        setAlert({
+          open: true,
+          title: `Error #${get(err, "response.data.returnCode", "")}`,
+          subtitle: get(err, "response.data.message", ""),
+          type: "error",
+          btn: __(`${module}.actions.close`),
+          func: closeAlert
+        })
+      } else {
+        setAlert({
+          open: true,
+          title: get(err, "response.data.Message", ""),
+          subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+          type: "error",
+          btn: __(`${module}.actions.close`),
+          func: closeAlert
+        })
+      }
     } else {
       setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
     }
@@ -262,7 +273,7 @@ const ActiveInventory = () => {
     })
   }
 
-  const onStart = () => { closePoop(); setAlertStart({ open: true, title: __(`${module}.actions.start.title`), subtitle: replace(__(`${module}.actions.start.question`), "[[number]]", `#${get(selected, "inventoryId")}`) }) }
+  const onStart = () => { closePoop(); setAlertStart({ open: true, title: __(`${module}.actions.start.title`), subtitle: replace(replace(__(`${module}.actions.start.question`), "[[number]]", `#${get(selected, "inventoryId")}`), "[[name]]", get(selected, "name")) }) }
   const onStartCancel = () => setAlertStart({ open: false, title: "", subtitle: "" })
   const onStartSubmit = () => {
     const body = {
@@ -279,10 +290,10 @@ const ActiveInventory = () => {
         onStartCancel()
         getData({ page: 1, filterSearch })
       })
-      .catch((err) => { setError(err); setLoadStart(false) })
+      .catch((err) => { setError(err); setLoadStart(false); onStartCancel() })
   }
 
-  const onFinish = () => { closePoop(); setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(__(`${module}.actions.finish.question`), "[[number]]", `#${get(selected, "inventoryId")}`) }) }
+  const onFinish = () => { closePoop(); setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(replace(__(`${module}.actions.finish.question`), "[[number]]", `#${get(selected, "inventoryId")}`), "[[name]]", get(selected, "name")) }) }
   const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
   const onFinishSubmit = () => {
     const body = {
@@ -299,11 +310,11 @@ const ActiveInventory = () => {
         onFinishCancel()
         getData({ page: 1, filterSearch })
       })
-      .catch((err) => { setError(err); setLoadFinish(false) })
+      .catch((err) => { setError(err); setLoadFinish(false); onFinishCancel() })
   }
 
   // const onPay = () => { closePoop(); setAlertPay({ open: true, title: __(`${module}.actions.pay.title`), subtitle: replace(__(`${module}.actions.pay.question`), "[[number]]", `#${get(selected, "inventoryId")}`) }) }
-  const onPay = () => { closePoop(); onPaySubmit(); console.log({ selected }) }
+  const onPay = () => { closePoop(); onPaySubmit() }
   const onPayCancel = () => setAlertPay({ open: false, title: "", subtitle: "" })
   const onPaySubmit = () => {
     setOpenPay(true)
@@ -390,7 +401,7 @@ const ActiveInventory = () => {
     <Layout
       propsToolbar={{
         title: __(`${module}.header.title`),
-        label: __(`${module}.header.sub - title`),
+        label: __(`${module}.header.subtitle`),
         // btn right
         btnLabel: __(`${module}.btn`),
         btnFunc: () => setOpenNew(true),
@@ -456,9 +467,9 @@ const ActiveInventory = () => {
       }
       <NewInventaryAlert
         title={__(`${module}.modal.alert.title`)}
-        subtitle={__(`${module}.modal.alert.sub - title`)}
-        btn1={{ label: __(`${module}.modal.alert.btn - 1`), func: onActivePay }}
-        btn2={{ label: __(`${module}.modal.alert.btn - 2`), func: () => setOpenAlert(false) }}
+        subtitle={__(`${module}.modal.alert.subtitle`)}
+        btn1={{ label: __(`${module}.modal.alert.btn1`), func: onActivePay }}
+        btn2={{ label: __(`${module}.modal.alert.btn2`), func: () => setOpenAlert(false) }}
         openAlert={openAlert}
         closeAlert={() => setOpenAlert(false)}
       />
@@ -484,14 +495,6 @@ const ActiveInventory = () => {
         submit={{ label: __(`${module}.actions.delete.title`), func: onDeleteElement }}
         openAlert={alertDelete.open}
         loading={loadDelete}
-      />
-      <AlertQuestion
-        title={alertStart.title}
-        subtitle={alertStart.subtitle}
-        cancel={{ label: __(`${module}.actions.cancel`), func: onStartCancel }}
-        submit={{ label: __(`${module}.actions.start.title`), func: onStartSubmit }}
-        openAlert={alertStart.open}
-        loading={loadStart}
       />
       <AlertQuestion
         title={alertStart.title}

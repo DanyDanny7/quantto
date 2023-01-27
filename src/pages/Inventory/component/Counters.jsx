@@ -14,7 +14,7 @@ import Notification from "../../../components/form/Notification";
 import { deleteInventaryCounterRequest } from "../../../store/inventary/actions/inventary/detail/deleteInventaryCounter"
 
 
-const Counters = ({ getInventariDetail, filterSearch }) => {
+const Counters = ({ getInventariDetail, filterSearch, inventaryId }) => {
     const [__] = useTranslation("count");
 
     const module = "counts"
@@ -38,7 +38,7 @@ const Counters = ({ getInventariDetail, filterSearch }) => {
     }
 
     const setError = (err) => {
-        if (!!get(err, "response.data")) {
+        if (!!get(err, "response.data") && (get(err, "response.status") !== 500)) {
             setAlert({
                 open: true,
                 title: get(err, "response.data.Message", ""),
@@ -60,10 +60,11 @@ const Counters = ({ getInventariDetail, filterSearch }) => {
     const onDelete = () => {
         setAlertDelete({ open: false, title: "", subtitle: "" })
         const body = {
-            userid: get(userState, "userId"),
+            // userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
             language: get(userState, "language"),
-            counters: get(itemsDelete, "items.[0].counterId"),
+            counterid: get(itemsDelete, "items.[0].counterId"),
+            inventoryid: inventaryId
         }
         setLoadDelete(true)
         deleteInventaryCounterRequest(body, () => getState)

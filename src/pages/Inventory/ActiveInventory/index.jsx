@@ -243,7 +243,7 @@ const ActiveInventory = () => {
     }
 
     const setError = (err) => {
-        if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
+        if (!!get(err, "response.data") && (get(err, "response.status") !== 500)) {
             setAlert({
                 open: true,
                 title: get(err, "response.data.Message", ""),
@@ -256,8 +256,9 @@ const ActiveInventory = () => {
             setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
         }
     }
-
-    const onFinish = () => setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(__(`${module}.actions.finish.question`), "[[number]]", code) })
+    console.log(get(inventaryActive, "data.data.name", "--"))
+    
+    const onFinish = () => setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(replace(__(`${module}.actions.finish.question`), "[[number]]", code), "[[name]]", get(inventaryActive, "data.data.name", "--")) })
     const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
     const onFinishSubmit = () => {
         const body = {

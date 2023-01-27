@@ -63,8 +63,9 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
         },
     ];
 
-    const isDisabled = () => {
-        const inactive = isEmpty(file) || (isEmpty(selected) && activeStep === 1)
+    const isDisabled = (con) => {
+        const inactive = (isEmpty(file) && activeStep === 0) || (isEmpty(con) && activeStep === 1)
+        console.log((isEmpty(file), activeStep === 0), (isEmpty(con), activeStep === 1))
         if (inactive !== disabled) {
             setDisabled(inactive)
         }
@@ -166,7 +167,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             color="secondary"
                                             endIcon={<ArrowDropDownIcon />}
                                             component={Link}
-                                            href={`/files/example.xlsx`}
+                                            href={`https://quantto.s3.amazonaws.com/InventoryTemplate.csv`}
                                             download={`${__(`${module}.modal.download-file-name`)}.csv`}
                                         >
                                             <Typography variant="bodyMedium">{__(`${module}.modal.download-file`)}</Typography>
@@ -233,7 +234,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                 variant="contained"
                                 color="primary"
                                 onClick={handleNext}
-                                disabled={isDisabled()}
+                                disabled={isDisabled(selected)}
                                 loading={loading}
                             >
                                 {activeStep < 1

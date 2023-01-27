@@ -228,7 +228,7 @@ const ActiveInventory = () => {
   }
 
   const setError = (err) => {
-    if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
+    if (!!get(err, "response.data") && (get(err, "response.status") !== 500)) {
       setAlert({
         open: true,
         title: get(err, "response.data.Message", ""),
@@ -255,7 +255,9 @@ const ActiveInventory = () => {
     })
   }
 
-  const onStart = () => { handleClose(); setAlertStart({ open: true, title: __(`${module}.actions.start.title`), subtitle: replace(__(`${module}.actions.start.question`), "[[number]]", code) }) }
+  const onStart = () => {
+    handleClose(); setAlertStart({ open: true, title: __(`${module}.actions.start.title`), subtitle: replace(replace(__(`${module}.actions.start.question`), "[[number]]", code), "[[name]]", get(inventaryDetailState, "data.data.name", "--")) })
+  }
   const onStartCancel = () => setAlertStart({ open: false, title: "", subtitle: "" })
   const onStartSubmit = () => {
     onStartCancel();
@@ -276,7 +278,7 @@ const ActiveInventory = () => {
       .catch((err) => { setError(err); setLoadStart(false) })
   }
 
-  const onFinish = () => { handleClose(); setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(__(`${module}.actions.finish.question`), "[[number]]", code) }) }
+  const onFinish = () => { handleClose(); setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(replace(__(`${module}.actions.finish.question`), "[[number]]", code), "[[name]]", get(inventaryDetailState, "data.data.name", "--")) }) }
   const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
   const onFinishSubmit = () => {
     onStartCancel();

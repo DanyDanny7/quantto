@@ -62,6 +62,7 @@ const Login = () => {
         initialValues: {
             email: '',
             password: '',
+            language: "es"
         },
         validationSchema: validator(inputs),
         onSubmit: (values) => dispatch(login(values))

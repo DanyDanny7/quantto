@@ -11,10 +11,17 @@ import {
     MenuList,
     MenuItem,
     Popover,
-    Checkbox
+    Checkbox,
+    Collapse,
+    Stack,
+    Tooltip,
+    Box
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import PanToolIcon from '@mui/icons-material/PanTool';
 
 import Layout from "../../../../components/layout/Layout"
 import Table from "../../../../components/form/Table";
@@ -114,7 +121,7 @@ const ActiveInventory = () => {
     }
 
     const setError = (err) => {
-        if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
+        if (!!get(err, "response.data") && (get(err, "response.status") !== 500)) {
             setAlert({
                 open: true,
                 title: get(err, "response.data.Message", ""),
@@ -205,21 +212,21 @@ const ActiveInventory = () => {
         setSelected(newSelected);
     };
     const headTable = [
-        {
-            key: "checkbox",
-            label: (
-                <Checkbox
-                    color="secondary"
-                    indeterminate={selected.length > 0 && selected.length < get(inventaryDetailState, "data.data", []).length}
-                    checked={get(inventaryDetailState, "data.data", []).length > 0 && selected.length === get(inventaryDetailState, "data.data", []).length}
-                    onChange={handleSelectAllClick}
-                    inputProps={{
-                        'aria-label': 'select all desserts',
-                    }}
-                />
-            ),
-            align: "center",
-        },
+        // {
+        //     key: "checkbox",
+        //     label: (
+        //         <Checkbox
+        //             color="secondary"
+        //             indeterminate={selected.length > 0 && selected.length < get(inventaryDetailState, "data.data", []).length}
+        //             checked={get(inventaryDetailState, "data.data", []).length > 0 && selected.length === get(inventaryDetailState, "data.data", []).length}
+        //             onChange={handleSelectAllClick}
+        //             inputProps={{
+        //                 'aria-label': 'select all desserts',
+        //             }}
+        //         />
+        //     ),
+        //     align: "center",
+        // },
         {
             key: "create_at",
             label: get(titles, "[0]"),
@@ -250,11 +257,11 @@ const ActiveInventory = () => {
             label: get(titles, "[5]"),
             align: "center"
         },
-        {
-            key: "reconut",
-            label: get(titles, "[6]"),
-            align: "center"
-        },
+        // {
+        //     key: "reconut",
+        //     label: get(titles, "[6]"),
+        //     align: "center"
+        // },
         {
             key: "options",
             label: "",
@@ -263,29 +270,33 @@ const ActiveInventory = () => {
     ]
 
     const dataTable = map(get(inventaryDetailState, "data.data", []), (row, i) => {
-        const isItemSelected = isSelected(row.inventoryTemplateLineCountId);
-        const labelId = `enhanced-table-checkbox-${i}`;
+        // const isItemSelected = isSelected(row.inventoryTemplateLineCountId);
+        // const labelId = `enhanced-table-checkbox-${i}`;
         return ({
             id: get(row, "inventoryTemplateLineCountId"),
             ...row,
             create_at: moment(get(row, "date")).format("DD/MM/YYYY"),
             time: moment(get(row, "date")).format("hh:mm A"),
-            reconut: (
-                <Checkbox
-                    color="primary"
-                    checked={get(row, "markedRecount", false)}
-                    sx={{ color: (theme) => `${theme.palette.primary.main} !important` }}
-                    disabled
-                />
+            itemname: (
+                <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+                    <Box>{get(row, "itemname")}</Box>
+                    <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
+                </ Stack>
             ),
-            checkbox: (
-                <Checkbox
-                    color="secondary"
-                    checked={isItemSelected}
-                    onChange={(e, v) => handleChecked(e, row.inventoryTemplateLineCountId)}
-                    inputProps={{ 'aria-labelledby': labelId, }}
-                />
+            qty: (
+                <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+                    <Box minWidth={0.5}>{get(row, "qty")}</Box>
+                    <Collapse in={get(row, "markedRecount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>
+                </ Stack>
             ),
+            // checkbox: (
+            //     <Checkbox
+            //         color="secondary"
+            //         checked={isItemSelected}
+            //         onChange={(e, v) => handleChecked(e, row.inventoryTemplateLineCountId)}
+            //         inputProps={{ 'aria-labelledby': labelId, }}
+            //     />
+            // ),
             options: (
                 <IconButton
                     aria-label="more"

@@ -169,7 +169,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                 {get(edit, "value", false) &&
                     <Box flex={1}>
                         <Typography className='text-center' component={Box} variant="heading3" pb={2} >Contadores</Typography>
-                        <Counters getInventariDetail={getInventariDetail} filterSearch={filterSearch} />
+                        <Counters inventaryId={get(edit, "item.inventoryId")} getInventariDetail={getInventariDetail} filterSearch={filterSearch} />
                     </Box>
                 }
                 {get(edit, "value", false) &&

@@ -7,7 +7,8 @@ import {
     DialogTitle,
     DialogContent,
     DialogContentText,
-    DialogActions
+    DialogActions,
+    Typography
 } from '@mui/material';
 import { get } from "lodash";
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,7 +31,7 @@ const AlertQuestion = ({
                 open={openAlert}
                 aria-labelledby="alert-dialog-delete"
                 aria-describedby="alert-dialog-delete"
-                maxWidth="sm"
+                maxWidth="xs"
             >
                 <Box>
                     <IconButton
@@ -51,7 +52,7 @@ const AlertQuestion = ({
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {subtitle}
+                        <Typography variant="bodyMedium" color="text.main" dangerouslySetInnerHTML={{ __html: subtitle }} />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

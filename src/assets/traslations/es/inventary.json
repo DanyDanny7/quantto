@@ -18,7 +18,7 @@
         "actions": {
             "start": {
                 "title": "Activar Inventario",
-                "question": "¿Desea activar el inventario [[number]]?",
+                "question": "¿Desea activar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario iniciado con éxito"
             },
             "delete": {
@@ -60,7 +60,7 @@
             },
             "finish": {
                 "title": "Finalizar conteo",
-                "question": "¿Desea finalizar el inventario [[number]]?",
+                "question": "¿Desea finalizar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario finalizado con éxito"
             },
             "close": "Cerrar",
@@ -155,9 +155,9 @@
             },
             "alert": {
                 "title": "Conteo creado con éxito",
-                "sub-title": "Es hora de realizar tu pago para activar tu conteo; si aún no lo quieres comenzar dale click en guardar y salir",
-                "btn-1": "Activar inventario",
-                "btn-2": "Guardar y salir"
+                "subtitle": "Es hora de realizar tu pago para activar tu conteo; si aún no lo quieres comenzar dale click en guardar y salir",
+                "btn1": "Activar inventario",
+                "btn2": "Guardar y salir"
             }
         }
     },
@@ -190,7 +190,7 @@
             },
             "start": {
                 "title": "Activar Inventario",
-                "question": "¿Desea activar el inventario [[number]]?",
+                "question": "¿Desea activar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario Iniciado con éxito"
             },
             "pay": {
@@ -227,7 +227,7 @@
             },
             "finish": {
                 "title": "Finalizar conteo",
-                "question": "¿Desea finalizar el inventario [[number]]?",
+                "question": "¿Desea finalizar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario finalizado con éxito"
             },
             "close": "Cerrar",
@@ -326,6 +326,9 @@
         "filters": {
             "search": "Buscar"
         },
+        "menu": {
+            "recount": "Recontear"
+        },
         "table": [
             "Creación",
             "Hora",
@@ -333,7 +336,7 @@
             "Contador",
             "Ubicación",
             "Cantidad",
-            "Recontar"
+            "Recontear"
         ],
         "empty": {
             "title": "No hay datos que mostrar",
@@ -342,7 +345,7 @@
         "modal": {
             "recount": {
                 "title": "Envíar a reconteo",
-                "submit": "Recontar",
+                "submit": "Recontear",
                 "cancel": "Cancelar",
                 "confirm1": "¿Desea enviarle al contador \"[[name]]\" el producto \"[[product]]\" para reconteo?",
                 "confirm2": "¿Desea enviar a reconteo [[number]] productos?",
