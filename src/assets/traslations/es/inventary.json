@@ -316,7 +316,7 @@
     },
     "counts": {
         "header": {
-            "title": "Conteos de inventario [[code]]",
+            "title": "Conteos del Artículo: [[name]]",
             "sub-title": "Pudes ver los detalles de tu conteo"
         },
         "btn": "Finalizar conteo",

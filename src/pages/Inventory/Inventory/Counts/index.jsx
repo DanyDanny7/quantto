@@ -238,7 +238,7 @@ const ActiveInventory = () => {
             align: "center"
         },
         {
-            key: "itemname",
+            key: "product",
             label: get(titles, "[2]"),
             align: "center"
         },
@@ -277,7 +277,7 @@ const ActiveInventory = () => {
             ...row,
             create_at: moment(get(row, "date")).format("DD/MM/YYYY"),
             time: moment(get(row, "date")).format("hh:mm A"),
-            itemname: (
+            product: (
                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
                     <Box>{get(row, "itemname")}</Box>
                     <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
@@ -311,12 +311,13 @@ const ActiveInventory = () => {
             )
         })
     })
+    console.log(dataTable)
 
     return (
         <Layout
             propsToolbar={{
-                title: replace(__(`${module}.header.title`), "[[code]]", `#${inventaryId}`),
-                label: replace(__(`${module}.header.sub-title`), "[[code]]", `#${inventaryId}`),
+                title: replace(__(`${module}.header.title`), "[[name]]", get(dataTable, "[0].itemname", "--")),
+                label: __(`${module}.header.sub-title`),
                 code: null,
                 // btnLabel: __(`${module}.btn`),
                 // btnFunc: countFinish
