@@ -2,7 +2,7 @@
     "payment": {
         "header": {
             "title": "Historial de pagos",
-            "sub-title": "Puedes ver el detalle de tus pagos realizados"
+            "sub-title": "Puedes ver el detalle de tus pagos de conteos realizados"
         },
         "filters": {
             "search": "Buscar"
@@ -22,30 +22,30 @@
         },
         "voucher": {
             "labels": {
-                "company": "Quantto",
-                "country": "Pegasus S.A. de C.V., El Salvador",
-                "document": "Recibo",
-                "email": "Correo:",
-                "terms": "",
-                "billed": "Fecha:",
-                "no": "Recibo #",
-                "billto": "Factura a",
+                "company": "Quantto Inc.",
+                "country": "United States",
+                "document": "Invoice",
+                "email": "Email:",
+                "terms": "Terms",
+                "billed": "Billed On",
+                "no": "Invoice #",
+                "billto": "Bill To",
                 "subtotal": "SubTotal",
                 "total": "Total",
-                "paid": "Pagado",
-                "amount": "Pendiente",
-                "download": "Descargar"
+                "paid": "Paid",
+                "amount": "Amount Due",
+                "download": "Download"
             },
             "values": {
                 "email": "support@getquantto.com",
-                "paid": "PAGADO",
-                "terms": ""
+                "paid": "PAID",
+                "terms": "On-Receipt"
             },
             "table": {
-                "date": "Fecha",
-                "description": "Descripción",
-                "quantity": "Cantidad",
-                "price": "Precio",
+                "date": "Date",
+                "description": "Description",
+                "quantity": "Qty",
+                "price": "Price",
                 "subtotal": "Subtotal"
             }
         }

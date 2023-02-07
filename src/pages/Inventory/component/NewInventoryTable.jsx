@@ -91,7 +91,6 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
             const newSelected = map(counterFilterd, (n) => n.counterId);
             // const newSelected = map(get(countsState, "data.data"), (n) => n.counterId);
             setSelected(newSelected);
-            console.log(newSelected)
             return;
         }
         setSelected([]);

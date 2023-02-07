@@ -65,7 +65,6 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
 
     const isDisabled = (con) => {
         const inactive = (isEmpty(file) && activeStep === 0) || (isEmpty(con) && activeStep === 1)
-        console.log((isEmpty(file), activeStep === 0), (isEmpty(con), activeStep === 1))
         if (inactive !== disabled) {
             setDisabled(inactive)
         }

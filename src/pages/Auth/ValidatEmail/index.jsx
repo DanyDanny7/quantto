@@ -43,7 +43,6 @@ const Profile = () => {
 
     if (!!token) {
       validateToken(token)
-      console.log(token)
     }
   }, [])
 

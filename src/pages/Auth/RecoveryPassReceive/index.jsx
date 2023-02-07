@@ -31,7 +31,6 @@ const RecoveryPassReceive = () => {
     }
 
     const onSubmit = (values) => {
-        console.log(values)
         navigate("/login")
     }
 

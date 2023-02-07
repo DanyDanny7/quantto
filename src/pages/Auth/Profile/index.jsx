@@ -157,7 +157,6 @@ const Profile = () => {
             <Typography variant="buttonMedium" >{__(`${module}.button.logout`)}</Typography>
           </Button>
         </Paper>
-        {console.log(formik.errors)}
         <Paper className='w-full mb-8' elevation={3} >
           <Box component="form" onSubmit={get(formik, "handleSubmit")}>
             <Box className='py-6 px-8 w-full'>

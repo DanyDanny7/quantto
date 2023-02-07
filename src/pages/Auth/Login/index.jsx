@@ -62,10 +62,9 @@ const Login = () => {
         initialValues: {
             email: '',
             password: '',
-            language: "es"
         },
         validationSchema: validator(inputs),
-        onSubmit: (values) => dispatch(login(values))
+        onSubmit: (values) => dispatch(login({ ...values, language: i18n.resolvedLanguage }))
     });
 
     return (

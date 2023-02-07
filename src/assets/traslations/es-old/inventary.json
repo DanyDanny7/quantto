@@ -1,7 +1,7 @@
 {
     "inventaries": {
         "header": {
-            "title": "Listado de inventarios",
+            "title": "Historial de inventarios",
             "sub-title": "Selecciona tu inventario para iniciarlo, editarlo o eliminarlo según sea posible"
         },
         "btn": "Nuevo inventario",
@@ -9,16 +9,16 @@
             "detail": "Ver detalle",
             "edit": "Editar",
             "start": "Iniciar inventario",
-            "delete": "Eliminar inventario",
-            "finish": "Finalizar inventario",
+            "delete": "Eliminar",
+            "finish": "Finalizar conteo",
             "pay": "Pagar inventario",
             "download": "Descargar informe",
             "report": "Reporte [[code]]"
         },
         "actions": {
             "start": {
-                "title": "Iniciar Inventario",
-                "question": "¿Desea iniciar el inventario [[number]]?",
+                "title": "Activar Inventario",
+                "question": "¿Desea activar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario iniciado con éxito"
             },
             "delete": {
@@ -37,8 +37,8 @@
                 },
                 "input": {
                     "name": {
-                        "label": "Nombre",
-                        "placeholder": "Ingrese su Nombre",
+                        "label": "Nombre de tarjeta",
+                        "placeholder": "Ingrese su Nombre en la tarjeta",
                         "error": "Nombre es requerido"
                     },
                     "number": {
@@ -60,27 +60,26 @@
             },
             "finish": {
                 "title": "Finalizar conteo",
-                "question": "¿Desea finalizar el inventario [[number]]?",
+                "question": "¿Desea finalizar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario finalizado con éxito"
             },
             "close": "Cerrar",
             "acept": "Aceptar",
             "cancel": "Cancelar",
-            "submit": "Pagar",
-            "title": "Completa todos los campos para realizar el pago de tu inventario",
-            "subtitle": "",
+            "submit": "Comensar Conteo",
+            "title": "Completa todos los campos para comenzar tu conteo",
+            "subtitle": "Completa todos los campos para comenzar tu conteo",
             "data": {
-                "title": "Confirma tus datos de inventario",
+                "title": "Confirma tus datos de conteo",
                 "name": "Nombre",
-                "counters": "",
-                "products": "cantidad de productos",
+                "counters": "Contadores",
+                "products": "Productos",
                 "total": "Monto total a pagar"
             },
             "alert": {
                 "template": {
                     "title": "No agregó plantilla",
-                    "question": "¿Desea continuar sin una plantilla?",
-                    "subtitle": "Luego de crear tu inventario no podrás agregar productos a tu inventario, esta tarea únicamente podrá realizarse desde la aplicación movil de conteo."
+                    "question": "¿Desea continuar sin una plantilla?"
                 },
                 "counter": {
                     "title": "No agregó contador",
@@ -114,11 +113,11 @@
             }
         ],
         "table": [
-            "Id",
+            "Código",
             "Nombre",
             "Creación",
             "Estado",
-            "Plantilla",
+            "Archivo",
             "Teórico",
             "Físicos"
         ],
@@ -134,7 +133,7 @@
             "sub-title-1": "Completa los campos y adjunta el archivo para continuar",
             "sub-title-2": "Selecciona los usuarios para asignarlos a tu conteo",
             "download-file": "Descargar plantilla",
-            "download-file-name": "InventoryTemplete",
+            "download-file-name": "ejemplo-plantilla",
             "table-title": "Contadores",
             "btn-1": "Siguiente paso",
             "btn-2": "Paso anterior",
@@ -155,12 +154,10 @@
                 "file": "Solo se admiten archivos .csv"
             },
             "alert": {
-                "title": "Inventario creado con éxito",
-                "sub-title": "Debes pagar el inventario antes de iniciarlo, si aún no quieres pagarlo presionar click en guardar y salir",
-                "sub-title-free": "Posees un inventario gratis. Puedes iniciarlo en este momento o presionar click en guardar y salir",
-                "btn-1": "Pagar inventario",
-                "btn-1-free": "Iniciar inventario",
-                "btn-2": "Guardar y salir"
+                "title": "Conteo creado con éxito",
+                "subtitle": "Es hora de realizar tu pago para activar tu conteo; si aún no lo quieres comenzar dale click en guardar y salir",
+                "btn1": "Activar inventario",
+                "btn2": "Guardar y salir"
             }
         }
     },
@@ -173,9 +170,9 @@
         },
         "btn-1": "Pagar inventario",
         "btn-2": "Finalizar conteo",
-        "btn-3": "Iniciar Inventario",
+        "btn-3": "Activar Inventario",
         "menu": {
-            "recount": "Recontar",
+            "recount": "Recontear",
             "manualrecord": "Creado manualmente",
             "details": "Ver conteos",
             "delete": "Eliminar",
@@ -193,7 +190,7 @@
             },
             "start": {
                 "title": "Activar Inventario",
-                "question": "¿Desea activar el inventario [[number]]?",
+                "question": "¿Desea activar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario Iniciado con éxito"
             },
             "pay": {
@@ -230,7 +227,7 @@
             },
             "finish": {
                 "title": "Finalizar conteo",
-                "question": "¿Desea finalizar el inventario [[number]]?",
+                "question": "¿Desea finalizar el inventario <br /> [[number]] - [[name]] ? <br /><br /> Este cambio no podrá revertirse",
                 "success": "Inventario finalizado con éxito"
             },
             "close": "Cerrar",
@@ -239,7 +236,7 @@
             "submit": "Comensar Conteo",
             "title": "Completa todos los campos para comenzar tu conteo",
             "subtitle": "Completa todos los campos para comenzar tu conteo",
-            "link": "Ir a listado de inventarios",
+            "link": "Ir a histórico de inventarios",
             "reload": "Actualizar",
             "data": {
                 "title": "Confirma tus datos de conteo",
@@ -250,12 +247,12 @@
             },
             "alert": {
                 "template": {
-                    "title": "No agregó Archivo",
-                    "question": "¿Desea continuar sin un Archivo?, Nota: todos los artículos tendrán que ser agregados desde la apliación móvil"
+                    "title": "No agregó plantilla",
+                    "question": "¿Desea continuar sin una plantilla?"
                 },
                 "counter": {
-                    "title": "No agregó Auxiliar de inventario",
-                    "question": "¿Desea continuar sin un auxiliar?, Nota: No podrás iniciar tu inventario sin contadores"
+                    "title": "No agregó contador",
+                    "question": "¿Desea continuar sin un contador?"
                 }
             }
         },
@@ -319,7 +316,7 @@
     },
     "counts": {
         "header": {
-            "title": "Conteos del Artículo: [[code]]",
+            "title": "Conteos del Artículo: [[name]]",
             "sub-title": "Pudes ver los detalles de tu conteo"
         },
         "btn": "Finalizar conteo",
@@ -335,24 +332,24 @@
         "table": [
             "Creación",
             "Hora",
-            "Artículo",
-            "Auxiliar de inventario",
+            "Producto",
+            "Contador",
             "Ubicación",
             "Cantidad",
-            "Recontar"
+            "Recontear"
         ],
         "empty": {
             "title": "No hay datos que mostrar",
-            "description": "Puedes agregar conteos desde la App Movil."
+            "description": "Puede agregar conteos desde la App Movil."
         },
         "modal": {
             "recount": {
                 "title": "Envíar a reconteo",
-                "submit": "Recontar",
+                "submit": "Recontear",
                 "cancel": "Cancelar",
-                "confirm1": "¿Desea solicitar un reconteo del artículo: \"[[product]]\" al auxiliar \"[[name]]\"",
+                "confirm1": "¿Desea enviarle al contador \"[[name]]\" el producto \"[[product]]\" para reconteo?",
                 "confirm2": "¿Desea enviar a reconteo [[number]] productos?",
-                "success1": "Se envió el producto \"[[product]]\" al auxiliar \"[[name]]\" para reconteo",
+                "success1": "Se envió el producto \"[[product]]\" al contador \"[[name]]\" para reconteo",
                 "success2": "Se enviaron a reconteo \"[[number]]\" productos"
             },
             "delete": {

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, join, toString, find, split, last, trim, replace } from "lodash";
+import { get, map, join, toString, find, split, last, trim, replace, isNull } from "lodash";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Divider,
@@ -30,6 +30,7 @@ import Notification from "../../components/form/Notification";
 import Toolbar from "./component/Toolbar"
 import NewInventory from "./component/NewInventory";
 import NewInventaryAlert from "./component/NewInventaryAlert";
+import NewInventaryAlertNoTemplate from "./component/NewInventaryAlertNoTemplate";
 import AlertDelete from "../../components/form/AlertQuestion";
 import Alert from "../../components/form/Alert";
 import AlertQuestion from "../../components/form/AlertQuestion";
@@ -54,11 +55,13 @@ const ActiveInventory = () => {
   const open = Boolean(anchorEl);
   const [openNew, setOpenNew] = useState(false)
   const [openAlert, setOpenAlert] = useState(false);
+  const [openAlertTemplate, setOpenAlertTemplate] = useState(false);
   const [filterSearch, setFilterSearch] = useState("")
   const [postLoading, setPostLoading] = useState(false);
   const [edit, setEdit] = useState({ item: {}, value: false });
   const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
-  const [loadDelete, setLoadDelete] = useState(false)
+  const [loadDelete, setLoadDelete] = useState(false);
+  const [valuesTemp, setValuesTemp] = useState({})
 
   const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
   const [loadStart, setLoadStart] = useState(false)
@@ -94,7 +97,7 @@ const ActiveInventory = () => {
     setAnchorEl(null);
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, noTemplate) => {
     const body = {
       userid: get(userState, "userId"),
       companyid: get(userState, "companyId"),
@@ -104,24 +107,35 @@ const ActiveInventory = () => {
       template: get(values, "file")
     }
 
-    const formData = new FormData();
-    for (const key in body) {
-      if (Object.hasOwnProperty.call(body, key)) {
-        if (!!body[key]) {
-          formData.append(`${key}`, body[key])
+    if (isNull(get(body, "template")) && !noTemplate) {
+      setValuesTemp(values)
+      setOpenAlertTemplate(true)
+    } else {
+      setOpenAlertTemplate(false)
+      const formData = new FormData();
+      for (const key in body) {
+        if (Object.hasOwnProperty.call(body, key)) {
+          if (!!body[key]) {
+            formData.append(`${key}`, body[key])
+          }
         }
       }
+      setPostLoading(true)
+      postInventaryRequest(formData, () => getState)
+        .then(({ data }) => {
+          setSelected({ inventoryId: get(data, "id") })
+          getData({ page: 1, filterSearch })
+          values.handleClose()
+          setPostLoading(false)
+          setOpenAlert(true)
+        })
+        .catch((err) => { setError(err); setPostLoading(false) })
     }
-    setPostLoading(true)
-    postInventaryRequest(formData, () => getState)
-      .then(({ data }) => {
-        setSelected({ inventoryId: get(data, "id") })
-        getData({ page: 1, filterSearch })
-        values.handleClose()
-        setPostLoading(false)
-        setOpenAlert(true)
-      })
-      .catch((err) => { setError(err); setPostLoading(false) })
+  }
+
+  const alertNoTempalteCancel = () => {
+    setValuesTemp({})
+    setOpenAlertTemplate(false)
   }
 
   const onActivePay = () => {
@@ -467,11 +481,19 @@ const ActiveInventory = () => {
       }
       <NewInventaryAlert
         title={__(`${module}.modal.alert.title`)}
-        subtitle={__(`${module}.modal.alert.subtitle`)}
-        btn1={{ label: __(`${module}.modal.alert.btn1`), func: onActivePay }}
-        btn2={{ label: __(`${module}.modal.alert.btn2`), func: () => setOpenAlert(false) }}
+        subtitle={__(`${module}.modal.alert.sub-title`)}
+        btn1={{ label: __(`${module}.modal.alert.btn-1`), func: onActivePay }}
+        btn2={{ label: __(`${module}.modal.alert.btn-2`), func: () => setOpenAlert(false) }}
         openAlert={openAlert}
         closeAlert={() => setOpenAlert(false)}
+      />
+      <NewInventaryAlertNoTemplate
+        __={__}
+        module={module}
+        submit={() => onSubmit(valuesTemp, true)}
+        cancel={alertNoTempalteCancel}
+        openAlert={openAlertTemplate}
+        closeAlert={() => setOpenAlertTemplate(false)}
       />
 
       {openPay &&

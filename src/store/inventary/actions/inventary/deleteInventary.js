@@ -14,7 +14,6 @@ export const deleteInventaryReject = (payload) => ({ type: DELETE_INVENTARY_REJE
 
 //* REQUEST SERVICE ---------------------------------------
 export const deleteInventaryRequest = async (data, getState) => {
-    console.log(getState)
     const options = await withToken({
         method: Methods.DELETE,
         data,

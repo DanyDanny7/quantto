@@ -47,7 +47,7 @@ const Register = () => {
         i18n.changeLanguage(selectLanguage);
         localStorage.setItem("lang", selectLanguage)
     }
-    
+
     const handleClickShowPassword = () => {
         setShowPass(state => !state)
     }
@@ -69,7 +69,7 @@ const Register = () => {
 
     const onSubmit = (values) => {
         setLoadRegister(true)
-        registerRequest(values, () => getState)
+        registerRequest({ ...values, language: i18n.resolvedLanguage }, () => getState)
             .then(({ data }) => {
                 setAlert({
                     open: true,
@@ -110,7 +110,6 @@ const Register = () => {
             pass: '',
             confirmation: '',
             // phone: "",
-            language: i18n.resolvedLanguage
         },
         validationSchema: validator(inputs),
         onSubmit

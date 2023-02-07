@@ -2,8 +2,7 @@
     "header": {
         "sub-title": "Posees el inventario [[code]] activo",
         "btn-1": "Finalizar conteo",
-        "btn-2": "Cambiar idioma",
-		"btn-3": "Actualizar"
+        "btn-2": "Cambiar idioma"
     },
     "change": "Ingles",
     "layout": {
@@ -15,8 +14,8 @@
         ],
         "menus": [
             "Inventario Activo",
-            "Listado de inventarios",
-            "Auxiliares de inventario",
+            "Historico de inventario",
+            "Contadores",
             "Historial de pagos",
             "Perfil"
         ]

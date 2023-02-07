@@ -1,10 +1,10 @@
 {
     "counts": {
         "header": {
-            "title": "Auxiliares de inventario",
-            "sub-title": "Puedes editar, eliminar o crear nuevos auxiliares de inventario"
+            "title": "Contadores",
+            "sub-title": "Puedes editar, eliminar o crear nuevos contadores"
         },
-        "btn": "Crear",
+        "btn": "Crear contador",
         "button": {
             "close": "Cerrar"
         },
@@ -16,8 +16,8 @@
             "inactive": "Inactivo"
         },
         "modal": {
-            "title-1": "Creación de nuevo auxiliar de inventario",
-            "title-2": "Editar auxiliar de inventario",
+            "title-1": "Creación de nuevo contador",
+            "title-2": "Editar contador",
             "sub-title-1": "Completa los siguientes campos para continuar",
             "btn": {
                 "btn-1": "Enviar y crear usuario",
@@ -30,12 +30,12 @@
             "input": [
                 {
                     "name": "Correo",
-                    "placeholder": "Ingresa el correo del auxiliar",
+                    "placeholder": "Ingresa el correo del contador",
                     "error": "Correo es requerido"
                 },
                 {
                     "name": "Nombre",
-                    "placeholder": "Ingresa el nombre del auxiliar",
+                    "placeholder": "Ingresa el nombre del contador",
                     "error": "Nombre es requerido"
                 },
                 {
@@ -52,29 +52,29 @@
                 }
             ],
             "delete": {
-                "title": "Eliminar auxiliar de inventario",
+                "title": "Eliminar contador",
                 "submit": "Eliminar",
                 "cancel": "Cancelar",
-                "confirm1": "¿Desea eliminar el auxiliar [[name]]?",
-                "confirm2": "¿Desea eliminar [[number]] auxiliar?",
-                "confirm3": "¿Desea eliminar el auxiliar?",
-                "success1": "Se eliminó con éxito el auxiliar [[name]]",
-                "success2": "Se eliminó con éxito [[number]] auxiliares",
-                "success3": "Se eliminó con éxito el auxiliar"
+                "confirm1": "¿Desea eliminar el contador [[name]]?",
+                "confirm2": "¿Desea eliminar [[number]] contadores?",
+                "confirm3": "¿Desea eliminar el contador?",
+                "success1": "Se eliminó con éxito el contador [[name]]",
+                "success2": "Se eliminó con éxito [[number]] contadores",
+                "success3": "Se eliminó con éxito el contador"
             }
         },
         "table": [
-            "Auxiliar de inventario",
+            "Contador",
             "Fecha de creación",
             "Estado"
         ],
         "empty": {
             "title": "No hay datos que mostrar",
-            "description": "Puedes agregar Auxiliares desde el siguiente botón."
+            "description": "Puedes agregar contadores desde el siguiente botón."
         },
         "msg": {
-            "create": "auxiliar creado con éxito",
-            "update": "auxiliar actualizado con éxito"
+            "create": "Contador creado con éxito",
+            "update": "Contador actualizado con éxito"
         },
         "actions": {
             "close": "Cerrar"

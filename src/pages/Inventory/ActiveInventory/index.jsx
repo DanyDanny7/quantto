@@ -256,7 +256,6 @@ const ActiveInventory = () => {
             setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
         }
     }
-    console.log(get(inventaryActive, "data.data.name", "--"))
     
     const onFinish = () => setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(replace(__(`${module}.actions.finish.question`), "[[number]]", code), "[[name]]", get(inventaryActive, "data.data.name", "--")) })
     const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })

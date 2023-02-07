@@ -311,12 +311,11 @@ const ActiveInventory = () => {
             )
         })
     })
-    console.log(dataTable)
 
     return (
         <Layout
             propsToolbar={{
-                title: replace(__(`${module}.header.title`), "[[name]]", get(dataTable, "[0].itemname", "--")),
+                title: replace(__(`${module}.header.title`), "[[code]]", get(dataTable, "[0].itemname", "--")),
                 label: __(`${module}.header.sub-title`),
                 code: null,
                 // btnLabel: __(`${module}.btn`),

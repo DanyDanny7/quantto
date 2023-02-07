@@ -14,7 +14,6 @@ export const deleteCountReject = (payload) => ({ type: DELETE_COUNT_REJECT, payl
 
 //* REQUEST SERVICE ---------------------------------------
 export const deleteCountRequest = async (data, getState) => {
-    console.log(getState)
     const options = await withToken({
         method: Methods.DELETE,
         data,
