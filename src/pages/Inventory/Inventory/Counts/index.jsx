@@ -11,7 +11,6 @@ import {
     MenuList,
     MenuItem,
     Popover,
-    Checkbox,
     Collapse,
     Stack,
     Tooltip,
@@ -171,62 +170,15 @@ const ActiveInventory = () => {
     }
 
     //  --------- Tabla -------------
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelected = get(inventaryDetailState, "data.data", []).map((n) => n.inventoryTemplateLineCountId);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
-
     const handleClick = (event, item) => {
         setAnchorEl(event.currentTarget);
         setItemSelected(item)
     };
     const handleClose = () => {
         setAnchorEl(null);
-        // getData({ page: 1, filterSearch })
     };
 
-    const isSelected = (id) => {
-        return selected.indexOf(id) !== -1
-    }
-
-    const handleChecked = (event, id) => {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-        setSelected(newSelected);
-    };
     const headTable = [
-        // {
-        //     key: "checkbox",
-        //     label: (
-        //         <Checkbox
-        //             color="secondary"
-        //             indeterminate={selected.length > 0 && selected.length < get(inventaryDetailState, "data.data", []).length}
-        //             checked={get(inventaryDetailState, "data.data", []).length > 0 && selected.length === get(inventaryDetailState, "data.data", []).length}
-        //             onChange={handleSelectAllClick}
-        //             inputProps={{
-        //                 'aria-label': 'select all desserts',
-        //             }}
-        //         />
-        //     ),
-        //     align: "center",
-        // },
         {
             key: "create_at",
             label: get(titles, "[0]"),

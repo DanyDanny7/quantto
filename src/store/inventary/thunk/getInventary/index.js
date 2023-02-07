@@ -1,4 +1,3 @@
-import { get } from "lodash";
 import {
     getInventaryLoading,
     getInventaryRequest,
