@@ -1,16 +1,92 @@
 {
     "inventaries": {
         "header": {
-            "title": "-",
-            "sub-title": "-"
+            "title": "List of Inventories",
+			"subtitle": "Select the inventory you want to pay, iniciate, edit or delete."
         },
-        "btn": "-",
+        "btn": "New Inventory",
         "menu": {
-            "detail": "-",
-            "edit": "-",
-            "start": "-",
-            "delete": "-",
-            "finish": "-"
+            "detail": "Details",
+            "edit": "Edit",
+            "start": "Start Inventory",
+            "delete": "Delete",
+            "finish": "finish inventory",
+            "pay": "Pay inventory",
+            "download": "Download Report",
+            "report": "Report [[code]]"
+        },
+        "actions": {
+            "start": {
+                "title": "Start Inventory",
+                "question": "Do you want to start the inventory count [[number]]?",
+                "success": "Inventory started"
+            },
+            "delete": {
+                "title": "Delete inventory",
+                "question": "Do you want to delete the inventory [[number]]?",
+                "success": "Inventory was deleted"
+            },
+            "pay": {
+                "title": "Pay for your inventory count",
+                "question": "¿Do you want to pay for the inventory [[number]]?",
+                "success": {
+                    "title": "¡Inventory paid for!",
+                    "subtitle": "Great!, you can now start your inventory fron the inventory list page",
+                    "btn-1": "go to inventory",
+                    "btn-2": "Accept and close"
+                },
+                "input": {
+                    "name": {
+                        "label": "Name",
+                        "placeholder": "Write your name",
+                        "error": "Name is required"
+                    },
+                    "number": {
+                        "label": "Card number",
+                        "placeholder": "0000 0000 0000 0000",
+                        "error": "Card number is required"
+                    },
+                    "date": {
+                        "label": "Expiration date",
+                        "placeholder": "MM / AA",
+                        "error": "Expiration date is required"
+                    },
+                    "cvv": {
+                        "label": "CVV",
+                        "placeholder": "000",
+                        "error": "CVV is required"
+                    }
+                }
+            },
+            "finish": {
+                "title": "Finish counting",
+                "question": "¿Do you want to end the inventory [[number]]?  <br /><br /> This action can't be undone",
+                "success": "Inventory finished"
+            },
+            "close": "Close",
+            "acept": "Accept",
+            "cancel": "Cancel",
+            "submit": "Pay",
+            "title": "Pay for your inventory count",
+			"subtitle": "Complete the required information to pay for your inventory",
+            "data": {
+                "title": "Confirm the inventory want to pay for",
+                "name": "Name",
+                "counters": "Inventory takers",
+                "products": "Items",
+                "total": "Price to pay"
+            },
+            "alert": {
+                "template": {
+                    "title": "No inventory template added",
+                    "question": "Do you want to continue without an inventory template?",
+                    "subtitle": "After creating your inventory you will not be able to add products to your inventory, this task can only be done from the counting mobile application."
+                },
+                "counter": {
+                    "title": "No inventory takers added",
+                    "question": "Do you want to continue without inventory takers? You can add them later"
+                }
+            }
         },
         "filters": {
             "search": "Search"
@@ -18,7 +94,7 @@
         "status": [
             {
                 "statusId": 1,
-                "description": "NEW / PENDING PAYMENT",
+                "description": "NEW / UNPAID",
                 "color": "default"
             },
             {
@@ -38,135 +114,256 @@
             }
         ],
         "table": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
+            "Id",
+            "Name",
+            "Date created",
+            "Status",
+            "File",
+            "Onhand",
+            "Counted"
         ],
+        "empty": {
+            "title": "There are no inventories to show",
+            "description": "You can create a new inventory from here."
+        },
         "modal": {
-            "title": "-",
-            "option-1": "-",
-            "option-2": "-",
-            "sub-title-1": "-",
-            "sub-title-2": "-",
-            "download-file": "-",
-            "download-file-name": "-",
-            "table-title": "-",
-            "btn-1": "-",
-            "btn-2": "-",
-            "btn-3": "-",
-            "btn-4": "-",
-            "btn-5": "-",
+            "title": "New inventory",
+            "title-edit": "Edit inventory taker | [[name]]",
+            "option-1": "File",
+            "option-2": "Users",
+            "sub-title-1": "Complete the information and attach your inventory file to continue",
+            "sub-title-2": "Select inventory takers for your inventory",
+            "download-file": "Download template",
+            "download-file-name": "InventoryTemplate",
+            "table-title": "Inventory takers",
+            "btn-1": "Next step",
+            "btn-2": "Back",
+            "btn-3": "Cancel",
+            "btn-4": "Create new",
+            "btn-5": "Create inventory",
+            "btn-6": "Add new",
             "dropzone": {
-                "text-start": "-",
-                "text-active": "-",
-                "complement": "-",
-                "text-head": "-"
+                "text-start": "Drag and drop your inventory file here, in .csv format",
+                "text-active": "Drop your file here",
+                "complement": "Optional",
+                "text-head": "File"
             },
             "input": {
-                "name": "-",
-                "placeholder": "-"
+                "name": "Inventory name",
+                "placeholder": "Write inventory name"
             },
             "error": {
-                "file": "-"
+                "file": "File must be in .csv format"
             },
             "alert": {
-                "title": "-",
-                "sub-title": "-",
-                "btn-1": "-",
-                "btn-2": "-"
+                "title": "Inventory created",
+                "sub-title": "Inventory must be paid before starting, if you want to pay later, click on save and exit",
+				"sub-title-free": "Posees un inventario gratis. Puedes iniciarlo en este momento o presionar click en guardar y salir",
+                "btn-1": "Pay inventory",
+				"btn-1-free": "Start inventory",
+                "btn-2": "Save and exit"
             }
         }
     },
     "detail": {
         "header": {
-            "title-1": "-",
-            "title-2": "-",
-            "sub-title-1": "-",
-            "sub-title-2": "-"
+            "title-1": "Inventory [[code]]",
+            "title-2": "Active inventory",
+            "sub-title-1": "Inventory detail",
+            "sub-title-2": "You have the inventory [[code]] in process"
         },
-        "btn-1": "-",
-        "btn-2": "-",
-        "btn-3": "-",
+        "btn-1": "Pay inventory",
+        "btn-2": "Finish iventory",
+        "btn-3": "Start inventory",
         "menu": {
-            "recount": "-",
-            "details": "-",
-            "delete": "-",
-            "delete-success": "-"
+            "recount": "Recount",
+            "manualrecord": "Created manually",
+            "details": "View counts",
+            "delete": "Delete",
+            "delete-success": "Count was deleted",
+            "download": "Download Report"
+        },
+        "actions": {
+            "edit": {
+                "title": "Edit"
+            },
+            "delete": {
+                "title": "Delete item",
+                "question": "¿Do you want to delete then item: [[number]] from this inventory?",
+                "success": "Item deleted"
+            },
+            "start": {
+                "title": "Start inventory",
+                "question": "¿Do you want to strat the inventory: [[number]]?",
+                "success": "Inventory Started"
+            },
+            "pay": {
+                "title": "Pay iventory",
+                "question": "¿Do you want to pay for this inventory: [[number]]?",
+                "success": {
+                    "title": "¡Iventory paid!",
+                    "subtitle": "Great! you can now view and start your inventory from the  “Inventory list” section ",
+                    "btn-1": "go to inventory",
+                    "btn-2": "Save and close"
+                },
+                "input": {
+                    "name": {
+                        "label": "Name",
+                        "placeholder": "Write name",
+                        "error": "Name required"
+                    },
+                    "number": {
+                        "label": "Card number",
+                        "placeholder": "0000 0000 0000 0000",
+                        "error": "Card number is required"
+                    },
+                    "date": {
+                        "label": "Expiration date",
+                        "placeholder": "MM / AA",
+                        "error": "Expiration date is required"
+                    },
+                    "cvv": {
+                        "label": "CVV",
+                        "placeholder": "000",
+                        "error": "CVV is required"
+                    }
+                }
+            },
+            "finish": {
+                "title": "Finish inventory",
+                "question": "¿Do you want to finish the iventory: [number]]?, this process can not be undone",
+                "success": "Iventory finished"
+            },
+            "close": "Close",
+            "cancel": "Cancel",
+            "acept": "OK",
+            "submit": "Pay iventory",			
+			"title": "Pay for your inventory count",
+			"subtitle": "Complete the required information to pay for your inventory",		
+            "link": "go to inventory list",
+            "reload": "Refresh",
+            "data": {
+                "title": "Confirm the inventory want to pay for",
+                "name": "Name",
+                "counters": "Inventory takers",
+                "products": "Items",
+                "total": "Price to pay"
+            },
+            "alert": {
+                "template": {
+                    "title": "No inventory template added",
+                    "question": "Do you want to continue without an inventory template?"
+                },
+                "counter": {
+                    "title": "No inventory takers added",
+                    "question": "Do you want to continue without inventory takers? You can add them later"
+                }
+            }
         },
         "filters": {
             "search": "Search"
         },
         "table": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
+            "ItemId",
+            "Description",
+            "Barcode",
+            "Onhand",
+            "Counted",
+            "Variances"
         ],
+        "empty": {
+            "title": "No information to show",
+            "description": ""
+        },
         "cards": {
             "card-1": {
-                "title": "-",
-                "count-name": "-",
-                "start": "-",
-                "end": "-",
-                "progress": "-",
-                "units-counted": "-",
-                "elapsed-time": "-:"
+                "title": "Active inventory details",
+                "count-name": "Name:",
+                "start": "Start:",
+                "end": "Finish:",
+                "progress": "Progress:",
+                "units-counted": "Units counted:",
+                "elapsed-time": "Elapsed time:"
             },
             "card-2": {
-                "title": "-",
-                "counted": "-",
-                "not-counted": "-s"
+                "title": "Percentage counted",
+                "counted": "Counted",
+                "not-counted": "Not counted"
             },
             "card-3": {
-                "title": "-",
-                "on-hand": "-",
-                "counted-units": "-",
-                "diference": "-a"
+                "title": "Categories",
+                "on-hand": "Onhand",
+                "counted-units": "Counted",
+                "diference": "Variances"
             }
         },
         "alert": {
             "alert-1": {
-                "title": "-",
-                "subtitle": "-",
-                "btn-1": "-",
-                "btn-2": "-o"
+                "title": "¡Sorry!",
+                "subtitle": "You can´t start a new inventory, there´s another inventory in process",
+                "btn-1": "go to in process inventory",
+                "btn-2": "ok"
             }
+        },
+        "active": {
+            "title": "",
+            "subtitle": "",
+            "submit": "",
+            "cancel": ""
+        },
+        "modal": {
+            "title-edit": "Edit inventory takers from inventory: | [[name]]",
+            "sub-title-2": "Select inventory takers to assing to this count",
+            "btn-4": "New inventory taker",
+            "table-title": "Inventory takers"
         }
     },
     "counts": {
         "header": {
-            "title": "-",
-            "sub-title": "-o"
+            "title": "Counts for item: [[code]]",
+            "sub-title": "View individual counts for this item"
         },
-        "btn": "-",
-        "menu": {
-            "recount": "-",
-            "delete": "-",
-            "delete-success": "-o"
+        "btn": "Finish inventory",
+        "button": {
+            "close": "Close"
         },
         "filters": {
             "search": "Search"
         },
+        "menu": {
+            "recount": "Recount",
+            "manualrecord": "Created manually"
+        },
         "table": [
-            "Creación",
-            "Hora",
-            "Producto",
-            "Contador",
-            "Ubicación",
-            "Cantidad"
+            "Date created",
+            "Time",
+            "Description",
+            "Inventory taker",
+            "Location",
+            "Quantity",
+            "Recount"
         ],
-        "notification-1": "Reconteo enviado al contador \"[[name]]\"",
-        "notification-2": "Eliminado satisfactoriamente",
-        "notification-3": ""
+        "empty": {
+            "title": "No information to show",
+            "description": "Counts must be added from the mobile app."
+        },
+        "modal": {
+            "recount": {
+                "title": "Mark for recount",
+                "submit": "Recount",
+                "cancel": "Cancel",
+                "confirm1": "Do you want to send a recount task for item: \"[[product]]\" to inventory taker: \"[[name]]\" ",
+                "confirm2": "Send recount task for item:[[number]]",
+                "success1": "Recount task for item \"[[product]]\" sent to  \"[[name]]\" ",
+                "success2": "Recount task for item \"[[product]]\" sent to  \"[[name]]\" "
+            },
+            "delete": {
+                "title": "Delete count",
+                "submit": "Delete",
+                "cancel": "Cancel",
+                "confirm1": "Do you want to delete this count for item: \"[[product]]\"?",
+                "success1": "Count deleted for item: \"[[product]]\""
+            }
+        }
     }
 }

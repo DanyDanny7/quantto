@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Checkbox, Stack, Box, Typography, Divider } from "@mui/material";
+import { Checkbox, Stack, Box, Typography, Divider, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { get, map, isEmpty, join, filter, find } from "lodash";
 import { LoadingButton } from '@mui/lab';
@@ -70,7 +70,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
             counterid: join(selected, ","),
             userid: get(userState, "userId"),
             companyid: get(userState, "companyId"),
-            language: get(userState, "language"),
+            language: localStorage.getItem("lang"),
         }
         setLoadAddCounter(true)
         postInventaryCounterRequest(body, () => getState)
@@ -167,7 +167,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
             <Stack direction="row" spacing={2} >
                 {get(edit, "value", false) &&
                     <Box flex={1}>
-                        <Typography className='text-center' component={Box} variant="heading3" pb={2} >Contadores</Typography>
+                        <Typography className='text-center' component={Box} variant="heading3" pb={2} >{__(`${module}.modal.table-title`)}</Typography>
                         <Counters inventaryId={get(edit, "item.inventoryId")} getInventariDetail={getInventariDetail} filterSearch={filterSearch} />
                     </Box>
                 }
@@ -184,21 +184,32 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                                 disabled={isEmpty(selected)}
                                 loading={loadAddCounter}
                             >
-                                Agregar contador
+                                {__(`${module}.modal.btn-6`)}
                             </LoadingButton>
                         </Stack>
                     }
                     <Table
-                        toolbar={<NewInventoryToolbar __={__} module={module} newCounter={newCounter} setFilterSearch={setFilterSearch} />}
+                        toolbar={
+                            <NewInventoryToolbar __={__} module={module} newCounter={newCounter} setFilterSearch={setFilterSearch} >
+                                <Button variant="outlined" color="secondary" onClick={newCounter} >
+                                    {__(`${module}.modal.btn-4`)}
+                                </Button>
+                            </NewInventoryToolbar>
+                        }
                         headTable={headTable}
                         dataTable={dataTable}
-                        __={__}
-                        module={module}
+                        __={__2}
+                        module={module2}
                         sizeFilters={125}
                         propsTableCell={{ padding: "checkbox" }}
                         loading={get(countsState, "isLoading", false) || get(inventaryDetailState, "isLoading", false)}
                         propsTable={{ stickyHeader: true }}
                         propsContainer={{ sx: { height: 350, overflow: "auto" } }}
+                        action={
+                            <Button variant="outlined" color="secondary" onClick={newCounter} >
+                                {__(`${module}.modal.btn-4`)}
+                            </Button>
+                        }
                     />
                 </Box>
             </Stack>

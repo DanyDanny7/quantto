@@ -23,7 +23,6 @@
         "voucher": {
             "labels": {
                 "company": "Quantto",
-                "country": "Pegasus S.A. de C.V., El Salvador",
                 "document": "Recibo",
                 "email": "Correo:",
                 "terms": "",
@@ -43,7 +42,7 @@
             },
             "table": {
                 "date": "Fecha",
-                "description": "Descripción",
+                "description": "Descripciï¿½n",
                 "quantity": "Cantidad",
                 "price": "Precio",
                 "subtotal": "Subtotal"

@@ -98,7 +98,7 @@ const Counts = () => {
     const body = {
       userid: get(userState, "userId"),
       companyid: Number(get(userState, "companyId")),
-      language: get(userState, "language"),
+      language: localStorage.getItem("lang"),
       counters: get(itemsDelete, "inRow") ? toString(get(itemsDelete, "items.[0].counterId")) : join(get(itemsDelete, "items"), ","),
     }
     setLoadDelete(true)

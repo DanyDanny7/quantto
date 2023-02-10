@@ -62,7 +62,7 @@ const Counters = ({ getInventariDetail, filterSearch, inventaryId }) => {
         const body = {
             // userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
-            language: get(userState, "language"),
+            language: localStorage.getItem("lang"),
             counterid: get(itemsDelete, "items.[0].counterId"),
             inventoryid: inventaryId
         }

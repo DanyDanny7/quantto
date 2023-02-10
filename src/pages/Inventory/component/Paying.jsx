@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { get } from "lodash";
 import { useNavigate } from 'react-router-dom';
-
+import moment from "moment";
 import CloseIcon from '@mui/icons-material/Close';
 import {
     Button,
@@ -118,7 +118,7 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
 
     const onSubmit = () => {
         const body = {
-            language: get(userState, "language", "es"),
+            language: localStorage.getItem("lang"),
             userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
             correoelectronico: get(userState, "email", "es"),
@@ -126,8 +126,9 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
             primernombre: name,
             tarjetanumero: get(values, "number", "")?.replaceAll(" ", ""),
             tarjetacvv2: get(values, "cvv", ""),
-            tarjetavigencia: get(values, "date", ""),
+            tarjetavigencia: moment(get(values, "date", ""), "MM/YY").format("YYYYMM"),
         }
+
         setLoadPay(true)
         postInventaryPayRequest(body, () => getState)
             .then(({ data }) => {

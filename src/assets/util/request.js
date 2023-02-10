@@ -33,12 +33,14 @@ export const Methods = {
 };
 
 export const withToken = async (options, getState = () => { }) => {
+  console.log(getState())
   return {
     ...options,
     token: get(getState(), "auth.login.dataUser.token"),
     jwt: get(getState(), "auth.login.dataUser.jwt"),
     userid: get(getState(), "auth.login.dataUser.userId"),
     companyid: get(getState(), "auth.login.dataUser.companyId"),
+    language: localStorage.getItem("lang") || "en"
   };
 };
 
@@ -50,6 +52,7 @@ export const getOptions = ({
   params = {},
   companyid,
   userid,
+  language,
   jwt,
 }) => {
   const headers = {
@@ -68,7 +71,7 @@ export const getOptions = ({
     method,
     data,
     headers,
-    params: { companyid, userid, language: "es", ...params },
+    params: { companyid, userid, language, ...params },
     // paramsSerializer: (params) => {
     //   return qs.stringify(params, { encode: false });
     // },

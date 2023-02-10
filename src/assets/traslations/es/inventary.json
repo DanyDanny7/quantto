@@ -2,7 +2,7 @@
     "inventaries": {
         "header": {
             "title": "Listado de inventarios",
-            "sub-title": "Selecciona tu inventario para iniciarlo, editarlo o eliminarlo según sea posible"
+            "subtitle": "Selecciona tu inventario para iniciarlo, editarlo o eliminarlo según sea posible"
         },
         "btn": "Nuevo inventario",
         "menu": {
@@ -60,19 +60,19 @@
             },
             "finish": {
                 "title": "Finalizar conteo",
-                "question": "¿Desea finalizar el inventario [[number]]?",
-                "success": "Inventario finalizado con éxito"
+                "question": "¿Desea finalizar el inventario [[number]]? <br /><br /> Esta acción no se podrá revertir",
+                "success": "Inventario finished"
             },
             "close": "Cerrar",
             "acept": "Aceptar",
             "cancel": "Cancelar",
             "submit": "Pagar",
-            "title": "Completa todos los campos para realizar el pago de tu inventario",
-            "subtitle": "",
+            "title": "Realiza tu pago para poder ralizar un conteo de inventario",
+            "subtitle": "Completa todos los campos para realizar el pago de tu inventario",
             "data": {
                 "title": "Confirma tus datos de inventario",
                 "name": "Nombre",
-                "counters": "",
+                "counters": "Contadores",
                 "products": "cantidad de productos",
                 "total": "Monto total a pagar"
             },
@@ -141,6 +141,7 @@
             "btn-3": "Cancelar",
             "btn-4": "Nuevo contador",
             "btn-5": "Crear inventario",
+            "btn-6": "Agregar contador",
             "dropzone": {
                 "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv",
                 "text-active": "Suelta tu plantilla aquí",
@@ -157,9 +158,9 @@
             "alert": {
                 "title": "Inventario creado con éxito",
                 "sub-title": "Debes pagar el inventario antes de iniciarlo, si aún no quieres pagarlo presionar click en guardar y salir",
-                "sub-title-free": "Posees un inventario gratis. Puedes iniciarlo en este momento o presionar click en guardar y salir",
+				"sub-title-free": "Posees un inventario gratis. Puedes iniciarlo en este momento o presionar click en guardar y salir",
                 "btn-1": "Pagar inventario",
-                "btn-1-free": "Iniciar inventario",
+				"btn-1-free": "Iniciar inventario",
                 "btn-2": "Guardar y salir"
             }
         }
@@ -299,7 +300,7 @@
         "alert": {
             "alert-1": {
                 "title": "¡Lo sentimos!",
-                "subtitle": "No es posible activar este conteo porque tienes uno en progreso, Si deseas activar el conteo debes finalizar el que tienes en progreso",
+                "subtitle": "No es posible iniciar este inventario porque tienes uno en progreso, Si deseas iniciar el inventario debes finalizar el que tienes en proceso",
                 "btn-1": "Ir al conteo activo",
                 "btn-2": "Entendido"
             }
@@ -311,10 +312,10 @@
             "cancel": "Cancelar"
         },
         "modal": {
-            "title-edit": "Editar contadores de inventario | [[name]]",
-            "sub-title-2": "Selecciona los usuarios para asignarlos a tu conteo",
-            "btn-4": "Nuevo contador",
-            "table-title": "Contadores"
+            "title-edit": "Editar auxiliares de inventario | [[name]]",
+            "sub-title-2": "Selecciona los auxiliares para asignarlos a tu conteo",
+            "btn-4": "Nuevo auxiliar",
+            "table-title": "Auxiliares"
         }
     },
     "counts": {
@@ -330,7 +331,8 @@
             "search": "Buscar"
         },
         "menu": {
-            "recount": "Recontear"
+            "recount": "Recontar",
+            "manualrecord": "Creado manualmente"
         },
         "table": [
             "Creación",

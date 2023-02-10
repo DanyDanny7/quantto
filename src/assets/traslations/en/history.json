@@ -1,32 +1,52 @@
 {
     "payment": {
         "header": {
-            "title": "",
-            "sub-title": ""
+            "title": "Payment history",
+            "sub-title": "Here is a list of all the payments received"
         },
-        "btn": "ES",
         "filters": {
-            "search": "Search",
-            "selects": [
-                {
-                    "title": "Filter1",
-                    "options": [
-                        "Option-1",
-                        "Option-2",
-                        "Option-3",
-                        "Option-4"
-                    ]
-                }
-            ]
+            "search": "Search"
         },
         "table": [
             "Date",
             "Name",
-            "Inventary",
+            "Inventory",
             "Attached",
             "Amount",
             "Card",
-            "Voucher"
-        ]
+            "Receipt"
+        ],
+        "empty": {
+            "title": "There are no payments to show",
+            "description": ""
+        },
+        "voucher": {
+            "labels": {
+                "company": "Quantto",
+                "document": "Receipt",
+                "email": "Email:",
+                "terms": "",
+                "billed": "Billed On",
+                "no": "Receipt #",
+                "billto": "Bill To",
+                "subtotal": "SubTotal",
+                "total": "Total",
+                "paid": "Paid",
+                "amount": "Amount Due",
+                "download": "Download"
+            },
+            "values": {
+                "email": "support@getquantto.com",
+                "paid": "PAID",
+                "terms": ""
+            },
+            "table": {
+                "date": "Date",
+                "description": "Description",
+                "quantity": "Qty",
+                "price": "Price",
+                "subtotal": "Subtotal"
+            }
+        }
     }
 }

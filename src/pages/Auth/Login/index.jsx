@@ -74,7 +74,7 @@ const Login = () => {
                     <Box className='mb-2' ><Typography variant='heading1'>{__("login.title")}</Typography></Box>
                     <Box className='mb-4' ><Typography variant='bodySmall'>{__("login.sub-title-1")}</Typography></Box>
                     <Stack direction="row" justifyContent="flex-end">
-                        <BtnLanguage active={i18n.resolvedLanguage} onClickEn={() => onHeadBtn("en")} onClickEs={() => onHeadBtn("es")} />
+                        <BtnLanguage active={i18n.resolvedLanguage} onClickEn={onHeadBtn} onClickEs={onHeadBtn} />
                     </Stack>
                     <Box component="form" onSubmit={get(formik, "handleSubmit")}>
                         <Box className='mb-8'>

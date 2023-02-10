@@ -1,3 +1,83 @@
 {
-    
+    "counts": {
+        "header": {
+            "title": "Inventory takers",
+            "sub-title": "Create, edit, or delete inventory takers"
+        },
+        "btn": "Create",
+        "button": {
+            "close": "Close"
+        },
+        "filters": {
+            "search": "Search"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "modal": {
+            "title-1": "Create a new inventory taker",
+            "title-2": "Edit inventory taker",
+            "sub-title-1": "Complete the following information to continue",
+            "btn": {
+                "btn-1": "Create",
+                "btn-2": "Save changes",
+                "btn-3": "Cancel",
+                "btn-4": "Edit password"
+            },
+            "notification-1": "Inventory taker created",
+            "notification-2": "Inventory taker updated",
+            "input": [
+                {
+                    "name": "Email",
+                    "placeholder": "Write email",
+                    "error": "Email is required"
+                },
+                {
+                    "name": "Name",
+                    "placeholder": "Write Name",
+                    "error": "Name is required"
+                },
+                {
+                    "name": "Password",
+                    "placeholder": "Write password",
+                    "error": "Password is required",
+                    "error-2": "Passwords do not match. Try again"
+                },
+                {
+                    "name": "Confirm Password",
+                    "placeholder": "Confirm Password",
+                    "error": "Password is required",
+                    "error-2": "Passwords do not match. Try again"
+                }
+            ],
+            "delete": {
+                "title": "Delete inventory taker",
+                "submit": "Delete",
+                "cancel": "Cancel",
+                "confirm1": "¿Do you want to delete [[name]]?",
+                "confirm2": "¿Do you want to delete [[number]] ?",
+                "confirm3": "¿Do you want to delete inventory taker?",
+                "success1": "[[name]] was deleted",
+                "success2": "[[number]] was deleted",
+                "success3": "Inventory taker was deleted"
+            }
+        },
+        "table": [
+            "Inventory taker",
+            "Date created",
+            "Status"
+        ],
+        "empty": {
+            "title": "There are no inventory takers",
+            "description": "You can add inventory takers"
+        },
+        "msg": {
+            "create": "Inventory taker was created",
+            "update": "Inventory taker was updated"
+        },
+        "actions": {
+            "close": "Close"
+        }
+    }
 }

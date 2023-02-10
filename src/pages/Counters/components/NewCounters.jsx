@@ -84,7 +84,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
             // active: get(toEdit, "active", false),
             userpass: get(toEdit, "userPass", ""),
             confirmation: get(toEdit, "userPass", ""),
-            language: get(toEdit, "language", "es"),
+            language: localStorage.getItem("lang"),
             // ---- complements -----
             userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),

@@ -101,7 +101,7 @@ const ActiveInventory = () => {
     const body = {
       userid: get(userState, "userId"),
       companyid: get(userState, "companyId"),
-      language: get(userState, "language"),
+      language: localStorage.getItem("lang"),
       inventoryname: trim(get(values, "name")),
       counters: join(get(values, "counters"), ","),
       template: get(values, "file")
@@ -157,7 +157,7 @@ const ActiveInventory = () => {
     const body = {
       userid: get(userState, "userId"),
       companyid: Number(get(userState, "companyId")),
-      language: get(userState, "language"),
+      language: localStorage.getItem("lang"),
       inventoryid: get(selected, "inventoryId")
     }
     setLoadDelete(true)
@@ -292,7 +292,7 @@ const ActiveInventory = () => {
   const onStartSubmit = () => {
     const body = {
       inventoryid: get(selected, "inventoryId"),
-      language: get(userState, "language", "es"),
+      language: localStorage.getItem("lang"),
       userid: get(userState, "userId"),
       companyid: Number(get(userState, "companyId")),
     }
@@ -312,7 +312,7 @@ const ActiveInventory = () => {
   const onFinishSubmit = () => {
     const body = {
       inventoryid: get(selected, "inventoryId"),
-      language: get(userState, "language", "es"),
+      language: localStorage.getItem("lang"),
       userid: get(userState, "userId"),
       companyid: Number(get(userState, "companyId")),
     }
@@ -362,7 +362,7 @@ const ActiveInventory = () => {
       },
       params: {
         inventoryid: get(selected, "inventoryId"),
-        language: get(userState, "language", "es"),
+        language: localStorage.getItem("lang"),
         userid: get(userState, "userId"),
         companyid: Number(get(userState, "companyId")),
       }

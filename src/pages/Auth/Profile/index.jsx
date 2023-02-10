@@ -120,7 +120,7 @@ const Profile = () => {
     const body = {
       companyid: Number(get(dataUser, "companyId")),
       userid: get(dataUser, "userId"),
-      language: get(dataUser, "language"),
+      language: localStorage.getItem("lang"),
     }
     dispatch(logout(body))
   }
@@ -130,16 +130,7 @@ const Profile = () => {
   }
 
   return (
-    <Layout
-      propsToolbar={{
-        // title: __(`${module}.name`),
-        // label: __(`${module}.sub-title-1`),
-        // code: null,
-        // btnLabel: __(`${module}.button.language`),
-        // btnFunc: onHeadBtn,
-        customBtn: <BtnLanguage active={i18n.resolvedLanguage} onClickEn={() => onHeadBtn("en")} onClickEs={() => onHeadBtn("es")} />
-      }}
-    >
+    <Layout propsToolbar={{ customBtn: <BtnLanguage active={i18n.resolvedLanguage} onClickEn={onHeadBtn} onClickEs={onHeadBtn} /> }}    >
       <Box>
         <Paper className='flex justify-between items-center py-6 px-8 w-full mb-6' elevation={3}  >
           <Box className='flex'>
@@ -161,7 +152,7 @@ const Profile = () => {
           <Box component="form" onSubmit={get(formik, "handleSubmit")}>
             <Box className='py-6 px-8 w-full'>
 
-              <Typography className='pb-4' component={Box} variant="buttonXtra">Detalle de perfil</Typography>
+              <Typography className='pb-4' component={Box} variant="buttonXtra">{__(`${module}.title`)}</Typography>
 
               <Typography className='py-3' component={Box} variant="bodySmall">{get(sections, "[0]")}</Typography>
               <Divider />

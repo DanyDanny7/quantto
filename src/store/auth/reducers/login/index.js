@@ -2,6 +2,7 @@ import {
     LOGIN_LOADING,
     LOGIN_SUCCESS,
     LOGIN_REJECT,
+    UPDATE_DATA
 } from "../../actions/login";
 
 import {
@@ -65,6 +66,12 @@ const loginReducer = (state = stateInit, action) => {
             allResp: action.payload
         }
 
+        // ------------- UPDATE DATA USER --------------------
+        case UPDATE_DATA: return {
+            ...state,
+            ...action.payload,
+        }
+
         // ------------- Validate user --------------------
         case POST_VALIDATE_EMAIL_LOADING: return {
             ...state,
@@ -72,10 +79,11 @@ const loginReducer = (state = stateInit, action) => {
         }
         case POST_VALIDATE_EMAIL_SUCCESS: {
             return {
-            ...state,
-            ...action.payload,
-            validateFail: false,
-        }}
+                ...state,
+                ...action.payload,
+                validateFail: false,
+            }
+        }
         case POST_VALIDATE_EMAIL_REJECT: return {
             ...state,
             validateFail: true,

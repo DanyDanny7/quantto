@@ -40,7 +40,7 @@ const AlertQuestion = ({
                 paymentid: get(selected, "historyid"),
                 userid: get(userState, "userId"),
                 companyid: Number(get(userState, "companyId")),
-                language: get(userState, "language"),
+                language: localStorage.getItem("lang"),
             }
             dispatch(getHistoryPaymentId(filters))
         }
@@ -89,7 +89,7 @@ const AlertQuestion = ({
                                             <Stack>
                                                 <Stack direction="column" justifyContent="center" sx={{ height: 150 }}>
                                                     <Typography variant="heading1" sx={{ fontSize: 40, lineHeight: "1.3" }} gutterBottom >{__(`${module}.voucher.labels.company`)}</Typography>
-                                                    <Typography variant="bodyXtraSmall" color="text.light">{__(`${module}.voucher.labels.country`)}</Typography>
+                                                    {/* <Typography variant="bodyXtraSmall" color="text.light">{__(`${module}.voucher.labels.country`)}</Typography> */}
                                                     <Typography variant="bodyXtraSmall" color="text.light">{`${__(`${module}.voucher.labels.email`)} ${__(`${module}.voucher.values.email`)}`}</Typography>
                                                 </Stack>
                                                 <Stack spacing={0.5}>
@@ -172,7 +172,7 @@ const AlertQuestion = ({
                                             <Stack>
                                                 <Stack direction="column" justifyContent="center" sx={{ height: 150 }}>
                                                     <Typography variant="heading1" sx={{ fontSize: 40, lineHeight: "1.3" }} gutterBottom >{__(`${module}.voucher.labels.company`)}</Typography>
-                                                    <Typography variant="bodyXtraSmall" color="text.light">{__(`${module}.voucher.labels.country`)}</Typography>
+                                                    {/* <Typography variant="bodyXtraSmall" color="text.light">{__(`${module}.voucher.labels.country`)}</Typography> */}
                                                     <Typography variant="bodyXtraSmall" color="text.light">{`${__(`${module}.voucher.labels.email`)} ${__(`${module}.voucher.values.email`)}`}</Typography>
                                                 </Stack>
                                                 <Stack spacing={0.5}>
@@ -261,7 +261,7 @@ const AlertQuestion = ({
                         variant="contained"
                         color="primary"
                         onClick={() =>
-                            pdfFromReact(".element-to-print", `voucher #${get(historyDetailState, "data.paymentid")}`, "p", false, false)
+                            pdfFromReact(".element-to-print", `quanttoinvoice#${get(historyDetailState, "data.paymentid")}`, "p", false, false)
                         }
                     >
                         {__(`${module}.voucher.labels.download`)}

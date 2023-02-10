@@ -94,7 +94,7 @@ const ActiveInventory = () => {
             countid: get(itemsReCount, "inRow") ? toString(get(itemsReCount, "items.[0].inventoryTemplateLineCountId")) : join(get(itemsReCount, "items"), ","),
             userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
-            language: get(userState, "language"),
+            language: localStorage.getItem("lang"),
             markedRecount: true,
         }
         setLoadingReCount(true)
@@ -150,7 +150,7 @@ const ActiveInventory = () => {
         const body = {
             userid: get(userState, "userId"),
             companyid: get(userState, "companyId"),
-            language: get(userState, "language"),
+            language: localStorage.getItem("lang"),
             countid: `${get(itemsDelete, "[0].inventoryTemplateLineCountId")}`,
             inventoryid: get(params, "detailId"),
         }

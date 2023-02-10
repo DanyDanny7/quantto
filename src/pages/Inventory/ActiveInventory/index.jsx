@@ -212,7 +212,7 @@ const ActiveInventory = () => {
         const body = {
             userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
-            language: get(userState, "language"),
+            language: localStorage.getItem("lang"),
             inventoryid: Number(detailId),
             templatelineid: get(active, "inventoryDetailId")
         }
@@ -262,7 +262,7 @@ const ActiveInventory = () => {
     const onFinishSubmit = () => {
         const body = {
             inventoryid: detailId,
-            language: get(userState, "language", "es"),
+            language: localStorage.getItem("lang"),
             userid: get(userState, "userId"),
             companyid: Number(get(userState, "companyId")),
         }
