@@ -88,6 +88,7 @@ const ActiveInventory = () => {
     }
 
     const onReCount = () => {
+        console.log("acá enviamos esto")
         setAlertReCount({ open: false, title: "", subtitle: "" })
         const body = {
             inventoryid: get(params, "detailId"),
@@ -97,6 +98,7 @@ const ActiveInventory = () => {
             language: localStorage.getItem("lang"),
             markedRecount: true,
         }
+        console.log(body)
         setLoadingReCount(true)
         putInventaryReCountRequest(body, () => getState)
             .then(({ data }) => {

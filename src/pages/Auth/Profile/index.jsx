@@ -269,6 +269,7 @@ const Profile = () => {
                         helperText={get(formik, "touched.password") && get(formik, "errors.password")}
                         disabled={!isEdit}
                         InputProps={{
+                          autoComplete: 'new-password',
                           endAdornment:
                             <InputAdornment position="end" className='mr-2'>
                               <IconButton
@@ -302,6 +303,7 @@ const Profile = () => {
                           error={get(formik, "touched.confirmation") && Boolean(get(formik, "errors.confirmation"))}
                           helperText={get(formik, "touched.confirmation") && get(formik, "errors.confirmation")}
                           InputProps={{
+                            autoComplete: 'new-password',
                             endAdornment:
                               <InputAdornment position="end" className='mr-2'>
                                 <IconButton

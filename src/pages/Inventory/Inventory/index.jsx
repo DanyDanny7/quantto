@@ -73,6 +73,7 @@ const ActiveInventory = () => {
   const [openPay, setOpenPay] = useState(false)
   const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
   const [loadDelete, setLoadDelete] = useState(false)
+  const [loadToPay, setLoadToPay] = useState(false)
 
   const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
   const [loadStart, setLoadStart] = useState(false)
@@ -99,7 +100,6 @@ const ActiveInventory = () => {
 
 
   // ---------- Table ---------------
-
   const headTable = [
     {
       key: "itemId",
@@ -109,6 +109,11 @@ const ActiveInventory = () => {
     {
       key: "itemName",
       label: get(titles, "[1]"),
+      align: "left"
+    },
+    {
+      key: "category",
+      label: get(titles, "[6]"),
       align: "left"
     },
     {
@@ -314,7 +319,7 @@ const ActiveInventory = () => {
     const edit = { btnLabel2: __(`${module}.actions.edit.title`), btnFunc2: onEdit, color2: "info" }
 
     switch (status) {
-      case 1: return ({ btnLabel: __(`${module}.actions.pay.title`), btnFunc: onPay, color: "warning", ...edit })
+      case 1: return ({ btnLabel: __(`${module}.actions.pay.title`), btnFunc: onPay, color: "warning", loading: loadToPay,  ...edit })
       case 2: return ({ btnLabel: __(`${module}.actions.start.title`), btnFunc: onStart, color: "success", ...edit })
       case 3: return ({ btnLabel: __(`${module}.actions.finish.title`), btnFunc: onFinish, color: "primary", ...edit })
       default: return ({})
@@ -431,6 +436,9 @@ const ActiveInventory = () => {
           setError={setError}
           setSuccess={setSuccess}
           getData={() => getData({ page: 1, filterSearch })}
+          closeAlert={closeAlert}
+          onDetail={true}
+          setIsLoading={setLoadToPay}
         />
       }
       {get(edit, "value") &&

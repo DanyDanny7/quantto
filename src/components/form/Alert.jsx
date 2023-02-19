@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import { get } from "lodash";
 import CloseIcon from '@mui/icons-material/Close';
-
+import InfoIcon from '@mui/icons-material/Info';
+import { LoadingButton } from '@mui/lab';
 
 
 const Warning = () => (
@@ -68,8 +69,8 @@ const Success = () => (
         <path d="M129.06 96.4751C119.519 96.4751 110.193 93.6461 102.261 88.3457C94.3279 83.0453 88.1452 75.5116 84.4942 66.6974C80.8432 57.8831 79.8879 48.1842 81.7491 38.827C83.6104 29.4699 88.2045 20.8747 94.9506 14.1286C101.697 7.38243 110.292 2.78826 119.649 0.926965C129.006 -0.934328 138.705 0.0208823 147.519 3.67182C156.334 7.32275 163.867 13.5054 169.168 21.438C174.468 29.3706 177.297 38.6968 177.297 48.2372C177.283 61.0262 172.196 73.2873 163.153 82.3306C154.11 91.3738 141.849 96.4606 129.06 96.4751ZM129.06 1.32733C119.782 1.32733 110.712 4.0786 102.998 9.23318C95.2835 14.3878 89.2709 21.7141 85.7204 30.2859C82.1699 38.8576 81.2409 48.2897 83.051 57.3894C84.8611 66.4891 89.3288 74.8477 95.8894 81.4082C102.45 87.9687 110.809 92.4365 119.908 94.2465C129.008 96.0565 138.44 95.1275 147.012 91.5769C155.584 88.0263 162.91 82.0137 168.064 74.2993C173.219 66.5849 175.97 57.5152 175.97 48.2372C175.956 35.8002 171.009 23.8767 162.215 15.0824C153.42 6.2881 141.497 1.34132 129.06 1.32733Z" fill="#353535" />
         <path d="M122.57 72.9972C121.749 72.9972 120.939 72.8059 120.204 72.4384C119.469 72.0709 118.83 71.5373 118.337 70.88L105.358 53.5745C104.941 53.0186 104.637 52.3858 104.464 51.7124C104.291 51.0389 104.252 50.338 104.35 49.6496C104.448 48.9612 104.681 48.2989 105.035 47.7006C105.389 47.1022 105.858 46.5795 106.414 46.1623C106.971 45.7451 107.604 45.4417 108.277 45.2693C108.951 45.0969 109.652 45.0589 110.34 45.1576C111.028 45.2563 111.69 45.4896 112.288 45.8443C112.886 46.1989 113.409 46.668 113.825 47.2246L122.317 58.5454L144.125 25.8329C144.511 25.2546 145.006 24.758 145.584 24.3713C146.161 23.9846 146.809 23.7154 147.491 23.5791C148.172 23.4428 148.874 23.4421 149.556 23.5769C150.237 23.7118 150.886 23.9796 151.464 24.3651C152.042 24.7506 152.539 25.2462 152.926 25.8237C153.312 26.4011 153.582 27.049 153.718 27.7305C153.854 28.412 153.855 29.1136 153.72 29.7953C153.585 30.4771 153.317 31.1256 152.932 31.7039L126.974 70.6405C126.504 71.3447 125.873 71.926 125.132 72.3358C124.392 72.7455 123.564 72.9717 122.718 72.9954C122.669 72.9963 122.62 72.9972 122.57 72.9972Z" fill="#63E298" />
     </SvgIcon>
-
 )
+const Info = () => <InfoIcon sx={{ color: theme => theme.palette.info.dark, width: 244, height: 148, mx: "auto", mt: 3, mb: -3 }} />
 
 const Alert = ({
     title,
@@ -78,7 +79,8 @@ const Alert = ({
     btn2 = { label: "", func: () => { } },
     openAlert,
     closeAlert,
-    type = "warning" // warning | error | success
+    type = "warning", // warning | error | success | info
+    loading
 }) => {
 
     const selectedType = (key) => {
@@ -86,6 +88,7 @@ const Alert = ({
             case "warning": return <Warning />
             case "error": return <Error />
             case "success": return <Success />
+            case "info": return <Info />
             default: return <Warning />
         }
     }
@@ -115,12 +118,16 @@ const Alert = ({
                     <Typography className='text-center' variant="bodyMedium">
                         {subtitle}
                     </Typography>
-                    <Button variant="contained" color="primary" sx={{ mt: 5 }} onClick={get(btn1, "func")}>
-                        {get(btn1, "label")}
-                    </Button>
-                    <Button variant="text" color="secondary" sx={{ mt: 1 }} onClick={get(btn2, "func")}>
-                        {get(btn2, "label")}
-                    </Button>
+                    {get(btn1, "label") &&
+                        <LoadingButton autoFocus loading={loading} variant="contained" color="primary" sx={{ mt: 5 }} onClick={get(btn1, "func")}>
+                            {get(btn1, "label")}
+                        </LoadingButton>
+                    }
+                    {get(btn2, "label") &&
+                        <Button variant="text" color="secondary" sx={{ mt: 1 }} onClick={get(btn2, "func")}>
+                            {get(btn2, "label")}
+                        </Button>
+                    }
                 </Box>
             </Dialog>
         </div >

@@ -126,6 +126,11 @@ const ActiveInventory = () => {
             align: "left"
         },
         {
+            key: "category",
+            label: get(titles, "[6]"),
+            align: "left"
+        },
+        {
             key: "barCode",
             label: get(titles, "[2]"),
             align: "center"
@@ -256,7 +261,7 @@ const ActiveInventory = () => {
             setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
         }
     }
-    
+
     const onFinish = () => setAlertFinish({ open: true, title: __(`${module}.actions.finish.title`), subtitle: replace(replace(__(`${module}.actions.finish.question`), "[[number]]", code), "[[name]]", get(inventaryActive, "data.data.name", "--")) })
     const onFinishCancel = () => setAlertFinish({ open: false, title: "", subtitle: "" })
     const onFinishSubmit = () => {
@@ -336,7 +341,7 @@ const ActiveInventory = () => {
                             <Paper elevation={[1]} className='py-8 px-6 h-full'>
                                 <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
                                 <Box className='m-auto my-6' maxWidth={250} >
-                                    <PieChart values={[get(inventaryActive, "data.data.getCountsPieChart.counted", 0), get(inventaryActive, "data.data.getCountsPieChart.notCounted", 0)]} />
+                                    <PieChart loading={get(inventaryActive, "isLoading", false)} values={[get(inventaryActive, "data.data.getCountsPieChart.counted", 0), get(inventaryActive, "data.data.getCountsPieChart.notCounted", 0)]} />
                                 </Box>
                                 <Box className='flex items-center justify-around'>
                                     <Box className='flex items-center'>
@@ -354,7 +359,7 @@ const ActiveInventory = () => {
                             <Paper elevation={[1]} className='py-8 px-6 h-full'>
                                 <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
                                 <Box className='m-auto my-6 px-6' overflow="auto">
-                                    <BarChart minWidth={350} countsBarChart={get(inventaryActive, "data.data.getCountsBarChart")} />
+                                    <BarChart loading={get(inventaryActive, "isLoading", false)} minWidth={350} countsBarChart={get(inventaryActive, "data.data.getCountsBarChart")} />
                                 </Box>
                                 <Box className='flex items-center justify-around'>
                                     <Box className='flex items-center'>

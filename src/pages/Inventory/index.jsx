@@ -62,6 +62,7 @@ const ActiveInventory = () => {
   const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
   const [loadDelete, setLoadDelete] = useState(false);
   const [valuesTemp, setValuesTemp] = useState({})
+  const [loadToPay, setLoadToPay] = useState(false)
 
   const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
   const [loadStart, setLoadStart] = useState(false)
@@ -327,8 +328,8 @@ const ActiveInventory = () => {
       .catch((err) => { setError(err); setLoadFinish(false); onFinishCancel() })
   }
 
-  // const onPay = () => { closePoop(); setAlertPay({ open: true, title: __(`${module}.actions.pay.title`), subtitle: replace(__(`${module}.actions.pay.question`), "[[number]]", `#${get(selected, "inventoryId")}`) }) }
-  const onPay = () => { closePoop(); onPaySubmit() }
+  useEffect(() => { if (!loadToPay) closePoop() }, [loadToPay])
+  const onPay = () => { onPaySubmit() }
   const onPayCancel = () => setAlertPay({ open: false, title: "", subtitle: "" })
   const onPaySubmit = () => {
     setOpenPay(true)
@@ -386,12 +387,22 @@ const ActiveInventory = () => {
   const getOptions = (status) => {
     const divider = <Divider />
     const detail = <MenuItem onClick={onDetail}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.detail`)}</strong></Typography></MenuItem>
-    const edit = <MenuItem onClick={onEdit}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.edit`)}</strong></Typography></MenuItem>
+    const edit = <MenuItem loading={true} onClick={onEdit}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.edit`)}</strong></Typography></MenuItem>
     const start = <MenuItem onClick={onStart}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.start`)}</strong></Typography></MenuItem>
     const deleteIt = <MenuItem onClick={onDelete}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.delete`)}</strong></Typography></MenuItem>
     const finish = <MenuItem onClick={onFinish}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.finish`)}</strong></Typography></MenuItem>
-    const pay = <MenuItem onClick={onPay}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.pay`)}</strong></Typography></MenuItem>
-    const report = <MenuItem onClick={onDownload}>
+    const pay =
+      <MenuItem onClick={onPay} disabled={loadToPay}>
+        <Box height={28} position="relative">
+          <Fade in={loadToPay}>
+            <Box position="absolute" width="100%" height="100%" display="flex" alignItems="center" justifyContent="center">
+              <CircularProgress color="primary" size={20} />
+            </Box>
+          </Fade>
+          <Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.pay`)}</strong></Typography>
+        </Box >
+      </MenuItem>
+    const report = <MenuItem onClick={onDownload} disabled={loadReport}>
       <Box height={28} position="relative">
         <Fade in={loadReport}>
           <Box position="absolute" width="100%" height="100%" display="flex" alignItems="center" justifyContent="center">
@@ -507,6 +518,8 @@ const ActiveInventory = () => {
           setSuccess={setSuccess}
           getData={() => getData({ page: 1, filterSearch })}
           closeAlert={closeAlert}
+          onDetail={false}
+          setIsLoading={setLoadToPay}
         />
       }
 

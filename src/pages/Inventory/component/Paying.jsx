@@ -25,8 +25,13 @@ import { IMaskInput } from 'react-imask';
 import { LoadingButton } from '@mui/lab';
 import { useDispatch, useSelector } from "react-redux";
 
+import Alert from "../../../components/form/Alert";
+
 import { postInventaryPayRequest } from "../../../store/inventary/actions/inventary/detail/postInventaryPay";
 import { getInventaryDetailPaying } from "../../../store/inventary/thunk/getInventary/detail/getDetailsPaying";
+import { getInventaryFreeRequest } from "../../../store/inventary/actions/inventary/getInventaryFree";
+import { postInventaryFreeRequest } from "../../../store/inventary/actions/inventary/postInventaryFree";
+import getTypeCard from "./getTypeCard"
 
 const InputNumberCustom = React.forwardRef(function InputNumberCustom(props, ref) {
     const { onChange, ...other } = props;
@@ -76,18 +81,26 @@ const InputCvvCustom = React.forwardRef(function InputCvvCustom(props, ref) {
     );
 });
 
-const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuccess, getData, closeAlert }) => {
+const NewInventory = ({ open, setOpen, __, module, onDetail, inventaryId, setError, setSuccess, getData, closeAlert, setIsLoading = () => { } }) => {
     const navegate = useNavigate();
     const dispatch = useDispatch()
     const [name, setName] = useState("");
     const [loadPay, setLoadPay] = useState(false);
+    const [loadPayFree, setLoadPayFree] = useState(false)
     const [cvvFocus, setCvvFocus] = useState(false);
     const [mount, setMount] = useState(false);
+    const [typeCard, setTypeCard] = useState(0)
+    const [openModal, setOpenModal] = useState(0);
+
     const [values, setValues] = useState({
         number: '',
         date: '',
         cvv: '',
     });
+
+    useEffect(() => {
+        if (open) getFree()
+    }, [open])
 
     useEffect(() => {
         setMount(true)
@@ -99,6 +112,10 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
             ...values,
             [event.target.name]: event.target.value,
         });
+        if (event.target.name === "number") {
+            setTypeCard(getTypeCard(event.target.value))
+        }
+
     };
 
     const userState = useSelector(state => state.auth.login.dataUser);
@@ -108,13 +125,25 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
     const handleClose = () => {
         setOpen(false);
         setName("")
-        setValues({
-            number: '',
-            date: '',
-            cvv: '',
-        })
+        setValues({ number: '', date: '', cvv: '' })
         setLoadPay(false)
+        setOpenModal(0)
+        setTypeCard(0)
     };
+
+    const onSuccess = () => {
+        const success = {
+            title: __(`${module}.actions.pay.success.title`),
+            subtitle: __(`${module}.actions.pay.success.subtitle`),
+            btn: __(`${module}.actions.pay.success.btn-${onDetail ? 2 : 1}`),
+            func: () => navegate(`/inventory/${inventaryId}`),
+            btn2: onDetail ? "" : __(`${module}.actions.pay.success.btn-2`),
+            func2: closeAlert
+        }
+        setSuccess(success, inventaryId)
+        handleClose()
+        getData()
+    }
 
     const onSubmit = () => {
         const body = {
@@ -133,18 +162,8 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
         postInventaryPayRequest(body, () => getState)
             .then(({ data }) => {
                 if (get(data, "success")) {
-                    const success = {
-                        title: __(`${module}.actions.pay.success.title`),
-                        subtitle: __(`${module}.actions.pay.success.subtitle`),
-                        btn: __(`${module}.actions.pay.success.btn-1`),
-                        func: () => navegate(`/inventory/${inventaryId}`),
-                        btn2: __(`${module}.actions.pay.success.btn-2`),
-                        func2: closeAlert
-                    }
-                    setSuccess(success, inventaryId)
+                    onSuccess()
                     setLoadPay(false)
-                    handleClose()
-                    getData()
                 } else {
                     const err = {
                         response: {
@@ -174,29 +193,66 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
         return true;
     }
 
+    const getFree = async () => {
+        try {
+            setIsLoading(true)
+            const { data } = await getInventaryFreeRequest()
+            if (get(data, "data.free", false)) { setOpenModal(1) }
+            else { setOpenModal(2) }
+            setIsLoading(false)
+        } catch (error) {
+            setOpenModal(2)
+            setIsLoading(false)
+        }
+    }
+
+    const setFree = async () => {
+        try {
+            setLoadPayFree(true)
+            const body = {
+                inventoryid: get(inventaryId, "inventoryId"),
+                language: localStorage.getItem("lang"),
+                userid: get(userState, "userId"),
+                companyid: Number(get(userState, "companyId")),
+            }
+            await postInventaryFreeRequest(body)
+            onSuccess()
+            setLoadPayFree(false)
+        } catch (err) {
+            setError(err, "pay");
+            setLoadPayFree(false)
+        }
+    }
+
     return (
         <div>
             <Dialog
                 onClose={handleClose}
                 aria-labelledby="modal-new-inventory"
-                open={open}
+                open={openModal === 2}
                 maxWidth="lg"
                 fullWidth
             >
-                <DialogTitle sx={{ m: 0, p: 2 }} >
+                <DialogTitle sx={{ m: 0, py: 0, px: 2 }} >
                     <IconButton
                         aria-label="close"
                         onClick={handleClose}
                         sx={{
                             position: 'absolute',
                             right: 8,
-                            top: 8,
+                            top: 15,
                             color: (theme) => theme.palette.grey[500],
                         }}
                     >
                         <CloseIcon />
                     </IconButton>
-                    {__(`${module}.actions.title`)}
+                    <Stack direction="row" alignItems="center" spacing={2}>
+                        <Box>
+                            {__(`${module}.actions.title`)}
+                        </Box>
+                        <img style={{ height: 60 }} alt="logo-card-admite" src="/images/visa.png" />
+                        <img style={{ height: 60 }} alt="logo-card-admite" src="/images/mastercard.png" />
+                    </Stack>
                 </DialogTitle>
                 <DialogContent dividers sx={{ m: 0, p: 0 }}>
                     <Box className='p-4 flex-1'>
@@ -336,9 +392,9 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                                                         <Box sx={{ width: 182, height: 264, borderRadius: 4, position: "relative" }}>
                                                             <CardMedia
                                                                 component="img"
-                                                                src="/images/card.svg"
+                                                                src={`/images/card-${typeCard}-a.svg`}
                                                                 alt="card-type"
-                                                                sx={{ width: 182, height: 264, position: "absolute", top: 0, left: 0, zIndex: 1 }}
+                                                                sx={{ width: 182, height: 264, position: "absolute", top: 0, left: 0, zIndex: 1, transition: "all 0.5s" }}
                                                             />
                                                             <Box sx={{
                                                                 height: "100%",
@@ -352,9 +408,9 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                                                                 pt: 2,
                                                                 pb: 4
                                                             }}>
-                                                                <Typography variant="bodyXtraSmall" color="text.dark" gutterBottom>{name || __(`${module}.actions.pay.input.name.label`)}</Typography>
-                                                                <Typography variant="bodyXtraSmall" color="text.lite" gutterBottom>{get(values, "number") || __(`${module}.actions.pay.input.number.placeholder`)}</Typography>
-                                                                <Typography variant="bodyXtraSmall" color="text.lite" gutterBottom>{get(values, "date") || __(`${module}.actions.pay.input.date.placeholder`)}</Typography>
+                                                                <Typography variant="bodyXtraSmall" color={!!typeCard ? "text.sslite" : "text.dark"} gutterBottom>{name || __(`${module}.actions.pay.input.name.label`)}</Typography>
+                                                                <Typography variant="bodyXtraSmall" color={!!typeCard ? "text.sslite" : "text.lite"} gutterBottom>{get(values, "number") || __(`${module}.actions.pay.input.number.placeholder`)}</Typography>
+                                                                <Typography variant="bodyXtraSmall" color={!!typeCard ? "text.sslite" : "text.lite"} gutterBottom>{get(values, "date") || __(`${module}.actions.pay.input.date.placeholder`)}</Typography>
                                                             </Box>
                                                         </Box>
                                                     </Box>
@@ -371,11 +427,11 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                                                             transform: "rotateY( 180deg)",
                                                         }}
                                                     >
-                                                        <Box sx={{ width: 182, height: 264, borderRadius: 4, position: "relative" }}>
+                                                        <Box sx={{ width: 182, height: 264, borderRadius: 4, position: "relative", transition: "all 0.5s" }}>
                                                             <Box sx={{ width: 182, height: 264, borderRadius: 4, position: "relative" }}>
                                                                 <CardMedia
                                                                     component="img"
-                                                                    src="/images/card-2.svg"
+                                                                    src={`/images/card-${typeCard}-b.svg`}
                                                                     alt="card-type"
                                                                     sx={{ width: 182, height: 264, position: "absolute", top: 0, left: 0, zIndex: 1 }}
                                                                 />
@@ -391,7 +447,7 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                                                                     pt: 2,
                                                                     pb: 4
                                                                 }}>
-                                                                    <Typography variant="bodyXtraSmall" color="text.lite" gutterBottom>{get(values, "cvv") || "CVV"}</Typography>
+                                                                    <Typography variant="bodyXtraSmall" color={!!typeCard ? "text.sslite" : "text.lite"} gutterBottom>{get(values, "cvv") || "CVV"}</Typography>
                                                                 </Box>
                                                             </Box>
                                                         </Box>
@@ -465,6 +521,15 @@ const NewInventory = ({ open, setOpen, __, module, inventaryId, setError, setSuc
                     </Stack>
                 </DialogActions>
             </Dialog >
+            <Alert
+                title={__(`${module}.modal.alert.title-free`)}
+                subtitle={__(`${module}.modal.alert.sub-title-free`)}
+                btn1={{ label: __(`${module}.actions.acept`), func: setFree }}
+                type={"info"}
+                openAlert={openModal === 1}
+                closeAlert={handleClose}
+                loading={loadPayFree}
+            />
         </div >
     );
 }

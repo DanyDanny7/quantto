@@ -158,7 +158,8 @@
             "alert": {
                 "title": "Inventory created",
                 "sub-title": "Inventory must be paid before starting, if you want to pay later, click on save and exit",
-				"sub-title-free": "Posees un inventario gratis. Puedes iniciarlo en este momento o presionar click en guardar y salir",
+                "title-free": "Inventory Free",
+				"sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept",
                 "btn-1": "Pay inventory",
 				"btn-1-free": "Start inventory",
                 "btn-2": "Save and exit"
@@ -231,7 +232,7 @@
             },
             "finish": {
                 "title": "Finish inventory",
-                "question": "¿Do you want to finish the iventory: [number]]?, this process can not be undone",
+                "question": "¿Do you want to finish the iventory: [[number]]?, this process can not be undone",
                 "success": "Iventory finished"
             },
             "close": "Close",
@@ -269,7 +270,8 @@
             "Barcode",
             "Onhand",
             "Counted",
-            "Variances"
+            "Variances",
+            "Category"
         ],
         "empty": {
             "title": "No information to show",
@@ -315,7 +317,11 @@
             "title-edit": "Edit inventory takers from inventory: | [[name]]",
             "sub-title-2": "Select inventory takers to assing to this count",
             "btn-4": "New inventory taker",
-            "table-title": "Inventory takers"
+            "table-title": "Inventory takers",
+            "alert": {
+                "title-free": "Inventory Free",
+				"sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept"
+            }
         }
     },
     "counts": {

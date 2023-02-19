@@ -9,7 +9,10 @@ import {
     InputAdornment,
     IconButton,
     Paper,
-    Stack
+    Stack,
+    Checkbox,
+    Autocomplete,
+    FormHelperText
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
@@ -23,7 +26,8 @@ import LayoutAuth from "../../../components/layout/LayoutAuth";
 import Notification from "../../../components/form/Notification";
 import Alert from "../../../components/form/Alert";
 import BtnLanguage from "../../../components/form/BtnLanguage";
-import validator from "./validator"
+import validator from "./validator";
+import countries from "./countries.json"
 
 import { registerRequest } from "../../../store/auth/actions/register"
 
@@ -109,7 +113,8 @@ const Register = () => {
             email: '',
             pass: '',
             confirmation: '',
-            // phone: "",
+            country: '',
+            termAndConditions: false
         },
         validationSchema: validator(inputs),
         onSubmit
@@ -160,23 +165,55 @@ const Register = () => {
                                     />
                                 </FormControl>
                             </Box>
-                            {/* <Box className='mb-8'>
-                                <FormControl fullWidth >
-                                    <Typography className='pb-2' component="label" htmlFor="companyNombre" >
-                                        {get(inputs, "[2].name")}
+                            <Box className='mb-8'>
+                                <FormControl variant="outlined" fullWidth >
+                                    <Typography className='pb-2' component="label" htmlFor="email" >
+                                        {get(inputs, "[6].name")}
                                     </Typography>
-                                    <TextField
-                                        fullWidth
-                                        id="phone"
-                                        name="phone"
-                                        placeholder={get(inputs, "[2].placeholder")}
-                                        value={get(formik, "values.phone")}
-                                        onChange={get(formik, "handleChange")}
-                                        error={get(formik, "touched.phone") && Boolean(get(formik, "errors.phone"))}
-                                        helperText={get(formik, "touched.phone") && get(formik, "errors.phone")}
+                                    <Autocomplete
+                                        id="country"
+                                        name="country"
+                                        options={countries}
+                                        onChange={(e, v) => formik.setFieldValue("country", get(v, "label"))}
+                                        autoHighlight
+                                        getOptionLabel={(option) => option.label}
+                                        renderOption={(props, option) => (
+                                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                                <img
+                                                    loading="lazy"
+                                                    width="20"
+                                                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                                    alt=""
+                                                />
+                                                <Typography component="span" variant='bodyMedium'>
+                                                    {option.code} - {option.label}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                inputProps={{
+                                                    ...params.inputProps,
+                                                    placeholder: get(inputs, "[6].placeholder"),
+                                                    autoComplete: 'new-password', // disable autocomplete and autofill
+                                                }}
+                                            />
+                                        )}
                                     />
+                                    <FormHelperText
+                                        error={get(formik, "touched.country") && Boolean(get(formik, "errors.country"))}
+                                        helperText={get(formik, "touched.country") && get(formik, "errors.country")}
+                                    >
+                                        {(get(formik, "touched.country") && Boolean(get(formik, "errors.country"))) &&
+                                            <Typography variant="caption" sx={{ lineHeight: "1.1 !important" }}>
+                                                {get(formik, "errors.country")}
+                                            </Typography>
+                                        }
+                                    </FormHelperText>
                                 </FormControl>
-                            </Box> */}
+                            </Box>
                             <Box className='mb-8'>
                                 <FormControl fullWidth >
                                     <Typography className='pb-2' component="label" htmlFor="email" >
@@ -208,7 +245,8 @@ const Register = () => {
                                         onChange={get(formik, "handleChange")}
                                         error={get(formik, "touched.pass") && Boolean(get(formik, "errors.pass"))}
                                         helperText={get(formik, "touched.pass") && get(formik, "errors.pass")}
-                                        InputProps={{
+                                        inputProps={{
+                                            autoComplete: 'new-password',
                                             endAdornment:
                                                 <InputAdornment position="end" className='mr-2'>
                                                     <IconButton
@@ -224,7 +262,7 @@ const Register = () => {
                                     />
                                 </FormControl>
                             </Box>
-                            <Box className='mb-8'>
+                            <Box className='mb-6'>
                                 <FormControl fullWidth >
                                     <Typography className='pb-2' component="label" htmlFor="confirmation" >
                                         {get(inputs, "[5].name")}
@@ -239,6 +277,7 @@ const Register = () => {
                                         error={get(formik, "touched.confirmation") && Boolean(get(formik, "errors.confirmation"))}
                                         helperText={get(formik, "touched.confirmation") && get(formik, "errors.confirmation")}
                                         InputProps={{
+                                            autoComplete: 'new-password',
                                             endAdornment:
                                                 <InputAdornment position="end" className='mr-2'>
                                                     <IconButton
@@ -254,6 +293,36 @@ const Register = () => {
                                     />
                                 </FormControl>
                             </Box>
+
+                            <FormControl sx={{ mb: 2 }} >
+                                <Stack direction="row" alignItems="center" spacing={0.5} >
+                                    <Checkbox
+                                        id="termAndConditions"
+                                        name="termAndConditions"
+                                        onChange={(e, v) => formik.setFieldValue("termAndConditions", v)}
+                                        color="primary"
+                                    />
+                                    <Typography component="label" variant='bodyMedium' >
+                                        {get(links, "[1].cover")}{" "}
+                                        <LinkUi href={get(links, "[1].href")} underline="hover" color="secondary">
+                                            <Typography component="span" variant='bodyMedium'>
+                                                {get(links, "[1].name")}
+                                            </Typography>
+                                        </LinkUi>
+                                    </Typography>
+                                </Stack>
+                                <FormHelperText
+                                    error={get(formik, "touched.termAndConditions") && Boolean(get(formik, "errors.termAndConditions"))}
+                                    helperText={get(formik, "touched.termAndConditions") && get(formik, "errors.termAndConditions")}
+                                    sx={{ mt: -1 }}
+                                >
+                                    {(get(formik, "touched.termAndConditions") && Boolean(get(formik, "errors.termAndConditions"))) &&
+                                        <Typography variant="caption" sx={{ lineHeight: "1.1 !important" }}>
+                                            {get(formik, "errors.termAndConditions")}
+                                        </Typography>
+                                    }
+                                </FormHelperText>
+                            </FormControl>
 
                             <LoadingButton color="primary" variant="contained" fullWidth type="submit" size='large' loading={loadRegister}>
                                 {__(`${module}.button.name`)}

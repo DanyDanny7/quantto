@@ -6,7 +6,9 @@ const validators = (inputs) => (value) => {
         yup.object({
             username: yup.string().required(get(inputs, "[0].error")),
             companyNombre: yup.string().required(get(inputs, "[1].error")),
-            // phone: yup.string().required(get(inputs, "[2].error")),
+            country: yup.string().required(get(inputs, "[6].error")),
+            termAndConditions: yup.bool().oneOf([true], get(inputs, "[7].error")),
+
             email: yup.string().email(get(inputs, "[3].error-2")).required(get(inputs, "[3].error")),
             pass: yup.string()
                 // .matches(/^(?=.*[a-z])/, 'Ingrese al menos 1 minuscula')

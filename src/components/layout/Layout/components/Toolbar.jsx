@@ -3,8 +3,9 @@ import { styled } from '@mui/material/styles';
 import { get } from "lodash";
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from "react-helmet";
+import { LoadingButton } from '@mui/lab';
 
-import { Box, Typography, Toolbar as ToolbarUi, Button, IconButton, Stack } from '@mui/material';
+import { Box, Typography, Toolbar as ToolbarUi, IconButton, Stack } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const StyledToolbar = styled(ToolbarUi)(({ theme }) => ({
@@ -24,8 +25,10 @@ const Toolbar = ({
         btnFunc: () => { },
         color: "primary",
         btnLabel2: "",
+        loading: false,
         btnFunc2: () => { },
         color2: "primary",
+        loading2: false,
         customBtn: null
     },
     goBack
@@ -54,16 +57,16 @@ const Toolbar = ({
                 ? (
                     get(propsToolbar, "customBtn")
                 ) : (
-                    <Stack direction="row" spacing={2} alignItems="right">
-                        {get(propsToolbar, "btnLabel2", false) &&
-                            <Button color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
-                                {get(propsToolbar, "btnLabel2")}
-                            </Button>
-                        }
+                    <Stack direction="row-reverse" spacing={2} alignItems="right">
                         {get(propsToolbar, "btnLabel", false) &&
-                            <Button color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
+                            <LoadingButton loading={get(propsToolbar, "loading")} color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
                                 {get(propsToolbar, "btnLabel")}
-                            </Button>
+                            </LoadingButton>
+                        }
+                        {get(propsToolbar, "btnLabel2", false) &&
+                            <LoadingButton loading={get(propsToolbar, "loading2")} color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
+                                {get(propsToolbar, "btnLabel2")}
+                            </LoadingButton>
                         }
                     </Stack>
                 )}

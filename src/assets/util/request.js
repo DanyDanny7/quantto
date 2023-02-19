@@ -33,7 +33,6 @@ export const Methods = {
 };
 
 export const withToken = async (options, getState = () => { }) => {
-  console.log(getState())
   return {
     ...options,
     token: get(getState(), "auth.login.dataUser.token"),

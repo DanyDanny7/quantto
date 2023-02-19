@@ -14,15 +14,15 @@ const PieChart = ({ values, countsBarChart, loading, ...restProps }) => {
         labels: [get(countsBarChart, "category", "")],
         datasets: [
             {
-                data: [get(countsBarChart, "fisico", 0)],
+                data: [get(countsBarChart, "teorico", 0)],
                 backgroundColor: theme.palette.color.greenlight[400],
             },
             {
-                data: [get(countsBarChart, "teorico", 0)],
+                data: [get(countsBarChart, "fisico", 0)],
                 backgroundColor: theme.palette.color.orange[400],
             },
             {
-                data: [get(countsBarChart, "fisico", 0) - get(countsBarChart, "teorico", 0)],
+                data: [get(countsBarChart, "teorico", 0) - get(countsBarChart, "fisico", 0)],
                 backgroundColor: theme.palette.color.pink[300],
             }
         ]

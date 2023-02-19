@@ -158,7 +158,8 @@
             "alert": {
                 "title": "Inventario creado con éxito",
                 "sub-title": "Debes pagar el inventario antes de iniciarlo, si aún no quieres pagarlo presionar click en guardar y salir",
-				"sub-title-free": "Posees un inventario gratis. Puedes iniciarlo en este momento o presionar click en guardar y salir",
+				"title-free": "Inventario Gratis",
+				"sub-title-free": "Para que puedas probar todas las características de Quantto, hemos habilitado en tu cuenta un inventario gratis, el cual puedes aplicar presionando aceptar",
                 "btn-1": "Pagar inventario",
 				"btn-1-free": "Iniciar inventario",
                 "btn-2": "Guardar y salir"
@@ -269,7 +270,8 @@
             "Barcode",
             "Teórico",
             "Físicos",
-            "Diferencias"
+            "Diferencias",
+            "Categoría"
         ],
         "empty": {
             "title": "No hay datos que mostrar",
@@ -315,7 +317,11 @@
             "title-edit": "Editar auxiliares de inventario | [[name]]",
             "sub-title-2": "Selecciona los auxiliares para asignarlos a tu conteo",
             "btn-4": "Nuevo auxiliar",
-            "table-title": "Auxiliares"
+            "table-title": "Auxiliares",
+            "alert": {
+				"title-free": "Inventario Gratis",
+				"sub-title-free": "Para que puedas probar todas las características de Quantto, hemos habilitado en tu cuenta un inventario gratis, el cual puedes aplicar presionando aceptar"
+            }
         }
     },
     "counts": {
