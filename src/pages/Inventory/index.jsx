@@ -17,12 +17,15 @@ import {
   Button,
   Box,
   Fade,
-  CircularProgress
+  CircularProgress,
+  Collapse,
+  Tooltip
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import axios from "axios";
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 import Layout from "../../components/layout/Layout"
 import Table from "../../components/form/Table";
@@ -225,6 +228,13 @@ const ActiveInventory = () => {
     const s = find(status, { statusId: get(row, "statusId") });
     return ({
       ...row,
+      name: (
+        <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
+          <Box>{get(row, "name")}</Box>
+          <Collapse in={get(row, "free", false)} orientation="horizontal"><Tooltip title={__(`${module}.modal.alert.title-free`)} placement="top" arrow><CreditScoreIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
+        </ Stack>
+      ),
+
       create_at: moment(row.date).format("DD/MM/YYYY"),
       status: <Chip label={<Typography variant="bodyXtraSmall">{get(s, "description")}</Typography>} color={get(s, "color")} />,
       file: <Link color="secondary" href={get(row, "templateUrl")} download>{last(split(get(row, "templateUrl"), "/"))}</Link>,

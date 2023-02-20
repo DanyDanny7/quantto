@@ -196,7 +196,7 @@ const NewInventory = ({ open, setOpen, __, module, onDetail, inventaryId, setErr
     const getFree = async () => {
         try {
             setIsLoading(true)
-            const { data } = await getInventaryFreeRequest()
+            const { data } = await getInventaryFreeRequest({}, () => getState)
             if (get(data, "data.free", false)) { setOpenModal(1) }
             else { setOpenModal(2) }
             setIsLoading(false)
@@ -210,12 +210,12 @@ const NewInventory = ({ open, setOpen, __, module, onDetail, inventaryId, setErr
         try {
             setLoadPayFree(true)
             const body = {
-                inventoryid: get(inventaryId, "inventoryId"),
+                inventoryid: inventaryId,
                 language: localStorage.getItem("lang"),
                 userid: get(userState, "userId"),
                 companyid: Number(get(userState, "companyId")),
             }
-            await postInventaryFreeRequest(body)
+            await postInventaryFreeRequest(body, () => getState)
             onSuccess()
             setLoadPayFree(false)
         } catch (err) {
