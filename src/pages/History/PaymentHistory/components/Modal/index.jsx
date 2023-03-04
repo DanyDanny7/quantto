@@ -89,7 +89,6 @@ const AlertQuestion = ({
                                             <Stack>
                                                 <Stack direction="column" justifyContent="center" sx={{ height: 150 }}>
                                                     <Typography variant="heading1" sx={{ fontSize: 40, lineHeight: "1.3" }} gutterBottom >{__(`${module}.voucher.labels.company`)}</Typography>
-                                                    {/* <Typography variant="bodyXtraSmall" color="text.light">{__(`${module}.voucher.labels.country`)}</Typography> */}
                                                     <Typography variant="bodyXtraSmall" color="text.light">{`${__(`${module}.voucher.labels.email`)} ${__(`${module}.voucher.values.email`)}`}</Typography>
                                                 </Stack>
                                                 <Stack spacing={0.5}>
@@ -112,6 +111,10 @@ const AlertQuestion = ({
                                                         <tr>
                                                             <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 100 }}>{__(`${module}.voucher.labels.terms`)}</Typography>
                                                             <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 120 }}>{__(`${module}.voucher.values.terms`)}</Typography>
+                                                        </tr>
+                                                        <tr>
+                                                            <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 100 }}>{__(`${module}.voucher.labels.refcode`)}</Typography>
+                                                            <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 120 }}>{get(historyDetailState, "data.refcode", "--")}</Typography>
                                                         </tr>
                                                     </table>
                                                 </Stack>
@@ -195,6 +198,10 @@ const AlertQuestion = ({
                                                         <tr>
                                                             <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 100 }}>{__(`${module}.voucher.labels.terms`)}</Typography>
                                                             <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 120 }}>{__(`${module}.voucher.values.terms`)}</Typography>
+                                                        </tr>
+                                                        <tr>
+                                                            <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 100 }}>{__(`${module}.voucher.labels.refcode`)}</Typography>
+                                                            <Typography component="td" variant="bodyXtraSmall" sx={{ minWidth: 120 }}>{get(historyDetailState, "data.refcode", "--")}</Typography>
                                                         </tr>
                                                     </table>
                                                 </Stack>

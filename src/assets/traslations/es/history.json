@@ -33,7 +33,8 @@
                 "total": "Total",
                 "paid": "Pagado",
                 "amount": "Pendiente",
-                "download": "Descargar"
+                "download": "Descargar",
+                "refcode": "Código de referecia:"
             },
             "values": {
                 "email": "support@getquantto.com",

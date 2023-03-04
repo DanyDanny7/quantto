@@ -24,7 +24,7 @@ import InventoryDetailCounts from "../../pages/Inventory/Inventory/Counts";
 import PublicRouter from "./PublicRouter";
 import PrivateRoutes from "./PrivateRoutes";
 
-const routesPublics = [
+const routesNoAuth = [
     /* ---------- Auth ---------- */
     {
         key: "login",
@@ -59,7 +59,10 @@ const routesAuth = [
         key: "profile",
         path: "/profile",
         element: <Profile />,
-    },
+    }
+]
+
+const routesPublic = [
     {
         key: "validate",
         path: "/validate-email",
@@ -126,8 +129,9 @@ const routes = concat(
     map(routesInvent, (route) => ({ ...route, element: <PrivateRoutes>{get(route, "element")}</PrivateRoutes> })),
     map(routesCounts, (route) => ({ ...route, element: <PrivateRoutes>{get(route, "element")}</PrivateRoutes> })),
     map(routesHistory, (route) => ({ ...route, element: <PrivateRoutes>{get(route, "element")}</PrivateRoutes> })),
-    map(routesPublics, (route) => ({ ...route, element: <PublicRouter>{get(route, "element")}</PublicRouter> })),
+    map(routesNoAuth, (route) => ({ ...route, element: <PublicRouter>{get(route, "element")}</PublicRouter> })),
     map(routesError, (route) => ({ ...route, element: <PrivateRoutes>{get(route, "element")}</PrivateRoutes> })),
+    map(routesPublic, (route) => ({ ...route, element: <PublicRouter isPublic>{get(route, "element")}</PublicRouter> })),
 )
 
 export default routes
