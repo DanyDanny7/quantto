@@ -2,7 +2,7 @@
     "inventaries": {
         "header": {
             "title": "List of Inventories",
-			"subtitle": "Select the inventory you want to pay, iniciate, edit or delete."
+            "subtitle": "Select the inventory you want to pay, iniciate, edit or delete."
         },
         "btn": "New Inventory",
         "menu": {
@@ -68,7 +68,7 @@
             "cancel": "Cancel",
             "submit": "Pay",
             "title": "Pay for your inventory count",
-			"subtitle": "Complete the required information to pay for your inventory",
+            "subtitle": "Complete the required information to pay for your inventory",
             "data": {
                 "title": "Confirm the inventory want to pay for",
                 "name": "Name",
@@ -129,8 +129,23 @@
         "modal": {
             "title": "New inventory",
             "title-edit": "Edit inventory taker | [[name]]",
-            "option-1": "File",
-            "option-2": "Users",
+            "steps": {
+                "1": "Inventory name",
+                "2": "File",
+                "3": "Inventory takers",
+                "4": "Confirmation"
+            },
+            "descriptions": {
+                "name": "Put some explanation of the creation of the inventory, we will give the next",
+                "file": "put some explanation of the Template, we will give the next",
+                "confirm": {
+                    "name": "Inventary name:",
+                    "file": "Inventary file:",
+                    "takers": "Inventary takers:"
+                }
+            },
+            "yes": "Si",
+            "no": "No",
             "sub-title-1": "Complete the information and attach your inventory file to continue",
             "sub-title-2": "Select inventory takers for your inventory",
             "download-file": "Download template",
@@ -159,9 +174,9 @@
                 "title": "Inventory created",
                 "sub-title": "Inventory must be paid before starting, if you want to pay later, click on save and exit",
                 "title-free": "Inventory Free",
-				"sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept",
+                "sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept",
                 "btn-1": "Pay inventory",
-				"btn-1-free": "Start inventory",
+                "btn-1-free": "Start inventory",
                 "btn-2": "Save and exit"
             }
         }
@@ -238,9 +253,9 @@
             "close": "Close",
             "cancel": "Cancel",
             "acept": "OK",
-            "submit": "Pay iventory",			
-			"title": "Pay for your inventory count",
-			"subtitle": "Complete the required information to pay for your inventory",		
+            "submit": "Pay iventory",
+            "title": "Pay for your inventory count",
+            "subtitle": "Complete the required information to pay for your inventory",
             "link": "go to inventory list",
             "reload": "Refresh",
             "data": {
@@ -320,7 +335,7 @@
             "table-title": "Inventory takers",
             "alert": {
                 "title-free": "Inventory Free",
-				"sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept"
+                "sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept"
             }
         }
     },

@@ -129,8 +129,23 @@
         "modal": {
             "title": "Creación de inventario",
             "title-edit": "Editar contadores de inventario | [[name]]",
-            "option-1": "Archivos",
-            "option-2": "Usuarios",
+            "steps": {
+                "1": "Nombre de inventario",
+                "2": "Archivo",
+                "3": "Contadores",
+                "4": "Confirmación"
+            },
+            "descriptions": {
+                "name": "Explicación para la creación de inventario",
+                "file": "Explicación para adjuntar la plantilla",
+                "confirm": {
+                    "name": "Nombre de inventario:",
+                    "file": "Archivo de inventario:",
+                    "takers": "Contadores de inventario:"
+                }
+            },
+            "yes": "Si",
+            "no": "No",
             "sub-title-1": "Completa los campos y adjunta el archivo para continuar",
             "sub-title-2": "Selecciona los usuarios para asignarlos a tu conteo",
             "download-file": "Descargar plantilla",

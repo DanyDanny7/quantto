@@ -54,26 +54,17 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
 
     const steps = [
         {
-            label: __(`${module}.modal.steps.1`),
+            label: __(`${module}.modal.option-1`),
             key: 1,
         },
         {
-            label: __(`${module}.modal.steps.2`),
+            label: __(`${module}.modal.option-2`),
             key: 2,
-        },
-        {
-            label: __(`${module}.modal.steps.3`),
-            key: 3,
-        },
-        {
-            label: __(`${module}.modal.steps.4`),
-            key: 4,
         },
     ];
 
     const isDisabled = (con) => {
-        const inactive = (isEmpty(file) && activeStep === 1) || (isEmpty(con) && activeStep === 2)
-        console.log(inactive)
+        const inactive = (isEmpty(file) && activeStep === 0) || (isEmpty(con) && activeStep === 1)
         if (inactive !== disabled) {
             setDisabled(inactive)
         }
@@ -81,7 +72,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
     }
 
     const submit = () => {
-        if (activeStep < 3) {
+        if (activeStep < 1) {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else {
             onSubmit({ name, counters: selected, file, handleClose })
@@ -100,10 +91,10 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
         if (!disabled) {
             submit()
         } else {
-            switch (activeStep) {
-                case 1: onAlertNoTempalte(); break;
-                case 2: onAlertNoCounter(); break;
-                default: break;
+            if (activeStep < 1) {
+                onAlertNoTempalte()
+            } else {
+                onAlertNoCounter()
             }
         }
     };
@@ -138,10 +129,10 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                 <DialogContent dividers sx={{ m: 0, p: 0 }}>
                     <Box className='flex'>
                         {!get(edit, "value", false) &&
-                            <Box className='w-48 p-6'>
+                            <Box className='w-40 p-6'>
                                 <Stack direction="row" alignItems="center" spacing={1}>
                                     <Avatar sx={{ bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 }} >
-                                        {get(steps, "[0]key") <= activeStep
+                                        {get(steps, "[0]key") === activeStep
                                             ? <CheckIcon fontSize='inhert' />
                                             : <Typography variant="bodySmall">{get(steps, "[0]key")}</Typography>
                                         }
@@ -156,42 +147,12 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             : { sx: { bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 } }
                                         )}
                                     >
-                                        {get(steps, "[1]key") <= activeStep
+                                        {get(steps, "[1]key") === activeStep
                                             ? <CheckIcon fontSize='inhert' />
                                             : <Typography variant="bodySmall">{get(steps, "[1]key")}</Typography>
                                         }
                                     </Avatar>
                                     <Typography variant="bodyMedium" {...(get(steps, "[1]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })} >{get(steps, "[1]label")}</Typography>
-                                </Stack>
-                                <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9, color: "secondary.main" }} />
-                                <Stack direction="row" alignItems="center" spacing={1}>
-                                    <Avatar
-                                        {...(get(steps, "[2]key") > activeStep + 1
-                                            ? { sx: { bgcolor: "common.white", color: "text.lite", border: "1px solid", width: 32, height: 32 } }
-                                            : { sx: { bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 } }
-                                        )}
-                                    >
-                                        {get(steps, "[2]key") <= activeStep
-                                            ? <CheckIcon fontSize='inhert' />
-                                            : <Typography variant="bodySmall">{get(steps, "[2]key")}</Typography>
-                                        }
-                                    </Avatar>
-                                    <Typography variant="bodyMedium" {...(get(steps, "[2]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })} >{get(steps, "[2]label")}</Typography>
-                                </Stack>
-                                <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9, color: "secondary.main" }} />
-                                <Stack direction="row" alignItems="center" spacing={1}>
-                                    <Avatar
-                                        {...(get(steps, "[3]key") > activeStep + 1
-                                            ? { sx: { bgcolor: "common.white", color: "text.lite", border: "1px solid", width: 32, height: 32 } }
-                                            : { sx: { bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 } }
-                                        )}
-                                    >
-                                        {get(steps, "[3]key") === activeStep
-                                            ? <CheckIcon fontSize='inhert' />
-                                            : <Typography variant="bodySmall">{get(steps, "[3]key")}</Typography>
-                                        }
-                                    </Avatar>
-                                    <Typography variant="bodyMedium" {...(get(steps, "[3]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })} >{get(steps, "[3]label")}</Typography>
                                 </Stack>
                             </Box>
                         }
@@ -201,6 +162,15 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                 <Stack direction="column" spacing={3} >
                                     <Stack direction="row" justifyContent="space-between" alignItems="center" >
                                         <Typography variant="bodyMedium">{__(`${module}.modal.sub-title-1`)}</Typography>
+                                        <Button
+                                            color="secondary"
+                                            endIcon={<ArrowDropDownIcon />}
+                                            component={Link}
+                                            href={`https://quantto.s3.amazonaws.com/InventoryTemplate.csv`}
+                                            download={`${__(`${module}.modal.download-file-name`)}.csv`}
+                                        >
+                                            <Typography variant="bodyMedium">{__(`${module}.modal.download-file`)}</Typography>
+                                        </Button>
                                     </Stack>
                                     <Divider />
                                     <Stack direction="row" spacing={2} >
@@ -219,45 +189,13 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             />
                                         </FormControl>
                                         <Divider orientation="vertical" flexItem />
-                                        <Box flex={1} height="200px" >
-                                            <Stack justifyContent="center" alignItems="center" height="100%" >
-                                                <Box dangerouslySetInnerHTML={{ __html: __(`${module}.modal.descriptions.name`) }} />
-                                            </Stack>
-                                        </Box>
-                                    </Stack>
-                                </Stack>
-                            </Collapse>
-                            <Collapse in={activeStep === 1}>
-                                <Stack direction="column" spacing={3} >
-                                    <Stack direction="row" justifyContent="space-between" alignItems="center" >
-                                        <Typography variant="bodyMedium">{__(`${module}.modal.sub-title-1`)}</Typography>
-                                        <Button
-                                            color="secondary"
-                                            endIcon={<ArrowDropDownIcon />}
-                                            component={Link}
-                                            href={`https://quantto.s3.amazonaws.com/InventoryTemplate.csv`}
-                                            download={`${__(`${module}.modal.download-file-name`)}.csv`}
-                                        >
-                                            <Typography variant="bodyMedium">{__(`${module}.modal.download-file`)}</Typography>
-                                        </Button>
-                                    </Stack>
-                                    <Divider />
-                                    <Stack direction="row" spacing={2} >
-                                        <FormControl fullWidth sx={{ maxWidth: 360 }}  >
-                                            <Box flex={1} height="200px" >
-                                                <Stack justifyContent="center" alignItems="center" height="100%" >
-                                                    <Box dangerouslySetInnerHTML={{ __html: __(`${module}.modal.descriptions.file`) }} />
-                                                </Stack>
-                                            </Box>
-                                        </FormControl>
-                                        <Divider orientation="vertical" flexItem />
                                         <Box flex={1} >
                                             <NewInventaryDropZone __={__} module={module} getFile={setFile} />
                                         </Box>
                                     </Stack>
                                 </Stack>
                             </Collapse>
-                            <Collapse in={activeStep === 2}>
+                            <Collapse in={activeStep === 1}>
                                 <Stack direction="column" spacing={3} >
                                     <Stack direction="row" justifyContent="space-between" alignItems="center" >
                                         <Typography variant="bodyMedium">{__(`${module}.modal.sub-title-2`)}</Typography>
@@ -275,31 +213,6 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                             setError={setError}
                                         />
                                     </Box>
-                                </Stack>
-                            </Collapse>
-                            <Collapse in={activeStep === 3}>
-                                <Stack direction="column" spacing={3} >
-                                    <Stack direction="row" justifyContent="space-between" alignItems="center" >
-                                        <Stack direction="row" spacing={2}>
-                                            <Typography variant="bodyLarge"><strong>{__(`${module}.modal.descriptions.confirm.name`)}</strong></Typography>
-                                            <Typography variant="bodyLarge">{name}</Typography>
-                                        </Stack>
-                                    </Stack>
-                                    <Divider />
-                                    <Stack direction="row" spacing={2} >
-                                        <Box flex={1} height="200px" >
-                                            <Stack justifyContent="center" alignItems="flex-start" height="100%" spacing={2} >
-                                                <Stack direction="row" spacing={2}>
-                                                    <Typography variant="bodyLarge"><strong>{__(`${module}.modal.descriptions.confirm.file`)}</strong></Typography>
-                                                    <Typography variant="bodyLarge">{!!file ? __(`${module}.modal.yes`) : __(`${module}.modal.no`)}</Typography>
-                                                </Stack>
-                                                <Stack direction="row" spacing={2}>
-                                                    <Typography variant="bodyLarge"><strong>{__(`${module}.modal.descriptions.confirm.takers`)}</strong></Typography>
-                                                    <Typography variant="bodyLarge">{get(selected, "length")}</Typography>
-                                                </Stack>
-                                            </Stack>
-                                        </Box>
-                                    </Stack>
                                 </Stack>
                             </Collapse>
                         </Box>
@@ -323,7 +236,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                 disabled={isDisabled(selected)}
                                 loading={loading}
                             >
-                                {activeStep < 3
+                                {activeStep < 1
                                     ? __(`${module}.modal.btn-1`)
                                     : __(`${module}.modal.btn-5`)
                                 }
