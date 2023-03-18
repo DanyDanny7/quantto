@@ -35,7 +35,7 @@ import BarChart from "../component/BarChart";
 import Toolbar from "./Toolbar";
 import Notification from "../../../components/form/Notification";
 import Paying from "../component/Paying";
-import NewInventory from "../component/NewInventory";
+import EditInventory from "../component/EditInventory";
 
 import { getInventaryDetail } from "../../../store/inventary/thunk/getInventary/detail/getDetails";
 import { putInventaryEndRequest } from "../../../store/inventary/actions/inventary/detail/putInventaryEnd";
@@ -98,6 +98,11 @@ const ActiveInventory = () => {
     getData({ page: 1, filterSearch })
   }, [dispatch, filterSearch])
 
+  const onSuccess = () => {
+    const msg = __(`${module}.modal.update-csv`);
+    setShowNoti({ open: true, msg, variant: "success" })
+    getData({ page: 1, filterSearch })
+  }
 
   // ---------- Table ---------------
   const headTable = [
@@ -442,17 +447,17 @@ const ActiveInventory = () => {
         />
       }
       {get(edit, "value") &&
-        <NewInventory
+        <EditInventory
           __={__}
           open={get(edit, "value")}
           setOpen={() => { }}
           module={module}
-          onSubmit={() => { }}
           loading={false}
           showNoti={showNoti}
           setShowNoti={setShowNoti}
           edit={edit}
           setEdit={setEdit}
+          onSuccess={onSuccess}
         />
       }
 

@@ -85,6 +85,13 @@
                 "counter": {
                     "title": "No agregó contador",
                     "question": "¿Desea continuar sin un contador?"
+                },
+                "addtakers": {
+                    "title": "Agregar contador",
+                    "question": "¿Desea agregar [[numb]] al inventario?",
+                    "singular": "contador",
+                    "plural": "contadores",
+                    "success": "Lista de contadores actualizada con éxito"
                 }
             }
         },
@@ -129,6 +136,7 @@
         "modal": {
             "title": "Creación de inventario",
             "title-edit": "Editar contadores de inventario | [[name]]",
+            "update-csv": "CSV actualizado satisfactoriamente",
             "steps": {
                 "1": "Nombre de inventario",
                 "2": "Archivo",
@@ -138,11 +146,16 @@
             "descriptions": {
                 "name": "Explicación para la creación de inventario",
                 "file": "Explicación para adjuntar la plantilla",
+                "overwrite": "Explicación para sobreescribir csv",
                 "confirm": {
                     "name": "Nombre de inventario:",
                     "file": "Archivo de inventario:",
                     "takers": "Contadores de inventario:"
                 }
+            },
+            "tabs": {
+                "inventory": "Editar inventario",
+                "takers": "Editar contadores"
             },
             "yes": "Si",
             "no": "No",
@@ -157,11 +170,15 @@
             "btn-4": "Nuevo contador",
             "btn-5": "Crear inventario",
             "btn-6": "Agregar contador",
+            "btn-csv": "Actualizar CSV",
             "dropzone": {
                 "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv",
                 "text-active": "Suelta tu plantilla aquí",
                 "complement": "Opcional",
-                "text-head": "Archivo"
+                "text-head": "Archivo",
+                "current": "Actual",
+                "preload": "Precargado",
+                "clean": "Limpiar"
             },
             "input": {
                 "name": "Nombre del inventario",
@@ -173,10 +190,10 @@
             "alert": {
                 "title": "Inventario creado con éxito",
                 "sub-title": "Debes pagar el inventario antes de iniciarlo, si aún no quieres pagarlo presionar click en guardar y salir",
-				"title-free": "Inventario Gratis",
-				"sub-title-free": "Para que puedas probar todas las características de Quantto, hemos habilitado en tu cuenta un inventario gratis, el cual puedes aplicar presionando aceptar",
+                "title-free": "Inventario Gratis",
+                "sub-title-free": "Para que puedas probar todas las características de Quantto, hemos habilitado en tu cuenta un inventario gratis, el cual puedes aplicar presionando aceptar",
                 "btn-1": "Pagar inventario",
-				"btn-1-free": "Iniciar inventario",
+                "btn-1-free": "Iniciar inventario",
                 "btn-2": "Guardar y salir"
             }
         }
@@ -267,12 +284,20 @@
             },
             "alert": {
                 "template": {
-                    "title": "No agregó Archivo",
-                    "question": "¿Desea continuar sin un Archivo?, Nota: todos los artículos tendrán que ser agregados desde la apliación móvil"
+                    "title": "No agregó plantilla",
+                    "question": "¿Desea continuar sin una plantilla?",
+                    "subtitle": "Luego de crear tu inventario no podrás agregar productos a tu inventario, esta tarea únicamente podrá realizarse desde la aplicación movil de conteo."
                 },
                 "counter": {
-                    "title": "No agregó Auxiliar de inventario",
-                    "question": "¿Desea continuar sin un auxiliar?, Nota: No podrás iniciar tu inventario sin contadores"
+                    "title": "No agregó contador",
+                    "question": "¿Desea continuar sin un contador?"
+                },
+                "addtakers": {
+                    "title": "Agregar contador",
+                    "question": "¿Desea agregar [[numb]] al inventario?",
+                    "singular": "contador",
+                    "plural": "contadores",
+                    "success": "Lista de contadores actualizada con éxito"
                 }
             }
         },
@@ -331,11 +356,44 @@
         "modal": {
             "title-edit": "Editar auxiliares de inventario | [[name]]",
             "sub-title-2": "Selecciona los auxiliares para asignarlos a tu conteo",
-            "btn-4": "Nuevo auxiliar",
+            "update-csv": "CSV actualizado satisfactoriamente",
+            "btn-1": "Siguiente paso",
+            "btn-2": "Paso anterior",
+            "btn-3": "Cancelar",
+            "btn-4": "Nuevo contador",
+            "btn-5": "Crear inventario",
+            "btn-6": "Agregar contador",
+            "btn-csv": "Actualizar CSV",
             "table-title": "Auxiliares",
+            "descriptions": {
+                "name": "Explicación para la creación de inventario",
+                "file": "Explicación para adjuntar la plantilla",
+                "overwrite": "Explicación para sobreescribir csv",
+                "confirm": {
+                    "name": "Nombre de inventario:",
+                    "file": "Archivo de inventario:",
+                    "takers": "Contadores de inventario:"
+                }
+            },
+            "tabs": {
+                "inventory": "Editar inventario",
+                "takers": "Editar contadores"
+            },
+            "sub-title-1": "Completa los campos y adjunta el archivo para continuar",
+            "download-file": "Descargar plantilla",
+            "download-file-name": "InventoryTemplete",
+            "dropzone": {
+                "text-start": "Arrastra y suelta tu plantilla aquí, en formato .csv",
+                "text-active": "Suelta tu plantilla aquí",
+                "complement": "Opcional",
+                "text-head": "Archivo",
+                "current": "Actual",
+                "preload": "Precargado",
+                "clean": "Limpiar"
+            },
             "alert": {
-				"title-free": "Inventario Gratis",
-				"sub-title-free": "Para que puedas probar todas las características de Quantto, hemos habilitado en tu cuenta un inventario gratis, el cual puedes aplicar presionando aceptar"
+                "title-free": "Inventario Gratis",
+                "sub-title-free": "Para que puedas probar todas las características de Quantto, hemos habilitado en tu cuenta un inventario gratis, el cual puedes aplicar presionando aceptar"
             }
         }
     },

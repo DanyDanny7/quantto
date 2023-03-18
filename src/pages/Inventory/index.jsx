@@ -32,6 +32,7 @@ import Table from "../../components/form/Table";
 import Notification from "../../components/form/Notification";
 import Toolbar from "./component/Toolbar"
 import NewInventory from "./component/NewInventory";
+import EditInventory from "./component/EditInventory";
 import NewInventaryAlert from "./component/NewInventaryAlert";
 import NewInventaryAlertNoTemplate from "./component/NewInventaryAlertNoTemplate";
 import AlertDelete from "../../components/form/AlertQuestion";
@@ -100,6 +101,12 @@ const ActiveInventory = () => {
   const closePoop = () => {
     setAnchorEl(null);
   };
+
+  const onSuccess = () => {
+    const msg = __(`${module}.modal.update-csv`);
+    setShowNoti({ open: true, msg, variant: "success" })
+    getData({ page: 1, filterSearch })
+  }
 
   const onSubmit = async (values, noTemplate) => {
     const body = {
@@ -424,11 +431,11 @@ const ActiveInventory = () => {
     </MenuItem>
 
     switch (status) {
-      case 1: return <>{detail}{divider}{edit}{divider}{pay}{divider}{deleteIt}</>;
-      case 2: return <>{detail}{divider}{edit}{divider}{start}</>;
-      case 3: return <>{detail}{divider}{edit}{divider}{finish}</>;
-      case 4: return <>{detail}{divider}{report}</>;
-      default: return <>{detail}</>
+      case 1: return [detail, divider, edit, divider, pay, divider, deleteIt];
+      case 2: return [detail, divider, edit, divider, start];
+      case 3: return [detail, divider, edit, divider, finish];
+      case 4: return [detail, divider, report];
+      default: return [detail]
     }
   }
 
@@ -485,7 +492,7 @@ const ActiveInventory = () => {
         </MenuList>
       </Popover>
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
-      {(openNew || get(edit, "value")) &&
+      {openNew &&
         <NewInventory
           __={__}
           open={openNew || get(edit, "value")}
@@ -498,6 +505,20 @@ const ActiveInventory = () => {
           edit={edit}
           setEdit={setEdit}
           setError={setError}
+        />
+      }
+      {get(edit, "value") &&
+        <EditInventory
+          __={__}
+          open={openNew || get(edit, "value")}
+          setOpen={setOpenNew}
+          module={module}
+          showNoti={showNoti}
+          setShowNoti={setShowNoti}
+          edit={edit}
+          setEdit={setEdit}
+          setError={setError}
+          onSuccess={onSuccess}
         />
       }
       <NewInventaryAlert

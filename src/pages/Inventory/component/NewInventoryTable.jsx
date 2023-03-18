@@ -2,14 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Checkbox, Stack, Box, Typography, Divider, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { get, map, isEmpty, join, filter, find } from "lodash";
+import { get, map, isEmpty, join, replace, filter, find } from "lodash";
 import { LoadingButton } from '@mui/lab';
 import { useDispatch, useSelector } from "react-redux";
+import Notification from "../../../components/form/Notification";
 
 import Table from "../../../components/form/Table";
 import NewInventoryToolbar from "./NewInventoryToolbar"
 import Counters from "./Counters"
 import NewCounters from "../../Counters/components/NewCounters";
+import Alert from "../../../components/form/AlertQuestion";
 
 import { getCounts } from "../../../store/counts/thunk/getCounts"
 import { postInventaryCounterRequest } from "../../../store/inventary/actions/inventary/detail/postInventaryCounter"
@@ -23,6 +25,7 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
     const [openNew, setOpenNew] = useState(false);
     const [filterSearch, setFilterSearch] = useState("")
     const [loadAddCounter, setLoadAddCounter] = useState(false);
+    const [alert, setAlert] = useState({ open: false, title: "", subtitle: "", type: "" })
 
     const countsState = useSelector(state => state.counts);
     const inventaryDetailState = useSelector(state => state.inventary.inventary.detail);
@@ -63,8 +66,27 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
 
 
     // ---------- Agregar contador ---------------
+    const closeAlert = () => {
+        setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
+    }
 
     const addCounter = () => {
+        const numb = selected.length
+        const singular = __(`${module}.actions.alert.addtakers.singular`)
+        const plural = __(`${module}.actions.alert.addtakers.plural`)
+        setAlert({
+            open: true,
+            title: __(`${module}.actions.alert.addtakers.title`),
+            subtitle: replace(__(`${module}.actions.alert.addtakers.question`), "[[numb]]", numb === 1 ? `${numb} ${singular}` : `${numb} ${plural}`),
+            type: "error",
+            btn: __(`${module}.actions.close`),
+            btn2: __(`${module}.actions.acept`),
+            func: closeAlert,
+            func2: addCounterSubmit
+        })
+    }
+
+    const addCounterSubmit = () => {
         const body = {
             inventoryid: get(edit, "item.inventoryId"),
             counterid: join(selected, ","),
@@ -78,11 +100,11 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
                 setSelected([])
                 setLoadAddCounter(false)
                 getInventariDetail()
+                closeAlert()
+                const msg = __(`${module}.actions.alert.addtakers.success`);
+                setShowNoti({ open: true, msg, variant: "success" })
             })
-            .catch((err) => {
-                setShowNoti({ open: true, msg: get(err, "message",), variant: "error" })
-                setLoadAddCounter(false)
-            })
+            .catch((err) => { setError(err); setLoadAddCounter(false); closeAlert() })
     }
 
     // ---------- Table ---------------
@@ -230,7 +252,15 @@ const NewInventoryTable = ({ __, module, selected, setSelected, showNoti, setSho
 
                 />
             }
-
+            <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
+            <Alert
+                title={get(alert, "title")}
+                subtitle={get(alert, "subtitle")}
+                cancel={{ label: get(alert, "btn"), func: get(alert, "func") }}
+                submit={{ label: get(alert, "btn2", ""), func: get(alert, "func2", () => { }) }}
+                openAlert={get(alert, "open")}
+                loading={loadAddCounter}
+            />
         </div>
     )
 }

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { get, isEmpty, replace } from "lodash";
+import { get, isEmpty, replace, trim, join } from "lodash";
 
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -16,33 +16,35 @@ import {
     Stack,
     Collapse,
     Link,
-    FormControl,
-    TextField,
-    Avatar
+    Tabs,
+    Tab,
 } from '@mui/material';
 
-import CheckIcon from '@mui/icons-material/Check';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { LoadingButton } from '@mui/lab';
+import { useSelector } from "react-redux";
 
 import NewInventaryDropZone from "./NewInventaryDropZone";
 import NewInventoryTable from "./NewInventoryTable";
 import AlertQuestion from "../../../components/form/AlertQuestion";
+import { putInventaryRequest } from "../../../store/inventary/actions/inventary/putInventary"
 
-const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, setShowNoti, edit, setEdit, setError }) => {
-    const [activeStep, setActiveStep] = useState(get(edit, "value", false) ? 1 : 0);
-    const [name, setName] = useState("");
-    const [disabled, setDisabled] = useState(true);
+const NewInventory = ({ open, setOpen, __, module, showNoti, setShowNoti, edit, setEdit, setError, onSuccess }) => {
+    const [activeStep, setActiveStep] = useState(0);
     const [selected, setSelected] = useState([]);
     const [file, setFile] = useState(null);
-    const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" })
+    const [alertStart, setAlertStart] = useState({ open: false, title: "", subtitle: "" });
+    const [load, setLoad] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
-        setName("")
         setActiveStep(0)
         setEdit({ item: {}, value: false })
+        setFile(null)
     };
+
+    const userState = useSelector(state => state.auth.login.dataUser);
+    const getState = useSelector(state => state);
 
     const handleBack = () => {
         if (activeStep === 0) {
@@ -52,51 +54,47 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
         }
     };
 
-    const steps = [
-        {
-            label: __(`${module}.modal.option-1`),
-            key: 1,
-        },
-        {
-            label: __(`${module}.modal.option-2`),
-            key: 2,
-        },
-    ];
-
-    const isDisabled = (con) => {
-        const inactive = (isEmpty(file) && activeStep === 0) || (isEmpty(con) && activeStep === 1)
-        if (inactive !== disabled) {
-            setDisabled(inactive)
-        }
-        return !name
-    }
-
     const submit = () => {
-        if (activeStep < 1) {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        } else {
-            onSubmit({ name, counters: selected, file, handleClose })
+        const body = {
+            userid: get(userState, "userId"),
+            companyid: get(userState, "companyId"),
+            language: localStorage.getItem("lang"),
+            template: file,
+            inventoryId: get(edit, "item.inventoryId")
         }
+
+        const formData = new FormData();
+        for (const key in body) {
+            if (Object.hasOwnProperty.call(body, key)) {
+                if (!!body[key]) {
+                    formData.append(`${key}`, body[key])
+                }
+            }
+        }
+        setLoad(true)
+        putInventaryRequest(formData, () => getState)
+            .then(({ data }) => {
+                setLoad(false)
+                onSuccess()
+                handleClose()
+            })
+            .catch((err) => { setError(err); setLoad(false) })
     }
 
     const onAlertCancel = () => setAlertStart({ open: false, title: "", subtitle: "" })
-    const onAlertNoTempalte = () => setAlertStart({ open: true, title: __(`${module}.actions.alert.template.title`), subtitle: __(`${module}.actions.alert.template.question`) })
-    const onAlertNoCounter = () => setAlertStart({ open: true, title: __(`${module}.actions.alert.counter.title`), subtitle: __(`${module}.actions.alert.counter.question`) })
     const onAlertSubmit = () => {
         onAlertCancel()
         submit()
     }
 
-    const handleNext = async () => {
-        if (!disabled) {
-            submit()
-        } else {
-            if (activeStep < 1) {
-                onAlertNoTempalte()
-            } else {
-                onAlertNoCounter()
-            }
-        }
+    function a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+    const handleChange = (event, newValue) => {
+        setActiveStep(newValue);
     };
 
     return (
@@ -127,36 +125,13 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                     }
                 </DialogTitle>
                 <DialogContent dividers sx={{ m: 0, p: 0 }}>
+                    <Box px={2}>
+                        <Tabs value={activeStep} onChange={handleChange} aria-label="tab edith">
+                            <Tab color="primary" label={<Typography className='normal-case'>{__(`${module}.modal.tabs.inventory`)}</Typography>} {...a11yProps(0)} />
+                            <Tab color="primary" label={<Typography className='normal-case'>{__(`${module}.modal.tabs.takers`)}</Typography>} {...a11yProps(1)} />
+                        </Tabs>
+                    </Box>
                     <Box className='flex'>
-                        {!get(edit, "value", false) &&
-                            <Box className='w-40 p-6'>
-                                <Stack direction="row" alignItems="center" spacing={1}>
-                                    <Avatar sx={{ bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 }} >
-                                        {get(steps, "[0]key") === activeStep
-                                            ? <CheckIcon fontSize='inhert' />
-                                            : <Typography variant="bodySmall">{get(steps, "[0]key")}</Typography>
-                                        }
-                                    </Avatar>
-                                    <Typography variant="bodyMedium" {...(get(steps, "[0]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })}>{get(steps, "[0]label")}</Typography>
-                                </Stack>
-                                <Box sx={{ height: 34, borderLeft: "1px dashed", mx: 1.9, color: "secondary.main" }} />
-                                <Stack direction="row" alignItems="center" spacing={1}>
-                                    <Avatar
-                                        {...(get(steps, "[1]key") > activeStep + 1
-                                            ? { sx: { bgcolor: "common.white", color: "text.lite", border: "1px solid", width: 32, height: 32 } }
-                                            : { sx: { bgcolor: (theme) => theme.palette.color.blue[300], width: 32, height: 32 } }
-                                        )}
-                                    >
-                                        {get(steps, "[1]key") === activeStep
-                                            ? <CheckIcon fontSize='inhert' />
-                                            : <Typography variant="bodySmall">{get(steps, "[1]key")}</Typography>
-                                        }
-                                    </Avatar>
-                                    <Typography variant="bodyMedium" {...(get(steps, "[1]key") > activeStep + 1 ? { sx: { color: "text.lite" } } : { sx: { color: (theme) => theme.palette.color.blue[300] } })} >{get(steps, "[1]label")}</Typography>
-                                </Stack>
-                            </Box>
-                        }
-                        <Divider orientation="vertical" flexItem />
                         <Box className='p-4 flex-1'>
                             <Collapse in={activeStep === 0}>
                                 <Stack direction="column" spacing={3} >
@@ -174,23 +149,15 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                     </Stack>
                                     <Divider />
                                     <Stack direction="row" spacing={2} >
-                                        <FormControl fullWidth sx={{ maxWidth: 360 }}  >
-                                            <Typography className='pb-2' component="label" htmlFor="name" >
-                                                {__(`${module}.modal.input.name`)}
-                                            </Typography>
-                                            <TextField
-                                                fullWidth
-                                                id="name"
-                                                name="name"
-                                                placeholder={__(`${module}.modal.input.placeholder`)}
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                color="secondary"
-                                            />
-                                        </FormControl>
-                                        <Divider orientation="vertical" flexItem />
                                         <Box flex={1} >
-                                            <NewInventaryDropZone __={__} module={module} getFile={setFile} />
+                                            <NewInventaryDropZone
+                                                __={__}
+                                                module={module}
+                                                getFile={setFile}
+                                                type={2}
+                                                oldProducts={[]}
+                                                edit={edit}
+                                            />
                                         </Box>
                                     </Stack>
                                 </Stack>
@@ -218,7 +185,7 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                         </Box>
                     </Box>
                 </DialogContent>
-                {!get(edit, "value", false) &&
+                {activeStep === 0 &&
                     <DialogActions>
                         <Stack direction="row" spacing={2}>
                             <Button
@@ -227,19 +194,16 @@ const NewInventory = ({ open, setOpen, onSubmit, __, module, loading, showNoti, 
                                 onClick={handleBack}
                                 sx={{ color: (theme) => theme.palette.color.neutral[800] }}
                             >
-                                {activeStep > 0 ? __(`${module}.modal.btn-2`) : __(`${module}.modal.btn-3`)}
+                                {__(`${module}.modal.btn-3`)}
                             </Button>
                             <LoadingButton
                                 variant="contained"
                                 color="primary"
-                                onClick={handleNext}
-                                disabled={isDisabled(selected)}
-                                loading={loading}
+                                onClick={submit}
+                                loading={load}
+                                disabled={isEmpty(file)}
                             >
-                                {activeStep < 1
-                                    ? __(`${module}.modal.btn-1`)
-                                    : __(`${module}.modal.btn-5`)
-                                }
+                                {__(`${module}.modal.btn-csv`)}
                             </LoadingButton>
                         </Stack>
                     </DialogActions>

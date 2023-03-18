@@ -85,6 +85,13 @@
                 "counter": {
                     "title": "No inventory takers added",
                     "question": "Do you want to continue without inventory takers? You can add them later"
+                },
+                "addtakers": {
+                    "title": "Add taker",
+                    "question": "Do you add [[numb]] ?",
+                    "singular": "inventory taker",
+                    "plural": "inventory takers",
+                    "success": "Inventory takers list successfully update"
                 }
             }
         },
@@ -129,6 +136,7 @@
         "modal": {
             "title": "New inventory",
             "title-edit": "Edit inventory taker | [[name]]",
+            "update-csv": "CSV update successfully",
             "steps": {
                 "1": "Inventory name",
                 "2": "File",
@@ -138,11 +146,16 @@
             "descriptions": {
                 "name": "Put some explanation of the creation of the inventory, we will give the next",
                 "file": "put some explanation of the Template, we will give the next",
+                "overwrite": "this process will overwrite the current template.",
                 "confirm": {
                     "name": "Inventary name:",
                     "file": "Inventary file:",
                     "takers": "Inventary takers:"
                 }
+            },
+            "tabs": {
+                "inventory": "Edit inventory",
+                "takers": "Edit takers"
             },
             "yes": "Si",
             "no": "No",
@@ -157,11 +170,15 @@
             "btn-4": "Create new",
             "btn-5": "Create inventory",
             "btn-6": "Add new",
+            "btn-csv": "Update CSV",
             "dropzone": {
                 "text-start": "Drag and drop your inventory file here, in .csv format",
                 "text-active": "Drop your file here",
                 "complement": "Optional",
-                "text-head": "File"
+                "text-head": "File",
+                "current": "Current",
+                "preload": "Preload",
+                "clean": "Clean"
             },
             "input": {
                 "name": "Inventory name",
@@ -268,11 +285,19 @@
             "alert": {
                 "template": {
                     "title": "No inventory template added",
-                    "question": "Do you want to continue without an inventory template?"
+                    "question": "Do you want to continue without an inventory template?",
+                    "subtitle": "After creating your inventory you will not be able to add products to your inventory, this task can only be done from the counting mobile application."
                 },
                 "counter": {
                     "title": "No inventory takers added",
                     "question": "Do you want to continue without inventory takers? You can add them later"
+                },
+                "addtakers": {
+                    "title": "Add taker",
+                    "question": "Do you add [[numb]] ?",
+                    "singular": "inventory taker",
+                    "plural": "inventory takers",
+                    "success": "Inventory takers list successfully update"
                 }
             }
         },
@@ -331,8 +356,41 @@
         "modal": {
             "title-edit": "Edit inventory takers from inventory: | [[name]]",
             "sub-title-2": "Select inventory takers to assing to this count",
-            "btn-4": "New inventory taker",
+            "update-csv": "CSV update successfully",
+            "btn-1": "Next step",
+            "btn-2": "Back",
+            "btn-3": "Cancel",
+            "btn-4": "Create new",
+            "btn-5": "Create inventory",
+            "btn-6": "Add new",
+            "btn-csv": "Update CSV",
             "table-title": "Inventory takers",
+            "descriptions": {
+                "name": "Put some explanation of the creation of the inventory, we will give the next",
+                "file": "put some explanation of the Template, we will give the next",
+                "overwrite": "this process will overwrite the current template.",
+                "confirm": {
+                    "name": "Inventary name:",
+                    "file": "Inventary file:",
+                    "takers": "Inventary takers:"
+                }
+            },
+            "tabs": {
+                "inventory": "Edit inventory",
+                "takers": "Edit takers"
+            },
+            "sub-title-1": "Complete the information and attach your inventory file to continue",
+            "download-file": "Download template",
+            "download-file-name": "InventoryTemplate",
+            "dropzone": {
+                "text-start": "Drag and drop your inventory file here, in .csv format",
+                "text-active": "Drop your file here",
+                "complement": "Optional",
+                "text-head": "File",
+                "current": "Current",
+                "preload": "Preload",
+                "clean": "Clean"
+            },
             "alert": {
                 "title-free": "Inventory Free",
                 "sub-title-free": "So that you can try all the features of Quantto, we have enabled a free inventory in your account, which you can apply by pressing accept"
