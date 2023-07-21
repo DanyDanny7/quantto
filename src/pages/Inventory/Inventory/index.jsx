@@ -172,14 +172,14 @@ const ActiveInventory = () => {
     ...row,
     itemId: (
       <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
+        <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>        
         <Box>{get(row, "itemId")}</Box>
-        <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
       </ Stack>
     ),
     inventory: (
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+        <Collapse in={get(row, "recount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>        
         <Box minWidth={0.5}>{get(row, "inventory")}</Box>
-        <Collapse in={get(row, "recount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>
       </ Stack>
     ),
     options: (

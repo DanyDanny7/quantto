@@ -7,6 +7,7 @@ import {
 } from "../../../actions/inventary/detail/getDetailPaying";
 
 export const getInventaryDetailPaying = (formData) => async (dispatch, getState) => {
+
     if (!get(getState(), "inventary.inventary.paying.isLoading", false)) {
         dispatch(getInventaryDetailPayingLoading());
         try {

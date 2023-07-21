@@ -79,8 +79,8 @@
             "alert": {
                 "template": {
                     "title": "No inventory template added",
-                    "question": "Do you want to continue without an inventory template?",
-                    "subtitle": "After creating your inventory you will not be able to add products to your inventory, this task can only be done from the counting mobile application."
+                    "question": "it is not possible to create an inventory without a template",
+                    "subtitle": "You must add a file with your inventory template."
                 },
                 "counter": {
                     "title": "No inventory takers added",

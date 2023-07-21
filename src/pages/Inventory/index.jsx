@@ -237,8 +237,8 @@ const ActiveInventory = () => {
       ...row,
       name: (
         <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
+          <Collapse in={get(row, "free", false)} orientation="horizontal"><Tooltip title={__(`${module}.modal.alert.title-free`)} placement="top" arrow><CreditScoreIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>          
           <Box>{get(row, "name")}</Box>
-          <Collapse in={get(row, "free", false)} orientation="horizontal"><Tooltip title={__(`${module}.modal.alert.title-free`)} placement="top" arrow><CreditScoreIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
         </ Stack>
       ),
 

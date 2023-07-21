@@ -102,9 +102,12 @@ const NewInventory = ({ open, setOpen, __, module, onDetail, inventaryId, setErr
         if (open) getFree()
     }, [open])
 
-    useEffect(() => {
+
+    
+
+    useEffect(() => {         
         setMount(true)
-        dispatch(getInventaryDetailPaying({ inventoryid: inventaryId }))
+        dispatch(getInventaryDetailPaying({ inventoryid: inventaryId }))       
     }, [])
 
     const handleChange = (event) => {
@@ -153,7 +156,7 @@ const NewInventory = ({ open, setOpen, __, module, onDetail, inventaryId, setErr
             correoelectronico: get(userState, "email", "es"),
             inventoryid: inventaryId,
             primernombre: name,
-            tarjetanumero: get(values, "number", "")?.replaceAll(" ", ""),
+            tarjetanumero: get(values, "0", "")?.replaceAll(" ", ""),
             tarjetacvv2: get(values, "cvv", ""),
             tarjetavigencia: moment(get(values, "date", ""), "MM/YY").format("YYYYMM"),
         }
@@ -196,7 +199,7 @@ const NewInventory = ({ open, setOpen, __, module, onDetail, inventaryId, setErr
     const getFree = async () => {
         try {
             setIsLoading(true)
-            const { data } = await getInventaryFreeRequest({}, () => getState)
+            const { data } = await getInventaryFreeRequest({ inventoryid: inventaryId }, () => getState)
             if (get(data, "data.free", false)) { setOpenModal(1) }
             else { setOpenModal(2) }
             setIsLoading(false)

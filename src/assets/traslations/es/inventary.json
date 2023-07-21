@@ -79,8 +79,8 @@
             "alert": {
                 "template": {
                     "title": "No agregó plantilla",
-                    "question": "¿Desea continuar sin una plantilla?",
-                    "subtitle": "Luego de crear tu inventario no podrás agregar productos a tu inventario, esta tarea únicamente podrá realizarse desde la aplicación movil de conteo."
+                    "question": "no es posible crear un inventario sin una plantilla",
+                    "subtitle": "Debes agregar un archivo con tu plantilla de inventario."
                 },
                 "counter": {
                     "title": "No agregó contador",

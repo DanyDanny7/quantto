@@ -233,14 +233,14 @@ const ActiveInventory = () => {
             time: moment(get(row, "date")).format("hh:mm A"),
             product: (
                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
-                    <Box>{get(row, "itemname")}</Box>
                     <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
+                    <Box>{get(row, "itemname")}</Box>
                 </ Stack>
             ),
             qty: (
                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+                    <Collapse in={get(row, "markedRecount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>                    
                     <Box minWidth={0.5}>{get(row, "qty")}</Box>
-                    <Collapse in={get(row, "markedRecount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>
                 </ Stack>
             ),
             // checkbox: (
