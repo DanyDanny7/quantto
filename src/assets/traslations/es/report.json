@@ -1,0 +1,113 @@
+{
+    "menu": {
+        "stockProducts": "Existencia de productos",
+        "inventoryMovements": "Movimientos de inventario",
+        "inMovements": "Movimientos de entrada",
+        "outMovements": "Movimientos de salida"
+    },
+    "stockProducts": {
+        "header": {
+            "title": "Existencia de productos",
+            "subTitle": ""
+        },
+        "empty": {
+            "title": "No hay existencia de productos que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id Item",
+            "Item nombre",
+            "UOM",
+            "Ubicación",
+            "Estado",
+            "Días de inventario",
+            "Categorías",
+            "Sub Categorías",
+            "Lote",
+            "Vencimiento",
+            "Cant. total",
+            "Cant. en proceso",
+            "Peso en proceso",
+            "peso disponible",
+            "Peso total",
+            "Cant disponible"
+        ]
+    },
+    "inventoryMovements": {
+        "header": {
+            "title": "Movimientos de inventario",
+            "subTitle": ""
+        },
+        "empty": {
+            "title": "No hay movimientos de inventario que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id Item",
+            "Usuario",
+            "Item nombre",
+            "Creación",
+            "Estado",
+            "Tipo de documento",
+            "Número documento",
+            "Ubicación",
+            "Lote",
+            "Vencimiento",
+            "Cant. total",
+            "Peso total",
+            "Cant. reservada"
+        ]
+    },
+    "inMovements": {
+        "header": {
+            "title": "Movimientos de entrada",
+            "subTitle": ""
+        },
+        "empty": {
+            "title": "No hay movimientos de entrada que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id Item",
+            "Item nombre",
+            "UOM",
+            "Fecha documento",
+            "Estado",
+            "Inventario",
+            "Vencimiento",
+            "Número documento",
+            "Tipo",
+            "Días de inventario",
+            "Ubicación",
+            "Lote",
+            "Cant. total",
+            "Peso total"
+        ]
+    },
+    "outMovements": {
+        "header": {
+            "title": "Movimientos de salida",
+            "subTitle": ""
+        },
+        "empty": {
+            "title": "No hay movimientos de salida que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id Item",
+            "Item nombre",
+            "UOM",
+            "Fecha documento",
+            "Estado",
+            "Inventario",
+            "Vencimiento",
+            "Número documento",
+            "Tipo",
+            "Días de inventario",
+            "Ubicación",
+            "Lote",
+            "Cant. total",
+            "Peso total"
+        ]
+    }
+}

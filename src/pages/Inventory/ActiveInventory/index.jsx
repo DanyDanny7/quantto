@@ -302,7 +302,7 @@ const ActiveInventory = () => {
                 <Box className='mb-6'>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6} xl={3}>
-                            <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
+                            <Paper elevation={1} className='py-8 px-6 overflow-auto h-full'>
                                 {get(inventaryActive, "isLoading", false)
                                     ? (
                                         <LoadingData />
@@ -338,7 +338,7 @@ const ActiveInventory = () => {
                             </Paper>
                         </Grid>
                         <Grid item xs={12} sm={6} xl={4}>
-                            <Paper elevation={[1]} className='py-8 px-6 h-full'>
+                            <Paper elevation={1} className='py-8 px-6 h-full'>
                                 <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
                                 <Box className='m-auto my-6' maxWidth={250} >
                                     <PieChart loading={get(inventaryActive, "isLoading", false)} values={[get(inventaryActive, "data.data.getCountsPieChart.counted", 0), get(inventaryActive, "data.data.getCountsPieChart.notCounted", 0)]} />
@@ -356,7 +356,7 @@ const ActiveInventory = () => {
                             </Paper>
                         </Grid>
                         <Grid item xs={12} xl={5}>
-                            <Paper elevation={[1]} className='py-8 px-6 h-full'>
+                            <Paper elevation={1} className='py-8 px-6 h-full'>
                                 <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
                                 <Box className='m-auto my-6 px-6' overflow="auto">
                                     <BarChart loading={get(inventaryActive, "isLoading", false)} minWidth={350} countsBarChart={get(inventaryActive, "data.data.getCountsBarChart")} />
@@ -408,7 +408,7 @@ const ActiveInventory = () => {
                 onClose={handleClose}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                elevation={[1]}
+                elevation={1}
             >
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
                     <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>

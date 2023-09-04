@@ -1,0 +1,322 @@
+{
+    "menu": {
+        "uom": "Unidades de medidas",
+        "category": "Categorías",
+        "subCategory": "SubCategoría",
+        "stateProducts": "Estado de producto",
+        "inBoundType": "Tipos de entrada",
+        "outBoundType": "Tipos de salida"
+    },
+    "uom": {
+        "header": {
+            "title": "Unidades de medidas",
+            "subTitle": ""
+        },
+        "btn": "Crear unidad de medida",
+        "empty": {
+            "title": "No hay unidades de medidas que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id UOM",
+            "Estado",
+            "Descripción"
+        ],
+        "modal": {
+            "title1": "Crear unidad de medida",
+            "title2": "Editar unidad de medida",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar unidad de medida",
+                "question": "¿Desea eliminar la unidad de medida?",
+                "success": "Eliminado con éxito"
+            }
+        },
+        "input": {
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "msg": {
+            "create": "UOM creado con éxito",
+            "update": "UOM actualizado con éxito"
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        }
+    },
+    "category": {
+        "header": {
+            "title": "Categorías",
+            "subTitle": ""
+        },
+        "btn": "Crear categorías",
+        "empty": {
+            "title": "No hay unidades de medidas que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id UOM",
+            "Estado",
+            "Descripción"
+        ],
+        "modal": {
+            "title1": "Crear categorías",
+            "title2": "Editar categorías",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar categorías",
+                "question": "¿Desea eliminar la categorías?",
+                "success": "Eliminado con éxito"
+            }
+        },
+        "input": {
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "msg": {
+            "create": "Categoría creado con éxito",
+            "update": "Categoría actualizado con éxito"
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        }
+    },
+    "subCategory": {
+        "header": {
+            "title": "Sub categorías",
+            "subTitle": ""
+        },
+        "btn": "Crear sub categorías",
+        "empty": {
+            "title": "No hay unidades de medidas que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id UOM",
+            "Estado",
+            "Descripción"
+        ],
+        "modal": {
+            "title1": "Crear sub categorías",
+            "title2": "Editar sub categorías",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar sub categorías",
+                "question": "¿Desea eliminar la sub categorías?",
+                "success": "Eliminado con éxito"
+            }
+        },
+        "input": {
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "msg": {
+            "create": "Sub categoría creado con éxito",
+            "update": "Sub categoría actualizado con éxito"
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        }
+    },
+    "stateProducts": {
+        "header": {
+            "title": "Tipos de salida",
+            "subTitle": ""
+        },
+        "btn": "Crear estado de productos",
+        "empty": {
+            "title": "No hay unidades de medidas que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id UOM",
+            "Estado",
+            "Descripción"
+        ],
+        "modal": {
+            "title1": "Crear estado de productos",
+            "title2": "Editar estado de productos",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar estado de productos",
+                "question": "¿Desea eliminar la estado de productos?",
+                "success": "Eliminado con éxito"
+            }
+        },
+        "input": {
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "msg": {
+            "create": "Estado de producto creado con éxito",
+            "update": "Estado de producto actualizado con éxito"
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        }
+    },
+    "inBoundType": {
+        "header": {
+            "title": "Tipos de entradas",
+            "subTitle": ""
+        },
+        "btn": "Crear tipo de entrada",
+        "empty": {
+            "title": "No hay tipos de entrada que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id Tipo entrada",
+            "Estado",
+            "Descripción"
+        ],
+        "modal": {
+            "title1": "Crear tipo de entrada",
+            "title2": "Editar tipo de entrada",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar tipo de entrada",
+                "question": "¿Desea eliminar la tipo de entrada?",
+                "success": "Eliminado con éxito"
+            }
+        },
+        "input": {
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "msg": {
+            "create": "Tipo de entrada creado con éxito",
+            "update": "Tipo de entrada actualizado con éxito"
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        }
+    },
+    "outBoundType": {
+        "header": {
+            "title": "Tipos de salida",
+            "subTitle": ""
+        },
+        "btn": "Crear tipo de salida",
+        "empty": {
+            "title": "No hay tipos de salida que mostrar",
+            "description": ""
+        },
+        "table": [
+            "Id Tipo salida",
+            "Estado",
+            "Descripción"
+        ],
+        "modal": {
+            "title1": "Crear tipo de salida",
+            "title2": "Editar tipo de salida",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar tipo de salida",
+                "question": "¿Desea eliminar la tipo de salida?",
+                "success": "Eliminado con éxito"
+            }
+        },
+        "input": {
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "msg": {
+            "create": "Tipo de salida creado con éxito",
+            "update": "Tipo de salida actualizado con éxito"
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        }
+    }
+}

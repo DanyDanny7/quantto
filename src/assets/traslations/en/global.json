@@ -8,17 +8,26 @@
     "change": "English",
     "layout": {
         "search": "Search",
-        "titles": [
-            "My inventory",
-            "Users",
-            "Payments"
-        ],
-        "menus": [
-            "In process inventory",
-            "Inventory List",
-            "Inventory takers",
-            "Payment history",
-            "Profile"
-        ]
+        "titles": {
+            "inventory": "My inventory",
+            "users": "Users",
+            "documents": "Documents",
+            "payments": "Payments",
+            "config": "Config"
+        },
+        "menu": {
+            "active": "In process inventory",
+            "inventory": "Inventory List",
+            "product": "Products",
+            "warehouse": "Warehouses",
+            "counts": "Inventory takers",
+            "report": "Reports",
+            "inbound": "Enter",
+            "outbound": "Out",
+            "transfer": "Transfer",
+            "payment": "Payment history",
+            "profil": "Profile",
+            "config": "Config"
+        }
     }
 }

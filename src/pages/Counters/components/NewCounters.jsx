@@ -139,7 +139,7 @@ const NewCounters = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl
                             <Stack direction="column" spacing={2} >
                                 <Stack direction="row" spacing={2} >
                                     <FormControl fullWidth >
-                                        <Typography className='pb-2' component="label" htmlFor="username" >
+                                        <Typography className='pb-2' component="label" htmlFor="email" >
                                             {get(inputs, "[0].name")}
                                         </Typography>
                                         <TextField

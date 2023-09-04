@@ -18,7 +18,6 @@ import Alert from "../../components/form/Alert";
 import { getCounts } from "../../store/counts/thunk/getCounts"
 import { deleteCountRequest } from "../../store/counts/actions/deleteCounts"
 
-
 const Counts = () => {
   const [__] = useTranslation("count");
   const dispatch = useDispatch();

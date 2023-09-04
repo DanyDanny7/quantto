@@ -1,0 +1,141 @@
+{
+    "outbound": {
+        "header": {
+            "title": "Listado de documentos de salida",
+            "sub-title": "",
+            "new": {
+                "title": "Crear documento de salida",
+                "detail": "Detalle de documento de salida"
+            },
+            "edit": {
+                "title": "Editar documento de salida",
+                "detail": "Detalle de documento de salida"
+            }
+        },
+        "btn": "Nuevo documento de salida",
+        "filters": {
+            "search": "Buscar",
+            "status": "Estado"
+        },
+        "table": [
+            "Documento de salida",
+            "Descripción",
+            "Creación",
+            "Inventario",
+            "Estado"
+        ],
+        "tableDetail": [
+            "Id artículo",
+            "Descripción",
+            "Cantidad"
+        ],
+        "empty": {
+            "title": "No hay documentos de salida que mostrar",
+            "description": "",
+            "items": {
+                "title": "No hay productos que mostrar",
+                "description": ""
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar documento de salida",
+                "question": "¿Desea eliminar la documento de salida?",
+                "success": "Eliminado con éxito"
+            },
+            "deleteDetail": {
+                "title": "Eliminar artículo",
+                "question": "¿Desea eliminar el artículo?",
+                "success": "Eliminado con éxito"
+            },
+            "cancel": "Cancelar",
+            "accept": "Aceptar",
+            "add": "Agregar"
+        },
+        "input": {
+            "outBound": {
+                "label": "Documento de salida id"
+            },
+            "status": {
+                "label": "Estado"
+            },
+            "createdate": {
+                "label": "Fecha de creación"
+            },
+            "inventorydate": {
+                "label": "Fecha de inventario"
+            },
+            "type": {
+                "label": "Tipo",
+                "placeholder": "Seleccionar tipo",
+                "error": "Tipo es requerido"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error": "Descripción es requerida"
+            }
+        },
+        "inputDetail": {
+            "itemid": {
+                "label": "Producto",
+                "placeholder": "Seleccione el producto",
+                "error": "Producto es requerido"
+            },
+            "statusid": {
+                "label": "Estado",
+                "placeholder": "Seleccione el estado",
+                "error": "Estado es requerido"
+            },
+            "locationid": {
+                "label": "Ubicación",
+                "placeholder": "Seleccione la ubicación",
+                "error": "Ubicación es requerida"
+            },
+            "lot": {
+                "label": "Lote",
+                "placeholder": "Ingresa el lote",
+                "error": "Lote es requerido"
+            },
+            "quantity": {
+                "label": "Cantidad",
+                "placeholder": "Ingresa la cantidad",
+                "error": "Cantidad es requerida"
+            },
+            "expirationdate": {
+                "label": "Fecha de vencimiento",
+                "placeholder": "Ingresa la fecha de vencimiento",
+                "error": "Fecha de vencimiento es requerida"
+            }
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        },
+        "labels": {
+            "1": "Detalle de documento de salida"
+        },
+        "action": {
+            "save": "Guardar",
+            "cancel": "Cancelar",
+            "delete": "Eliminar",
+            "edit": "Editar"
+        },
+        "msg": {
+            "create": "Documento de salida creada con éxito",
+            "update": "Documento de salida actualizada con éxito"
+        },
+        "modal": {
+            "title1": "Agregar artículo",
+            "title2": "Editar artículo",
+            "subTitle1": "Puedes editar la salida, modificar el estado, entre otros.",
+            "label1": "Datos principales",
+            "label2": "Otros datos",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        }
+    }
+}

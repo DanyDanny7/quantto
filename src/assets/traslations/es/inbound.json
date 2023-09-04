@@ -1,0 +1,145 @@
+{
+    "inbound": {
+        "header": {
+            "title": "Listado de documentos de entrada",
+            "sub-title": "",
+            "new": {
+                "title": "Crear documento de entrada",
+                "detail": "Detalle de documento de entrada"
+            },
+            "edit": {
+                "title": "Editar documento de entrada",
+                "detail": "Detalle de documento de entrada"
+            }
+        },
+        "btn": "Nuevo documento de entrada",
+        "filters": {
+            "search": "Buscar",
+            "status": "Estado"
+        },
+        "table": [
+            "Documento de entrada",
+            "Descripción",
+            "Creación",
+            "Inventario",
+            "Estado"
+        ],
+        "tableDetail": [
+            "Id artículo",
+            "Producto",
+            "Vencimiento",
+            "Estado",
+            "Lote",
+            "Ubicación",
+            "Cantidad"
+        ],
+        "empty": {
+            "title": "No hay documentos de entrada que mostrar",
+            "description": "",
+            "items": {
+                "title": "No hay productos que mostrar",
+                "description": ""
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar documento de entrada",
+                "question": "¿Desea eliminar la documento de entrada?",
+                "success": "Eliminado con éxito"
+            },
+            "deleteDetail": {
+                "title": "Eliminar artículo",
+                "question": "¿Desea eliminar el artículo?",
+                "success": "Eliminado con éxito"
+            },
+            "cancel": "Cancelar",
+            "accept": "Aceptar",
+            "add": "Agregar"
+        },
+        "input": {
+            "inBound": {
+                "label": "Documento de entrada id"
+            },
+            "status": {
+                "label": "Estado"
+            },
+            "createdate": {
+                "label": "Fecha de creación"
+            },
+            "inventorydate": {
+                "label": "Fecha de inventario"
+            },
+            "type": {
+                "label": "Tipo",
+                "placeholder": "Seleccionar tipo",
+                "error": "Tipo es requerido"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error": "Descripción es requerida"
+            }
+        },
+        "inputDetail": {
+            "itemid": {
+                "label": "Producto",
+                "placeholder": "Seleccione el producto",
+                "error": "Producto es requerido"
+            },
+            "statusid": {
+                "label": "Estado",
+                "placeholder": "Seleccione el estado",
+                "error": "Estado es requerido"
+            },
+            "locationid": {
+                "label": "Ubicación",
+                "placeholder": "Seleccione la ubicación",
+                "error": "Ubicación es requerida"
+            },
+            "lot": {
+                "label": "Lote",
+                "placeholder": "Ingresa el lote",
+                "error": "Lote es requerido"
+            },
+            "quantity": {
+                "label": "Cantidad",
+                "placeholder": "Ingresa la cantidad",
+                "error": "Cantidad es requerida"
+            },
+            "expirationdate": {
+                "label": "Fecha de vencimiento",
+                "placeholder": "Ingresa la fecha de vencimiento",
+                "error": "Fecha de vencimiento es requerida"
+            }
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        },
+        "labels": {
+            "1": "Detalle de documento de entrada"
+        },
+        "action": {
+            "save": "Guardar",
+            "cancel": "Cancelar",
+            "delete": "Eliminar",
+            "edit": "Editar"
+        },
+        "msg": {
+            "create": "Documento de entrada creada con éxito",
+            "update": "Documento de entrada actualizada con éxito"
+        },
+        "modal": {
+            "title1": "Agregar artículo",
+            "title2": "Editar artículo",
+            "subTitle1": "Puedes editar la entrada, modificar el estado, entre otros.",
+            "label1": "Datos principales",
+            "label2": "Otros datos",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        }
+    }
+}

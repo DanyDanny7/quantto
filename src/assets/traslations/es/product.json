@@ -1,0 +1,177 @@
+{
+    "list": {
+        "header": {
+            "title": "Listado de productos",
+            "sub-title": "",
+            "new": {
+                "title": "Crear producto"
+            },
+            "edit": {
+                "title": "Editar producto",
+                "detail": "Detalle de producto"
+            }
+        },
+        "btn": "Nuevo producto",
+        "filters": {
+            "search": "Buscar",
+            "status": "Estado"
+        },
+        "table": [
+            "Id producto",
+            "Producto",
+            "Creación",
+            "Estado",
+            "Categoría",
+            "Subcategoría",
+            "Costo"
+        ],
+        "tableUom": [
+            "Unidad de medida",
+            "Código de barra",
+            "Estado",
+            "Factor"
+        ],
+        "tableInventary": [
+            "Bodega",
+            "Ubicación",
+            "Estado",
+            "Vencimiento",
+            "Lote",
+            "Cant.total",
+            "Cant. en proceso",
+            "Cant. disponible"
+        ],
+        "empty": {
+            "title": "No hay productos que mostrar",
+            "description": "",
+            "uom": {
+                "title": "No hay unidades de medida que mostrar",
+                "description": ""
+            },
+            "inventary": {
+                "title": "No hay inventarios que mostrar",
+                "description": ""
+            },
+            "image": {
+                "title": "No hay imagenes que mostrar",
+                "description": ""
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar producto",
+                "question": "¿Desea eliminar el roducto?",
+                "success": "Eliminado con éxito"
+            },
+            "deleteUom": {
+                "title": "Eliminar unidad de medida",
+                "question": "¿Desea eliminar la unidad de medida?",
+                "success": "Eliminado con éxito"
+            },
+            "deleteImage": {
+                "title": "Eliminar imagen",
+                "question": "¿Desea eliminar la imagen?",
+                "success": "Eliminado con éxito"
+            },
+            "edit": "Editar",
+            "cancel": "Cancelar",
+            "accept": "Aceptar",
+            "add": "Agregar",
+            "delet": "Eliminar"
+        },
+        "input": {
+            "itemCode": {
+                "label": "Código de producto",
+                "placeholder": "Ingrese el código",
+                "error": "Código es requerido"
+            },
+            "cost": {
+                "label": "Costo",
+                "placeholder": "0.00",
+                "error": "Costo es requerido"
+            },
+            "reorderPoint": {
+                "label": "Punto de reorden",
+                "placeholder": "Ingrese el punto de reorden",
+                "error": "Punto de reorden es requerido"
+            },
+            "itemName": {
+                "label": "Nombre",
+                "placeholder": "Ingresa una nombre",
+                "error": "Nombre es requerida"
+            },
+            "status": {
+                "label": "Estado"
+            },
+            "category": {
+                "label": "Categoría",
+                "placeholder": "Selecciona una categoría",
+                "error": "Categoría es requerida"
+            },
+            "subCategory": {
+                "label": "Sub categoría",
+                "placeholder": "Selecciona una sub categorían",
+                "error": "Sub categoría es requerida"
+            }
+        },
+        "inputUom": {
+            "barcode": {
+                "label": "Código de barra",
+                "placeholder": "Ingrese el código",
+                "error1": "Código de barra es requerido",
+                "error2": "Máximo 100 caracteres"
+            },
+            "factor": {
+                "label": "Factor",
+                "placeholder": "0",
+                "error": "Factor es requerido"
+            },
+            "uomId": {
+                "label": "Uom",
+                "placeholder": "Seleccione uom",
+                "error": "Uom es requerido"
+            },
+            "status": {
+                "label": "Estado"
+            }
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        },
+        "labels": {
+            "1": "Detalle de producto"
+        },
+        "action": {
+            "save": "Guardar",
+            "cancel": "Cancelar"
+        },
+        "msg": {
+            "create": "Bodega creada con éxito",
+            "update": "Bodega actualizada con éxito",
+            "uom": {
+                "create": "Unidad de medida creada con éxito",
+                "update": "Unidad de medida actualizada con éxito"
+            },
+            "inventary": {
+                "create": "Inventario creado con éxito",
+                "update": "Inventario actualizado con éxito"
+            },
+            "image": {
+                "create": "Imagen guardada con éxito"
+            }
+        },
+        "modal": {
+            "uom": {
+                "title1": "Crear unidad de medida",
+                "title2": "Editar unidad de medida",
+                "subTitle1": "Completa los siguientes campos para continuar"
+            },
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        }
+    }
+}

@@ -41,56 +41,116 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
         navigate("/profile")
     }
 
-    const titles = __('layout.titles', { returnObjects: true })
-    const menus = __('layout.menus', { returnObjects: true })
-
     const options = [
         {
             key: 1,
-            name: get(titles, "[0]"),
+            name: __('layout.titles.inventory'),
             path: null,
             title: true,
             divider: false,
         },
         {
             key: "active_inventory",
-            name: get(menus, "[0]"),
+            name: __('layout.menu.active'),
             path: get(find(routes, ({ key }) => key === "active_inventory"), "path"),
             title: false,
             divider: true,
         },
         {
             key: "inventory",
-            name: get(menus, "[1]"),
+            name: __('layout.menu.inventory'),
             path: get(find(routes, ({ key }) => key === "inventory"), "path"),
             title: false,
             divider: true,
         },
         {
-            key: 4,
-            name: get(titles, "[1]"),
+            key: "product",
+            name: __('layout.menu.product'),
+            path: get(find(routes, ({ key }) => key === "product"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "warehouse",
+            name: __('layout.menu.warehouse'),
+            path: get(find(routes, ({ key }) => key === "warehouse"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "users",
+            name: __('layout.titles.users'),
             path: null,
             title: true,
             divider: false,
         },
         {
             key: "counts",
-            name: get(menus, "[2]"),
+            name: __('layout.menu.counts'),
             path: get(find(routes, ({ key }) => key === "counts"), "path"),
             title: false,
             divider: true,
         },
         {
+            key: "report",
+            name: __('layout.menu.report'),
+            path: get(find(routes, ({ key }) => key === "report"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "documents",
+            name: __('layout.titles.documents'),
+            path: null,
+            title: true,
+            divider: false,
+        },
+        {
+            key: "inbound",
+            name: __('layout.menu.inbound'),
+            path: get(find(routes, ({ key }) => key === "inbound"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "outbound",
+            name: __('layout.menu.outbound'),
+            path: get(find(routes, ({ key }) => key === "outbound"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "transfer",
+            name: __('layout.menu.transfer'),
+            path: get(find(routes, ({ key }) => key === "transfer"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
             key: "payments",
-            name: get(titles, "[2]"),
+            name: __('layout.titles.payments'),
             path: null,
             title: true,
             divider: false,
         },
         {
             key: "payment_history",
-            name: get(menus, "[3]"),
+            name: __('layout.menu.payment'),
             path: get(find(routes, ({ key }) => key === "payment_history"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "conf",
+            name: __('layout.titles.config'),
+            path: null,
+            title: true,
+            divider: false,
+        },
+        {
+            key: "config",
+            name: __('layout.menu.config'),
+            path: get(find(routes, ({ key }) => key === "config"), "path"),
             title: false,
             divider: true,
         },
@@ -103,33 +163,40 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
     const drawer = (
         <Box className='flex-1 flex flex-col justify-between' >
             <Box>
-                <Box height={toolbarHeight}>
-                    <Quanto sx={{ width: "100%", height: '100%' }} />
-                </Box>
+                <div className="sticky top-0 bg-[#FFFFFF] z-[10]">
+                    <Box height={toolbarHeight} minHeight={toolbarHeight} >
+                        <Quanto sx={{ width: "100%", height: '100%' }} />
+                    </Box>
+                </div>
                 {/* <InputSearch sx={{ ml: 5, mr: 3, mb: 2 }} size="small" color="secondary" /> */}
                 <List>
                     {options.map((item, index) => (
-                        <Fragment key={get(item, "key")}>
-                            <ListItem disablePadding>
+                        <Fragment key={index}>
+                            <ListItem disablePadding >
                                 <ListItemButton
+
+                                    // disablePadding
                                     onClick={handleClick(item)}
                                     disabled={get(item, "title")}
                                     sx={{
                                         bgcolor: active === get(item, "key")
                                             ? orange[50]
                                             : "background.paper",
-                                        "&:hover": { bgcolor: orange[50] }
+                                        "&:hover": { bgcolor: orange[50] },
+                                        // ".MuiListItemText-root": { m: 0 }
                                     }}
                                 >
-                                    <ListItemText primary={
-                                        <Typography
-                                            variant={active === get(item, "key") ? "buttonMedium" : (get(item, "title") ? "bodySmall" : "bodyMedium")}
-                                            // color={get(item, "title") ? "text.lite" : "text.main"}
-                                            color="text.main"
-                                        >
-                                            {get(item, "name")}
-                                        </Typography>
-                                    } />
+                                    <ListItemText
+                                        primary={
+                                            <Typography
+                                                variant={active === get(item, "key") ? "buttonMedium" : (get(item, "title") ? "bodySmall" : "bodyMedium")}
+                                                // color={get(item, "title") ? "text.lite" : "text.main"}
+                                                color="text.main"
+                                            >
+                                                {get(item, "name")}
+                                            </Typography>
+                                        }
+                                    />
                                     {!(get(item, "title") || (active === get(item, "key"))) &&
                                         <NavigateNextIcon />
                                     }
@@ -141,24 +208,26 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
                 </List>
             </Box>
 
-            <Box className='flex mx-6 my-8 '>
-                <ButtonBase className='flex-1' sx={{ borderRadius: 4 }} onClick={onUserBtn}>
-                    <Box className='flex-1 p-4 flex items-center justify-between border rounded-2xl'>
-                        <Box className='text-left'>
-                            <Typography variant="buttonMedium">
-                                {get(dataUser, "username")}
-                            </Typography>
-                            <br />
-                            <Typography variant="bodySmall">
-                                {get(dataUser, "companyname")}
-                            </Typography>
+            {/* <div className='sticky bottom-0 bg-[#FFFFFF]'> */}
+                <Box className='flex mx-6 my-8'>
+                    <ButtonBase className='flex-1' sx={{ borderRadius: 4 }} onClick={onUserBtn}>
+                        <Box className='flex-1 p-4 flex items-center justify-between border rounded-2xl'>
+                            <Box className='text-left'>
+                                <Typography variant="buttonMedium">
+                                    {get(dataUser, "username")}
+                                </Typography>
+                                <br />
+                                <Typography variant="bodySmall">
+                                    {get(dataUser, "companyname")}
+                                </Typography>
+                            </Box>
+                            <Box>
+                                <SettingsIcon color="primary" />
+                            </Box>
                         </Box>
-                        <Box>
-                            <SettingsIcon color="primary" />
-                        </Box>
-                    </Box>
-                </ButtonBase>
-            </Box>
+                    </ButtonBase>
+                </Box>
+            {/* </div> */}
         </Box >
     );
 

@@ -8,17 +8,26 @@
     "change": "Ingles",
     "layout": {
         "search": "Buscar",
-        "titles": [
-            "Mi inventario",
-            "Mis usuarios",
-            "Pagos"
-        ],
-        "menus": [
-            "Inventario Activo",
-            "Listado de inventarios",
-            "Auxiliares de inventario",
-            "Historial de pagos",
-            "Perfil"
-        ]
+        "titles": {
+            "inventory": "Mi inventario",
+            "users": "Mis usuarios",
+            "documents": "Documentos",
+            "payments": "Pagos",
+            "config": "Configuración"
+        },
+        "menu": {
+            "active": "Inventario Activo",
+            "inventory": "Listado de inventarios",
+            "product": "Productos",
+            "warehouse": "Bodegas",
+            "counts": "Auxiliares de inventario",
+            "report": "Reportes",
+            "inbound": "Entradas",
+            "outbound": "Salidas",
+            "transfer": "Transferencia",
+            "payment": "Historial de pagos",
+            "profil": "Perfil",
+            "config": "Maestros"
+        }
     }
 }

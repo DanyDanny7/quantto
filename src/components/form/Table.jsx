@@ -14,7 +14,7 @@ import {
 
 import { get, map, isEmpty } from "lodash";
 
-import CircularProgress from "./CircularProgress"
+import Load from "./Load";
 
 const TableComponent = ({
     headTable,
@@ -27,58 +27,52 @@ const TableComponent = ({
     propsTable = {},
     propsContainer = {},
     propsTableCell = {},
-    action = <></>
+    propsPaper = {},
+    action = <></>,
+    empty
 }) => {
 
     return (
-        <Paper>
+        <Paper {...propsPaper} >
             {toolbar}
             <TableContainer {...propsContainer} >
-                <Table aria-label="table" {...propsTable}>
+                <Table aria-label="table" {...propsTable} >
                     <TableHead>
                         <TableRow >
-                            {map(headTable, ({ key, label, align, width = "auto" }, i) => (
-                                <TableCell key={i} align={align} {...propsTableCell} sx={{ width }} >
+                            {map(headTable, ({ key, label, align, width = "auto", sx = {} }, i) => (
+                                <TableCell key={i} align={align} {...propsTableCell} sx={{ width, ...sx }} >
                                     <Typography variant="buttonSmall" component="div" >{label}</Typography>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {dataTable.map((row, i) => {
-                            return (
-                                <TableRow
-                                    key={i}
-                                    sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
-                                        "&:nth-of-type(odd)": { bgcolor: "background.base" }
-                                    }}
-                                >
-                                    {map(headTable, ({ key, align, width = "auto" }, i) => (
-                                        <TableCell key={i} align={align} {...propsTableCell} sx={{ width }} >
-                                            <>
-                                                {!loading &&
-                                                    <Typography variant="bodySmall" component="div" >{get(row, `${[key]}`)}</Typography>
-                                                }
-                                            </>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
+                    {!loading &&
+                        <TableBody>
+                            {dataTable.map((row, i) => {
+                                return (
+                                    <TableRow
+                                        key={i}
+                                        sx={{
+                                            '&:last-child td, &:last-child th': { border: 0 },
+                                            "&:nth-of-type(odd)": { bgcolor: "background.base" }
+                                        }}
+                                    >
+                                        {map(headTable, ({ key, align, width = "auto", sx = {} }, i) => (
+                                            <TableCell key={i} align={align} {...propsTableCell} sx={{ width }} >
+                                                <>
+                                                    {!loading &&
+                                                        <Typography variant="bodySmall" component="div" sx={sx} >{get(row, `${[key]}`)}</Typography>
+                                                    }
+                                                </>
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    }
                 </Table>
-                {loading &&
-                    <Box sx={{
-                        display: 'flex',
-                        height: 300,
-                        width: '100%',
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}>
-                        <CircularProgress />
-                    </Box>
-                }
+                {loading && <Load />}
                 {(isEmpty(dataTable) && !loading) &&
                     <Box sx={{
                         display: 'flex',
@@ -87,13 +81,28 @@ const TableComponent = ({
                         justifyContent: "center",
                         alignItems: "center"
                     }}>
-                        <Stack justifyContent="center" alignItems="center" spacing={1} >
-                            <Typography variant="heading2">{__(`${module}.empty.title`)}</Typography>
-                            <Typography variant="bodySmall">{__(`${module}.empty.description`)}</Typography>
-                            <Box pt={2}>
-                                {action}
-                            </Box>
-                        </Stack>
+                        {!!empty
+                            ? (
+                                <Load >
+                                    <Stack justifyContent="center" alignItems="center" spacing={1}  >
+                                        <Typography variant="heading2">{__(`${module}.empty.${empty}.title`)}</Typography>
+                                        <Typography variant="bodySmall">{__(`${module}.empty.${empty}.description`)}</Typography>
+                                        <Box pt={2}>
+                                            {action}
+                                        </Box>
+                                    </Stack>
+                                </Load>
+                            ) : (
+                                <Load >
+                                    <Stack justifyContent="center" alignItems="center" spacing={1} >
+                                        <Typography variant="heading2">{__(`${module}.empty.title`)}</Typography>
+                                        <Typography variant="bodySmall">{__(`${module}.empty.description`)}</Typography>
+                                        <Box pt={2}>
+                                            {action}
+                                        </Box>
+                                    </Stack>
+                                </Load>
+                            )}
                     </Box>
                 }
             </TableContainer>

@@ -172,13 +172,13 @@ const ActiveInventory = () => {
     ...row,
     itemId: (
       <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
-        <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>        
+        <Collapse in={get(row, "manualRecord", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.manualrecord`)} placement="top" arrow><PanToolIcon sx={{ width: 15 }} color="info" /></Tooltip></Collapse>
         <Box>{get(row, "itemId")}</Box>
       </ Stack>
     ),
     inventory: (
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
-        <Collapse in={get(row, "recount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>        
+        <Collapse in={get(row, "recount", false)} orientation="horizontal"><Tooltip title={__(`${module}.menu.recount`)} placement="top" arrow><WarningAmberIcon fontSize={"small"} color="error" /></Tooltip></Collapse>
         <Box minWidth={0.5}>{get(row, "inventory")}</Box>
       </ Stack>
     ),
@@ -324,7 +324,7 @@ const ActiveInventory = () => {
     const edit = { btnLabel2: __(`${module}.actions.edit.title`), btnFunc2: onEdit, color2: "info" }
 
     switch (status) {
-      case 1: return ({ btnLabel: __(`${module}.actions.pay.title`), btnFunc: onPay, color: "warning", loading: loadToPay,  ...edit })
+      case 1: return ({ btnLabel: __(`${module}.actions.pay.title`), btnFunc: onPay, color: "warning", loading: loadToPay, ...edit })
       case 2: return ({ btnLabel: __(`${module}.actions.start.title`), btnFunc: onStart, color: "success", ...edit })
       case 3: return ({ btnLabel: __(`${module}.actions.finish.title`), btnFunc: onFinish, color: "primary", ...edit })
       default: return ({})
@@ -343,7 +343,7 @@ const ActiveInventory = () => {
       <Box className='mb-6'>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} xl={3}>
-            <Paper elevation={[1]} className='py-8 px-6 overflow-auto h-full'>
+            <Paper elevation={1} className='py-8 px-6 overflow-auto h-full'>
               {get(inventaryDetailState, "isLoading", false)
                 ? (
                   <LoadingData />
@@ -379,7 +379,7 @@ const ActiveInventory = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} xl={4}>
-            <Paper elevation={[1]} className='py-8 px-6 h-full'>
+            <Paper elevation={1} className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-2.title`)}</Typography>
               <Box className='m-auto my-6' maxWidth={250} >
                 <PieChart loading={get(inventaryDetailState, "isLoading", false)} values={[get(inventaryDetailState, "data.data.getCountsPieChart.counted", 0), get(inventaryDetailState, "data.data.getCountsPieChart.notCounted", 0)]} />
@@ -397,7 +397,7 @@ const ActiveInventory = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} xl={5}>
-            <Paper elevation={[1]} className='py-8 px-6 h-full'>
+            <Paper elevation={1} className='py-8 px-6 h-full'>
               <Typography className='mb-4' variant="heading4">{__(`${module}.cards.card-3.title`)}</Typography>
               <Box className='m-auto my-6 px-6' overflow="auto">
                 <BarChart loading={get(inventaryDetailState, "isLoading", false)} minWidth={350} countsBarChart={get(inventaryDetailState, "data.data.getCountsBarChart")} />
@@ -468,7 +468,7 @@ const ActiveInventory = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        elevation={[1]}
+        elevation={1}
       >
         <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button">
           <MenuItem onClick={showMore}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.menu.details`)}</strong></Typography></MenuItem>

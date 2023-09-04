@@ -1,0 +1,152 @@
+{
+    "transfer": {
+        "header": {
+            "title": "Listado de transferencias",
+            "sub-title": "",
+            "new": {
+                "title": "Crear transferencias",
+                "detail": "Detalle de transferencias"
+            },
+            "edit": {
+                "title": "Editar transferencias",
+                "detail": "Detalle de transferencias"
+            }
+        },
+        "btn": "Nuevo transferencias",
+        "filters": {
+            "search": "Buscar",
+            "status": "Estado"
+        },
+        "table": [
+            "transferencias",
+            "Descripción",
+            "Creación",
+            "Inventario",
+            "Estado"
+        ],
+        "tableDetail": [
+            "Id artículo",
+            "Descripción",
+            "Vencimiento",
+            "Estado",
+            "Lote",
+            "Ubicación",
+            "Cantidad"
+        ],
+        "empty": {
+            "title": "No hay transferencias que mostrar",
+            "description": "",
+            "items": {
+                "title": "No hay productos que mostrar",
+                "description": ""
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar transferencias",
+                "question": "¿Desea eliminar la transferencias?",
+                "success": "Eliminado con éxito"
+            },
+            "deleteDetail": {
+                "title": "Eliminar artículo",
+                "question": "¿Desea eliminar el artículo?",
+                "success": "Eliminado con éxito"
+            },
+            "cancel": "Cancelar",
+            "accept": "Aceptar",
+            "add": "Agregar",
+            "save": "Guardar",
+            "delet": "Eliminar",
+            "edit": "Editar"
+        },
+        "input": {
+            "transferid": {
+                "label": "transferencias id"
+            },
+            "status": {
+                "label": "Estado"
+            },
+            "createdate": {
+                "label": "Fecha de creación"
+            },
+            "inventorydate": {
+                "label": "Fecha de inventario"
+            },
+            "type": {
+                "label": "Tipo",
+                "placeholder": "Seleccionar tipo",
+                "error": "Tipo es requerido"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error": "Descripción es requerida"
+            }
+        },
+        "inputDetail": {
+            "itemid": {
+                "label": "Producto",
+                "placeholder": "Seleccione el producto",
+                "error": "Producto es requerido"
+            },
+            "statusid": {
+                "label": "Estado",
+                "placeholder": "Seleccione el estado",
+                "error": "Estado es requerido"
+            },
+            "sourcelocationid": {
+                "label": "Ubicación origen",
+                "placeholder": "Seleccione la ubicación",
+                "error": "Ubicación de origen es requerida"
+            },
+            "destinationlocationid": {
+                "label": "Ubicación de destino",
+                "placeholder": "Seleccione la ubicación",
+                "error": "Ubicación de destino es requerida"
+            },
+            "lot": {
+                "label": "Lote",
+                "placeholder": "Ingresa el lote",
+                "error": "Lote es requerido"
+            },
+            "lpn": {
+                "label": "LPN",
+                "placeholder": "Ingresa el LPN",
+                "error": "LPN es requerido"
+            },
+            "quantity": {
+                "label": "Cantidad",
+                "placeholder": "Ingresa la cantidad",
+                "error": "Cantidad es requerida"
+            },
+            "expirationdate": {
+                "label": "Fecha de vencimiento",
+                "placeholder": "Ingresa la fecha de vencimiento",
+                "error": "Fecha de vencimiento es requerida"
+            }
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        },
+        "labels": {
+            "1": "Detalle de transferencias"
+        },
+        "msg": {
+            "create": "transferencias creada con éxito",
+            "update": "transferencias actualizada con éxito"
+        },
+        "modal": {
+            "title1": "Agregar artículo",
+            "title2": "Editar artículo",
+            "subTitle1": "Puedes editar la entrada, modificar el estado, entre otros.",
+            "label1": "Datos principales",
+            "label2": "Otros datos",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        }
+    }
+}

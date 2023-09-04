@@ -1,0 +1,101 @@
+{
+    "warehouse": {
+        "header": {
+            "title": "Listado de bodegas",
+            "sub-title": "",
+            "new": {
+                "title": "Crear bodega",
+                "detail": "Detalle de bodega"
+            },
+            "edit": {
+                "title": "Editar bodega",
+                "detail": "Detalle de bodega"
+            }
+        },
+        "btn": "Nuevo bodega",
+        "filters": {
+            "search": "Buscar",
+            "status": "Estado"
+        },
+        "table": [
+            "Bodega",
+            "Nombre",
+            "Estado"
+        ],
+        "tableDetail": [
+            "Id ubicación",
+            "Creación",
+            "Estado",
+            "Descripción"
+        ],
+        "empty": {
+            "title": "No hay bodegas que mostrar",
+            "description": "",
+            "location": {
+                "title": "No hay ubicaciones que mostrar",
+                "description": ""
+            }
+        },
+        "actions": {
+            "delete": {
+                "title": "Eliminar bodega",
+                "question": "¿Desea eliminar la bodega?",
+                "success": "Eliminado con éxito"
+            },
+            "deleteLocation": {
+                "title": "Eliminar ubicación",
+                "question": "¿Desea eliminar la ubicación?",
+                "success": "Eliminado con éxito"
+            },
+            "cancel": "Cancelar",
+            "accept": "Aceptar",
+            "add": "Agregar",
+            "edit": "Editar"
+        },
+        "action": {
+            "save": "Guardar",
+            "cancel": "Cancelar"
+        },
+        "input": {
+            "warehouseid": {
+                "label": "Bodega id"
+            },
+            "active": {
+                "label": "Estado"
+            },
+            "createdate": {
+                "label": "Fecha de creación"
+            },
+            "status": {
+                "label": "Estado"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingresa una descripción",
+                "error1": "Descripción es requerida",
+                "error2": "Máximo 100 caracteres"
+            }
+        },
+        "status": {
+            "false": "Inactivo",
+            "true": "Activo"
+        },
+        "labels": {
+            "1": "Detalle de bodega"
+        },
+        
+        "msg": {
+            "create": "Bodega creada con éxito",
+            "update": "Bodega actualizada con éxito"
+        },
+        "modal": {
+            "title1": "Crear ubicación",
+            "subTitle1": "Completa los siguientes campos para continuar",
+            "btn": {
+                "accept": "Aceptar",
+                "save": "Guardar",
+                "cancel": "Cancelar"
+            }
+        }
+    }
+}
