@@ -135,8 +135,15 @@ const Drawer = ({ drawerWidth, toolbarHeight }) => {
         },
         {
             key: "payment_history",
-            name: __('layout.menu.payment'),
+            name: __('layout.menu.historyPayment'),
             path: get(find(routes, ({ key }) => key === "payment_history"), "path"),
+            title: false,
+            divider: true,
+        },
+        {
+            key: "plans",
+            name: __('layout.menu.plans'),
+            path: get(find(routes, ({ key }) => key === "plans"), "path"),
             title: false,
             divider: true,
         },

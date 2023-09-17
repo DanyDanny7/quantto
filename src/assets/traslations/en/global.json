@@ -25,7 +25,8 @@
             "inbound": "Enter",
             "outbound": "Out",
             "transfer": "Transfer",
-            "payment": "Payment history",
+            "historyPayment": "Payment history",
+            "plans": "My plans",
             "profil": "Profile",
             "config": "Config"
         }

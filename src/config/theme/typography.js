@@ -32,6 +32,13 @@ const typography = {
         lineHeight: "64px",
         letterSpacing: "-0.5%",
     },
+    display5: {
+        fontFamily: "Ubuntu-Bold",
+        fontWeight: "bold",
+        fontSize: "32px",
+        lineHeight: "38px",
+        letterSpacing: "-0.5%",
+    },
     // ------------------ Headings ---------------
     heading1: {
         fontFamily: "Ubuntu-Medium",

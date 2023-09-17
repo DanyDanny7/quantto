@@ -1,0 +1,31 @@
+{
+    "dashboard": {
+        "header": {
+            "title-1": "Inventarios",
+            "sub-title-1": "Posees el inventario [[code]] activo"
+        },
+        "filters": {
+            "search": "Buscar"
+        },
+        "table": [
+            "Artículos con incidencia",
+            "Diferencias"
+        ],
+        "empty": {
+            "title": "No hay datos que mostrar",
+            "description": ""
+        },
+        "cards": {
+            "card-1": {
+                "title": "Existencia de productos",
+                "prefix": "Top"
+            },
+            "card-2": {
+                "title": "Exactitud de inventarios",
+                "fault": "Averia",
+                "leftovers": "Sobrantes",
+                "missing": "Faltantes"
+            }
+        }
+    }
+}

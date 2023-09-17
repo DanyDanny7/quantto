@@ -22,13 +22,13 @@ import { getHistoryPayment } from "../../../store/history/thunk/historyPayment"
 
 const PaymentHistory = () => {
 
-  const [__] = useTranslation("hist");
+  const [__] = useTranslation("pay");
   const dispatch = useDispatch();
   const [filterSearch, setFilterSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState({})
 
-  const module = "payment"
+  const module = "history"
   const titles = __(`${module}.table`, { returnObjects: true })
 
   const historyState = useSelector(state => state.history.historyPayment);

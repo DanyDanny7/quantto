@@ -11,6 +11,9 @@ import ValidatEmail from "../../pages/Auth/ValidatEmail";
 import Profile from "../../pages/Auth/Profile";
 
 /* ---------- Counters ---------- */
+import Home from "../../pages/Home";
+
+/* ---------- Counters ---------- */
 import Counts from "../../pages/Counters";
 
 /* ---------- Config ---------- */
@@ -18,6 +21,7 @@ import Config from "../../pages/Config";
 
 /* ---------- History ---------- */
 import PaymentHistory from "../../pages/History/PaymentHistory";
+import Plans from "../../pages/History/Plans";
 
 /* ---------- Products ---------- */
 import ProductsList from "../../pages/Produts/ProductsList";
@@ -86,6 +90,11 @@ const routesNoAuth = [
 
 const routesAuth = [
     {
+        key: "/home",
+        path: "/home",
+        element: <Home />,
+    },
+    {
         key: "profile",
         path: "/profile",
         element: <Profile />,
@@ -126,7 +135,6 @@ const routesInvent = [
         path: "/inventory/active/:detailId/count/:countId",
         element: <ActiveInventoryCounts />,
     },
-
 ]
 
 const routesCounts = [
@@ -140,8 +148,13 @@ const routesCounts = [
 const routesHistor = [
     {
         key: "payment_history",
-        path: "/history/payment-history",
+        path: "/payment/payment-history",
         element: <PaymentHistory />,
+    },
+    {
+        key: "plans",
+        path: "/payment/plans",
+        element: <Plans />,
     },
 ]
 
@@ -305,10 +318,9 @@ const routesError = [
     {
         key: "404",
         path: "*",
-        element: <Navigate to="/inventory/active" />,
+        element: <Navigate to="/home" />,
     },
 ]
-
 
 const routes = concat(
     map(routesAuth, (route) => ({ ...route, element: <PrivateRoutes>{get(route, "element")}</PrivateRoutes> })),

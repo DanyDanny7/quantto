@@ -1,5 +1,5 @@
 {
-    "payment": {
+    "history": {
         "header": {
             "title": "Payment history",
             "sub-title": "Here is a list of all the payments received"
@@ -49,5 +49,8 @@
                 "subtotal": "Subtotal"
             }
         }
+    },
+    "plans": {
+        
     }
 }

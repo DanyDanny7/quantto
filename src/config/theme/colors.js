@@ -63,6 +63,7 @@ export const orange = {
     400: '#F47E2A',
     500: '#F95A05',
     600: '#A34C0D',
+    700: '#E04F00',
 };
 export const skyblue = {
     50: '#F5FEFF',

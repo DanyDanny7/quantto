@@ -25,7 +25,8 @@
             "inbound": "Entradas",
             "outbound": "Salidas",
             "transfer": "Transferencia",
-            "payment": "Historial de pagos",
+            "historyPayment": "Historial de pagos",
+            "plans": "Mis planes",
             "profil": "Perfil",
             "config": "Maestros"
         }

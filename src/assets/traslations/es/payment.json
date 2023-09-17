@@ -1,0 +1,144 @@
+{
+    "history": {
+        "header": {
+            "title": "Historial de pagos",
+            "sub-title": "Puedes ver el detalle de tus pagos realizados"
+        },
+        "filters": {
+            "search": "Buscar"
+        },
+        "table": [
+            "Fecha",
+            "Pago por",
+            "Inventario",
+            "Adjunto",
+            "Monto",
+            "Tarjeta de pago",
+            "Comprobante"
+        ],
+        "empty": {
+            "title": "No hay datos que mostrar",
+            "description": ""
+        },
+        "voucher": {
+            "labels": {
+                "company": "Quantto",
+                "document": "Recibo",
+                "email": "Correo:",
+                "terms": "",
+                "billed": "Fecha:",
+                "no": "Recibo #",
+                "billto": "Factura a",
+                "subtotal": "SubTotal",
+                "total": "Total",
+                "paid": "Pagado",
+                "amount": "Pendiente",
+                "download": "Descargar",
+                "refcode": "Código de referecia:"
+            },
+            "values": {
+                "email": "support@getquantto.com",
+                "paid": "PAGADO",
+                "terms": ""
+            },
+            "table": {
+                "date": "Fecha",
+                "description": "Descripci�n",
+                "quantity": "Cantidad",
+                "price": "Precio",
+                "subtotal": "Subtotal"
+            }
+        }
+    },
+    "plans": {
+        "header": {
+            "title": "Mis planes",
+            "sub-title": "Selecciona uno de nuestros diferentes planes"
+        },
+        "actions": {
+            "edit": {
+                "title": "Editar"
+            },
+            "delete": {
+                "title": "Eliminar Producto",
+                "question": "¿Desea eliminar el producto [[number]]?",
+                "success": "Producto eliminado con éxito"
+            },
+            "start": {
+                "title": "Activar Inventario",
+                "question": "¿Desea activar el inventario [[number]]?",
+                "success": "Inventario Iniciado con éxito"
+            },
+            "pay": {
+                "title": "Pagar inventario",
+                "question": "¿Desea pagar el inventario [[number]]?",
+                "success": {
+                    "title": "¡Conteo iniciado!",
+                    "subtitle": "Buen trabajo, ahora podrás ver tu conteo en la sección de “inventario”",
+                    "btn-1": "Ver inventario",
+                    "btn-2": "Aceptar y cerrar"
+                },
+                "input": {
+                    "name": {
+                        "label": "Nombre de tarjeta",
+                        "placeholder": "Ingrese su Nombre en la tarjeta",
+                        "error": "Nombre es requerido"
+                    },
+                    "number": {
+                        "label": "Número de tarjeta",
+                        "placeholder": "0000 0000 0000 0000",
+                        "error": "Número es requerido"
+                    },
+                    "date": {
+                        "label": "Fecha de expiración",
+                        "placeholder": "MM / AA",
+                        "error": "Fecha es requerida"
+                    },
+                    "cvv": {
+                        "label": "CVV",
+                        "placeholder": "000",
+                        "error": "CVV es requerido"
+                    }
+                }
+            },
+            "finish": {
+                "title": "Finalizar conteo",
+                "question": "¿Desea finalizar el inventario [[number]]?",
+                "success": "Inventario finalizado con éxito"
+            },
+            "close": "Cerrar",
+            "cancel": "Cancelar",
+            "acept": "Aceptar",
+            "submit": "Comensar Conteo",
+            "title": "Completa todos los campos para comenzar tu conteo",
+            "subtitle": "Completa todos los campos para comenzar tu conteo",
+            "link": "Ir a listado de inventarios",
+            "reload": "Actualizar",
+            "data": {
+                "title": "Confirma tus datos de conteo",
+                "name": "Nombre",
+                "counters": "Contadores",
+                "products": "Productos",
+                "total": "Monto total a pagar"
+            },
+            "alert": {
+                "template": {
+                    "title": "No agregó plantilla",
+                    "question": "¿Desea continuar sin una plantilla?",
+                    "subtitle": "Luego de crear tu inventario no podrás agregar productos a tu inventario, esta tarea únicamente podrá realizarse desde la aplicación movil de conteo."
+                },
+                "counter": {
+                    "title": "No agregó contador",
+                    "question": "¿Desea continuar sin un contador?"
+                },
+                "addtakers": {
+                    "title": "Agregar contador",
+                    "question": "¿Desea agregar [[numb]] al inventario?",
+                    "singular": "contador",
+                    "plural": "contadores",
+                    "success": "Lista de contadores actualizada con éxito"
+                }
+            }
+        }
+    }
+}

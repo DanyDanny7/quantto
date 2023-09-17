@@ -5,18 +5,20 @@ const App = () => {
 
   const up = 3;
   const down = 3;
+  // const up = 2;
+  // const down = 2;
 
   const color = {
     "N": "#01adef",
-    "N-CD": "#47bac2",
-    "N-GANA": "#47bac2",
+    "N-CD": "#a000ce",
+    "N-GANA": "#a000ce",
     "PCN": "#1835af",
     "ARENA": "#1600f7",
     "FMLN": "#cd242d",
-    "N-PCN": "#47bac2",
+    "N-PCN": "#a000ce",
     "GANA": "#df6f08",
-    "N-CD-GANA": "#47bac2",
-    "N-PCN-GANA": "#47bac2",
+    "N-CD-GANA": "#a000ce",
+    "N-PCN-GANA": "#a000ce",
     "ARENA-PCN": "#1600f7",
     "PDC": "#026f2c",
     "VAMOS": "#ffffff",
@@ -1622,7 +1624,7 @@ const App = () => {
         height: 530,
         width: 1000,
         position: "relative",
-        backgroundImage: "url(/map-proyec.png)",
+        // backgroundImage: "url(/map-proyec.png)",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center"
