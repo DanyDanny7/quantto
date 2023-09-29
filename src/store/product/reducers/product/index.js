@@ -66,6 +66,12 @@ import {
     POST_IMG_PRODUCT_RESET,
 } from "../../actions/productimg/post";
 
+import {
+    GET_INVENTORY_PRODUCT_LOADING,
+    GET_INVENTORY_PRODUCT_SUCCESS,
+    GET_INVENTORY_PRODUCT_REJECT,
+} from "../../actions/productInventory/get";
+
 
 const stateInit = {
     isLoading: false,
@@ -125,6 +131,12 @@ const stateInit = {
         isSuccess: false,
         isReject: false,
         data: {},
+    },
+    inventory: {
+        isLoading: false,
+        isSuccess: false,
+        isReject: false,
+        data: [],
     },
 }
 
@@ -578,6 +590,35 @@ const ProductListReducer = (state = stateInit, action) => {
                     isReject: true,
                     data: {},
                 }
+            }
+        }
+
+        // ------------- Product Inventory list --------------------
+        case GET_INVENTORY_PRODUCT_LOADING: return {
+            ...state,
+            inventory: {
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: [],
+            }
+        }
+        case GET_INVENTORY_PRODUCT_SUCCESS: return {
+            ...state,
+            inventory: {
+                isLoading: false,
+                isSuccess: true,
+                isReject: false,
+                ...action.payload,
+            }
+        }
+        case GET_INVENTORY_PRODUCT_REJECT: return {
+            ...state,
+            inventory: {
+                isLoading: false,
+                isSuccess: false,
+                isReject: true,
+                data: {},
             }
         }
 

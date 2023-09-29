@@ -33,6 +33,18 @@
             "Ubicación",
             "Cantidad"
         ],
+        "tableDetailModal": [
+            "Item id",
+            "Item code",
+            "Descripción",
+            "Vencimiento",
+            "Estado",
+            "Destino",
+            "Lote",
+            "Cantidad",
+            "Cant. en proceso",
+            "Cant. total"
+        ],
         "empty": {
             "title": "No hay transferencias que mostrar",
             "description": "",

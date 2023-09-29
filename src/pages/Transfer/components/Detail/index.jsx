@@ -1,15 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace, toString } from "lodash";
+import { get, map, replace } from "lodash";
 import {
-  Divider,
   IconButton,
   Typography,
   MenuList,
   MenuItem,
   Popover,
-  Chip,
 } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment';
@@ -19,13 +17,11 @@ import Table from "../../../../components/form/Table";
 import Toolbar from "./Toolbar";
 import AlertDelete from "../../../../components/form/AlertQuestion";
 import Alert from "../../../../components/form/Alert";
-import New from "./New";
+import New from "./List";
 import Notification from "../../../../components/form/Notification";
 
 import { deleteTransferDetailRequest } from "../../../../store/transfer/actions/detail/delete";
 import { getLocation } from "../../../../store/warehouse/thunk/location/get";
-import { getListProduct } from "../../../../store/product/thunk/productlist/get";
-import { getStateProducts } from "../../../../store/config/thunk/stateProducts/get"
 
 const Detail = ({ list, getData, loading }) => {
   const [__] = useTranslation("tran");
@@ -47,20 +43,13 @@ const Detail = ({ list, getData, loading }) => {
   const userState = useSelector(state => state.auth.login.dataUser);
   const getState = useSelector(state => state);
 
-  const getItemsData = () => {
-    dispatch(getListProduct({}))
-  }
+
   const getLocationData = () => {
     dispatch(getLocation({}))
   }
-  const getStatusData = () => {
-    dispatch(getStateProducts({}))
-  }
 
   useEffect(() => {
-    getItemsData()
     getLocationData()
-    getStatusData()
   }, [])
 
   const setError = (err) => {
@@ -126,6 +115,7 @@ const Detail = ({ list, getData, loading }) => {
       language: localStorage.getItem("lang"),
       uomId: get(selected, "uomId")
     }
+
     setLoadDelete(true)
     deleteTransferDetailRequest(body, () => getState)
       .then(({ data }) => {
@@ -140,7 +130,6 @@ const Detail = ({ list, getData, loading }) => {
   const onDeleteCancel = () => {
     setAlertDelete({ open: false, title: "", subtitle: "" })
   }
-
   const headTable = [
     {
       key: "itemid",
@@ -155,24 +144,25 @@ const Detail = ({ list, getData, loading }) => {
       width: 150,
     },
     {
+      key: "itemcode",
+      label: get(titles, "[2]"),
+      align: "center",
+      width: 150,
+    },
+    {
       key: "expiration",
       label: get(titles, "[2]"),
       align: "center",
       width: 150,
     },
     {
-      key: "statusid.description",
+      key: "status",
       label: get(titles, "[3]"),
       align: "left",
     },
     {
-      key: "locationid.description",
-      label: get(titles, "[4]"),
-      align: "left",
-    },
-    {
       key: "lot",
-      label: get(titles, "[5]"),
+      label: get(titles, "[4]"),
       align: "left",
     },
     {
@@ -190,7 +180,6 @@ const Detail = ({ list, getData, loading }) => {
   const dataTable = map(list, (row, i) => ({
     ...row,
     expiration: get(row, "expirationdate") ? moment(get(row, "expirationdate")).format("L") : "",
-    status: <Chip className='min-w-[70px]' size="small" label={<Typography variant="bodyXtraSmall">{__(`${module}.status.${toString(get(row, "active"))}`)}</Typography>} color={get(row, "active") ? "success" : "error"} />,
     options: (
       <IconButton
         className='!p-0'
@@ -230,8 +219,8 @@ const Detail = ({ list, getData, loading }) => {
         elevation={1}
       >
         <MenuList autoFocusItem={Boolean(anchorEl)} id="composition-menu" aria-labelledby="composition-button">
-          <MenuItem onClick={onEdit}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.actions.edit`)}</strong></Typography></MenuItem>
-          <Divider />
+          {/* <MenuItem onClick={onEdit}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.actions.edit`)}</strong></Typography></MenuItem>
+          <Divider /> */}
           <MenuItem onClick={onDelete}><Typography className='text-center w-full ' variant="bodySmall"><strong>{__(`${module}.actions.delet`)}</strong></Typography></MenuItem>
         </MenuList>
       </Popover>
@@ -247,7 +236,7 @@ const Detail = ({ list, getData, loading }) => {
           setShowNoti={setShowNoti}
           getData={getData}
           setError={setError}
-          maxWidth="md"
+          maxWidth="xl"
         />
       }
       <Notification showNoti={showNoti} setShowNoti={setShowNoti} />

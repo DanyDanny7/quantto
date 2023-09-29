@@ -1,26 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, replace } from "lodash";
+import { get, map } from "lodash";
 import {
-  // Pagination,
-  // Stack,
   Divider,
   IconButton,
   Typography,
   MenuList,
   MenuItem,
   Popover,
-  Pagination,
-  Stack,
-  Chip,
-  Link,
-  Button,
-  Box,
-  Fade,
-  CircularProgress,
-  Collapse,
-  Tooltip
 } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment/moment';
