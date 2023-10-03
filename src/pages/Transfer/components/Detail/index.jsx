@@ -22,6 +22,7 @@ import Notification from "../../../../components/form/Notification";
 
 import { deleteTransferDetailRequest } from "../../../../store/transfer/actions/detail/delete";
 import { getLocation } from "../../../../store/warehouse/thunk/location/get";
+import { getInventoryProdClear } from "../../../../store/product/thunk/productinventory/get";
 
 const Detail = ({ list, getData, loading }) => {
   const [__] = useTranslation("tran");
@@ -50,6 +51,9 @@ const Detail = ({ list, getData, loading }) => {
 
   useEffect(() => {
     getLocationData()
+    return () => {
+      dispatch(getInventoryProdClear())
+    }
   }, [])
 
   const setError = (err) => {
@@ -93,11 +97,11 @@ const Detail = ({ list, getData, loading }) => {
     setOpen(true)
   }
 
-  const onEdit = () => {
-    closePoop()
-    setIsEdit(true)
-    setOpen(true)
-  }
+  // const onEdit = () => {
+  //   closePoop()
+  //   setIsEdit(true)
+  //   setOpen(true)
+  // }
 
   //  --------- Delete -------------
   const closeAlert = () => {
@@ -124,6 +128,7 @@ const Detail = ({ list, getData, loading }) => {
         setSelected({})
         setLoadDelete(false)
         getData()
+        dispatch(getInventoryProdClear())
       })
       .catch((err) => { setError(err); setLoadDelete(false) })
   }

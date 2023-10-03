@@ -1,4 +1,5 @@
 import {
+    getInventoryProductClear,
     getInventoryProductLoading,
     getInventoryProductRequest,
     getInventoryProductSuccess,
@@ -13,5 +14,10 @@ export const getInventoryProduct = (formData) => async (dispatch, getState) => {
     } catch (error) {
         dispatch(getInventoryProductReject(error))
     }
+    return Promise.resolve();
+};
+
+export const getInventoryProdClear = () => async (dispatch, getState) => {
+    dispatch(getInventoryProductClear());
     return Promise.resolve();
 };

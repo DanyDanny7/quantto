@@ -33,7 +33,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     const [listItems, setListItems] = useState({})
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [filterSearch, setFilterSearch] = useState(" ");
+    const [filterSearch, setFilterSearch] = useState("");
 
     const titles = __(`${module}.tableDetailModal`, { returnObjects: true })
 
@@ -52,7 +52,10 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
         }
     }, [dispatch, filterSearch])
 
-
+    useEffect(() => {
+        setFilterSearch(get(selected, "itemid") || "")
+    }, [get(selected, "itemid")])
+    
     const handleClose = () => {
         onClose();
         setListItems({})
@@ -222,7 +225,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
                 </Box>
                 <Divider />
                 <Table
-                    toolbar={<Toolbar setFilterSearch={setFilterSearch} __={__} module={module} />}
+                    toolbar={<Toolbar setFilterSearch={setFilterSearch} __={__} module={module} initialValue={get(selected, "itemid", "")} />}
                     headTable={headTable}
                     dataTable={dataTable}
                     __={__}

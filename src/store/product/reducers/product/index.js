@@ -67,6 +67,7 @@ import {
 } from "../../actions/productimg/post";
 
 import {
+    GET_INVENTORY_PRODUCT_CLEAR,
     GET_INVENTORY_PRODUCT_LOADING,
     GET_INVENTORY_PRODUCT_SUCCESS,
     GET_INVENTORY_PRODUCT_REJECT,
@@ -594,6 +595,15 @@ const ProductListReducer = (state = stateInit, action) => {
         }
 
         // ------------- Product Inventory list --------------------
+        case GET_INVENTORY_PRODUCT_CLEAR: return {
+            ...state,
+            inventory: {
+                isLoading: false,
+                isSuccess: false,
+                isReject: false,
+                data: [],
+            }
+        }
         case GET_INVENTORY_PRODUCT_LOADING: return {
             ...state,
             inventory: {
@@ -618,7 +628,7 @@ const ProductListReducer = (state = stateInit, action) => {
                 isLoading: false,
                 isSuccess: false,
                 isReject: true,
-                data: {},
+                data: [],
             }
         }
 

@@ -55,6 +55,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     };
 
     const onSubmit = (values) => {
+        console.log("submit", values)
         const body = {
             outboundid: Number(id),
             itemid: get(values, "itemid"),
@@ -109,9 +110,9 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
                 open={open}
                 maxWidth={maxWidth}
                 fullWidth
-                component="form"
                 onSubmit={get(formik, "handleSubmit")}
                 classes={{ paper: '!overflow-visible' }}
+                component="form"
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} >
                     <IconButton

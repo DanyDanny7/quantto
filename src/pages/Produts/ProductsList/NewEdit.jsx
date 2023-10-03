@@ -373,6 +373,7 @@ const NewEdit = () => {
                                 <div>
                                     <CustomTabPanel value={tab} index={0}>
                                         <Inventary
+                                            loading={loadDetail}
                                             getData={getProduct}
                                             setBtnFunc={setBtnFunc}
                                         />

@@ -44,6 +44,10 @@
             "items": {
                 "title": "No hay productos que mostrar",
                 "description": ""
+            },
+            "detail": {
+                "title": "No hay detalle que mostrar",
+                "description": ""
             }
         },
         "actions": {
@@ -56,6 +60,11 @@
                 "title": "Eliminar artículo",
                 "question": "¿Desea eliminar el artículo?",
                 "success": "Eliminado con éxito"
+            },
+            "close": {
+                "title": "Cerrar documento",
+                "question": "¿Desea cerrar el documento de salida?, <br/> Este proceso no podrá revertirse",
+                "success": "Documento cerrado con éxito"
             },
             "cancel": "Cancelar",
             "accept": "Aceptar",
@@ -151,6 +160,7 @@
             "title1": "Artículos disponibles",
             "title2": "",
             "subTitle1": "",
+            "add": "Añadir",
             "btn": {
                 "accept": "Aceptar",
                 "save": "Guardar",

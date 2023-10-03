@@ -32,14 +32,14 @@
             "Factor"
         ],
         "tableInventary": [
-            "Bodega",
+            "Id",
+            "Código",
             "Ubicación",
             "Estado",
             "Vencimiento",
             "Lote",
-            "Cant.total",
-            "Cant. en proceso",
-            "Cant. disponible"
+            "Cant. reservada",
+            "Cant. total"
         ],
         "empty": {
             "title": "No hay productos que mostrar",

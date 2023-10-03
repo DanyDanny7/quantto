@@ -55,14 +55,19 @@
         },
         "actions": {
             "delete": {
-                "title": "Eliminar transferencias",
-                "question": "¿Desea eliminar la transferencias?",
+                "title": "Eliminar transferencia",
+                "question": "¿Desea eliminar la transferencia?",
                 "success": "Eliminado con éxito"
             },
             "deleteDetail": {
                 "title": "Eliminar artículo",
                 "question": "¿Desea eliminar el artículo?",
                 "success": "Eliminado con éxito"
+            },
+            "close": {
+                "title": "Cerrar documento",
+                "question": "¿Desea cerrar la transferencia?, <br/> este proceso no podrá revertirse",
+                "success": "Documento cerrado con éxito"
             },
             "cancel": "Cancelar",
             "accept": "Aceptar",

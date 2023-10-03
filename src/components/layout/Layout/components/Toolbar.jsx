@@ -26,10 +26,12 @@ const Toolbar = ({
         color: "primary",
         btnLabel2: "",
         loading: false,
+        disabled: false,
         btnFunc2: () => { },
         color2: "primary",
         loading2: false,
-        customBtn: null
+        customBtn: null,
+        disabled2: false,
     },
     goBack
 }) => {
@@ -59,12 +61,12 @@ const Toolbar = ({
                 ) : (
                     <Stack direction="row-reverse" spacing={2} alignItems="right">
                         {get(propsToolbar, "btnLabel", false) &&
-                            <LoadingButton loading={get(propsToolbar, "loading")} color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
+                            <LoadingButton loading={get(propsToolbar, "loading")} disabled={get(propsToolbar, "disabled", false)} color={get(propsToolbar, "color")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc")} >
                                 {get(propsToolbar, "btnLabel")}
                             </LoadingButton>
                         }
                         {get(propsToolbar, "btnLabel2", false) &&
-                            <LoadingButton loading={get(propsToolbar, "loading2")} color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
+                            <LoadingButton loading={get(propsToolbar, "loading2")} disabled={get(propsToolbar, "disabled2", false)} color={get(propsToolbar, "color2")} variant="contained" size='large' onClick={get(propsToolbar, "btnFunc2")} >
                                 {get(propsToolbar, "btnLabel2")}
                             </LoadingButton>
                         }

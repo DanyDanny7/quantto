@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, } from 'react-router-dom';
 import {
     Dialog,
     Box,
@@ -13,6 +13,7 @@ import {
     Autocomplete as AutocompleteUi,
 } from '@mui/material';
 import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import Table from "../../../../components/form/Table";
 import map from "lodash/map";
 import includes from "lodash/includes";
@@ -34,7 +35,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     const [listItems, setListItems] = useState({})
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [filterSearch, setFilterSearch] = useState(" ");
+    const [filterSearch, setFilterSearch] = useState("0");
 
     const titles = __(`${module}.tableDetailModal`, { returnObjects: true })
 

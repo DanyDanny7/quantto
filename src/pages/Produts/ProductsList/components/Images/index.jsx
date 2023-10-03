@@ -31,6 +31,7 @@ import { SampleNextArrow, SamplePrevArrow } from "./Arrows"
 
 import { getListProduct } from "../../../../../store/product/thunk/productlist/get"
 import { postImgProductRequest } from "../../../../../store/product/actions/productimg/post"
+import { deleteImgProductRequest } from "../../../../../store/product/actions/productimg/delete"
 
 const style = {
   position: 'absolute',
@@ -140,17 +141,15 @@ const ProductsList = ({ list, loading, getData, setBtnFunc }) => {
       id: selected
     }
     setLoadDelete(true)
-    // deleteInventaryRequest(body, () => getState)
-    //   .then(({ data }) => {
-    setTimeout(() => {
-      const msg = __(`${module}.actions.delete.success`);
-      setShowNoti({ open: true, msg, variant: "success" })
-      setSelected(null)
-      getData()
-      setLoadDelete(false)
-    }, 3000);
-    //   })
-    //   .catch((err) => { setError(err); setLoadDelete(false) })
+    deleteImgProductRequest(body, () => getState)
+      .then(({ data }) => {
+        const msg = __(`${module}.actions.delete.success`);
+        setShowNoti({ open: true, msg, variant: "success" })
+        setSelected(null)
+        getData()
+        setLoadDelete(false)
+      })
+      .catch((err) => { setError(err); setLoadDelete(false) })
   }
   const onDeleteCancel = () => {
     setAlertDelete({ open: false, title: "", subtitle: "" })

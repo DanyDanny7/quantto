@@ -12,6 +12,7 @@ const ToolbarComponent = ({ setFilterSearch, initialValue }) => {
     return (
         <Toolbar className='p-2' sx={{ borderBottomWidth: "1px", borderBottomColor: "text.sslite", borderBottomStyle: "solid" }}>
             <Stack className='w-full' direction="row" justifyContent="space-between" spacing={2} >
+                <div></div>
                 <InputSearch seachId="search-s-outbound" onSubmit={onSubmit} color="secondary" initialValue={initialValue} sx={{ minWidth: 300 }} size="small" />
             </Stack>
         </Toolbar>

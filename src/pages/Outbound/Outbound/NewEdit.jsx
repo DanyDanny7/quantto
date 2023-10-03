@@ -29,11 +29,13 @@ import Alert from "../../../components/form/Alert";
 import validator from "./validator"
 import AutoComplete from "../../../components/form/AutoComplete";
 import Load from "../../../components/form/Load";
+import AlertDelete from "../../../components/form/AlertQuestion";
 
 import { getOutboundIdRequest, } from "../../../store/outbound/actions/outbound/getId"
 import { postOutboundRequest } from "../../../store/outbound/actions/outbound/post"
 import { putOutboundRequest } from "../../../store/outbound/actions/outbound/put"
 import { getOutBoundType } from "../../../store/config/thunk/outBoundType/get"
+import { putCloseOutboundRequest } from "../../../store/outbound/actions/outbound/putClose"
 
 const NewEdit = () => {
     const dispatch = useDispatch();
@@ -48,6 +50,8 @@ const NewEdit = () => {
     const [current, setCurrent] = useState({})
     const [loadSuccess, setLoadSuccess] = useState(false);
     const [loadDetail, setLoadDetail] = useState(false);
+    const [loadClose, setLoadClose] = useState(false);
+    const [closeDoc, setCloseDoc] = useState({ open: false, title: "", subtitle: "" })
 
     const userState = useSelector(state => state.auth.login.dataUser);
     const getState = useSelector(state => state);
@@ -134,6 +138,34 @@ const NewEdit = () => {
         }
     }
 
+    const closeDocElement = () => {
+        const body = {
+            outboundid: id,
+            language: localStorage.getItem("lang"),
+            userid: get(userState, "userId"),
+            companyid: Number(get(userState, "companyId")),
+        }
+        setLoadClose(true)
+        putCloseOutboundRequest(body, () => getState)
+            .then(({ data }) => {
+                setLoadSuccess(false)
+                setLoadClose(false)
+                setShowNoti({ open: true, msg: __(`${module}.actions.close.success`), variant: "success" })
+                getOutbound()
+                closeDocCancel()
+            })
+            .catch((err) => { setError(err); setLoadClose(false) })
+    }
+
+    const closeDocConfirm = () => {
+        const msg = __(`${module}.actions.close.question`)
+        setCloseDoc({ open: true, title: __(`${module}.actions.close.title`), subtitle: msg })
+    }
+
+    const closeDocCancel = () => {
+        setCloseDoc({ open: false, title: "", subtitle: "" })
+    }
+
     const initialValues = {
         description: id ? get(current, "data.description", "") : "",
         createdate: (id ? get(current, "data.createdate", false) : false) ? moment(get(current, "data.createdate")).format("L") : moment().format("L"),
@@ -152,7 +184,14 @@ const NewEdit = () => {
         <Layout
             propsToolbar={{
                 title: !id ? __(`${module}.header.new.title`) : __(`${module}.header.edit.title`),
-                srute: !id ? __(`head.new.code`) : id
+                srute: !id ? __(`head.new.code`) : id,
+                ...(get(current, "data.status") !== "CLOSE") && !!id && {
+                    btnLabel: __(`${module}.actions.close.title`),
+                    btnFunc: closeDocConfirm,
+                    color: "error",
+                    loading: loadClose,
+                    disabled: loadDetail || putOutbound.loading
+                }
             }}
         >
             {!loadSuccess && id
@@ -278,6 +317,14 @@ const NewEdit = () => {
                 type={get(alert, "type")}
                 openAlert={get(alert, "open")}
                 closeAlert={closeAlert}
+            />
+            <AlertDelete
+                title={closeDoc.title}
+                subtitle={closeDoc.subtitle}
+                cancel={{ label: __(`${module}.actions.cancel`), func: closeDocCancel }}
+                submit={{ label: __(`${module}.actions.accept`), func: closeDocElement }}
+                openAlert={closeDoc.open}
+                loading={loadClose}
             />
         </Layout>
     )

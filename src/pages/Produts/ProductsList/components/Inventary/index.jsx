@@ -28,102 +28,58 @@ import { useNavigate } from 'react-router-dom';
 
 // import Layout from "../../../components/layout/Layout"
 import Table from "../../../../../components/form/Table";
+import Toolbar from "./ToolbarList";
 // import Modal from "./components/Modal";
 import AlertDelete from "../../../../../components/form/AlertQuestion";
 
-// import { getListProduct } from "../../../../../store/product/thunk/"
+import { getInventoryProduct } from "../../../../../store/product/thunk/productinventory/get"
 
-const listInventary = {
-  isLoading: false,
-  isSuccess: true,
-  data: [
-    {
-      id: 1,
-      store: "AJHG623645",
-      description: "Pellentesque commodo eros a enim. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Pellentesque commodo eros a enim. Nunc egestas, augue at pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo quis pede.",
-      active: true,
-      finish: moment().format(),
-      lote: 12,
-      quantity: 1,
-      quantity_process: 22,
-      quantity_available: 20,
-    },
-    {
-      id: 2,
-      store: "AJHG623645",
-      description: "Pellentesque commodo eros a enim. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Pellentesque commodo eros a enim. Nunc egestas, augue at pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo quis pede.",
-      active: false,
-      finish: moment().format(),
-      lote: 12,
-      quantity: 1,
-      quantity_process: 22,
-      quantity_available: 20,
-    },
-    {
-      id: 3,
-      store: "AJHG623645",
-      description: "Pellentesque commodo eros a enim. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Pellentesque commodo eros a enim. Nunc egestas, augue at pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo quis pede.",
-      active: false,
-      finish: moment().format(),
-      lote: 12,
-      quantity: 1,
-      quantity_process: 22,
-      quantity_available: 20,
-    },
-    {
-      id: 4,
-      store: "AJHG623645",
-      description: "Pellentesque commodo eros a enim. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Pellentesque commodo eros a enim. Nunc egestas, augue at pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo quis pede.",
-      active: true,
-      finish: moment().format(),
-      lote: 12,
-      quantity: 1,
-      quantity_process: 22,
-      quantity_available: 20,
-    },
-  ]
-}
-
-const ProductsList = ({setBtnFunc}) => {
+const ProductsList = ({ setBtnFunc }) => {
 
   const [__] = useTranslation("prod");
   const dispatch = useDispatch();
   const navegate = useNavigate();
-  const [filterSearch, setFilterSearch] = useState("");
+  const [filterSearch, setFilterSearch] = useState("0");
   const [anchorEl, setAnchorEl] = useState(null);
   const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
   const [loadDelete, setLoadDelete] = useState(false);
   const [edit, setEdit] = useState({ item: {}, value: false });
   const [selected, setSelected] = useState({});
 
-  // const [open, setOpen] = useState(false);
   // const [selected, setSelected] = useState({})
 
   const module = "list"
   const titles = __(`${module}.tableInventary`, { returnObjects: true })
 
-  // const product = useSelector(state => state.product.product);
+  const product = useSelector(state => state.product.product.inventory);
 
   const getData = ({ page, filterSearch }) => {
-    // const filters = { page, ...(!!filterSearch && { search: filterSearch }) }
-    // dispatch(getListProduct(filters))
+    const filters = { page, ...(!!filterSearch && { itemid: filterSearch }) }
+    dispatch(getInventoryProduct(filters))
   }
 
-  // useEffect(() => {
-  // getData({ page: 1, filterSearch })
-  // }, [dispatch, filterSearch])
+  useEffect(() => {
+    if (!!filterSearch) {
+      getData({ page: 1, filterSearch })
+    }
+  }, [dispatch, filterSearch])
 
 
   const headTable = [
     {
-      key: "store",
+      key: "itemId",
       label: get(titles, "[0]"),
       align: "left",
     },
     {
-      key: "description",
+      key: "itemCode",
       label: get(titles, "[1]"),
-      align: "center",
+      align: "left",
+    },
+    {
+      key: "location",
+      label: get(titles, "[2]"),
+      align: "left",
       sx: {
         width: 200,
         maxWidth: 200,
@@ -133,41 +89,35 @@ const ProductsList = ({setBtnFunc}) => {
       }
     },
     {
-      key: "status",
-      label: get(titles, "[2]"),
-      align: "center"
-    },
-    {
-      key: "date",
+      key: "estado",
       label: get(titles, "[3]"),
       align: "center"
     },
     {
-      key: "lote",
+      key: "expiration",
       label: get(titles, "[4]"),
       align: "center"
     },
     {
-      key: "quantity",
+      key: "lot",
       label: get(titles, "[5]"),
-      align: "center"
+      align: "left"
     },
     {
-      key: "quantity_process",
+      key: "quantityReserved",
       label: get(titles, "[6]"),
       align: "center"
     },
     {
-      key: "quantity_available",
+      key: "quantityTotal",
       label: get(titles, "[7]"),
       align: "center"
     },
   ]
 
-  const dataTable = map([], (row, i) => ({
+  const dataTable = map(get(product, "data", []), (row, i) => ({
     ...row,
-    date: moment(get(row, "finish")).format("DD/MM/YYYY"),
-    status: <Chip className='min-w-[70px]' size="small" label={<Typography variant="bodyXtraSmall">{__(`${module}.status.${toString(get(row, "active"))}`)}</Typography>} color={get(row, "active") ? "success" : "error"} />,
+    expiration: get(row, "expirationDate") ? moment(get(row, "expirationDate")).format("L") : "",
     total: `$ ${get(row, "cost")}`,
   }))
 
@@ -220,7 +170,7 @@ const ProductsList = ({setBtnFunc}) => {
   useEffect(() => {
     setBtnFunc(<div />)
   }, [])
-  
+
 
   return (
     // <Layout
@@ -235,12 +185,13 @@ const ProductsList = ({setBtnFunc}) => {
     // >
     <div className='min-h-[300px]'>
       <Table
+        toolbar={<Toolbar setFilterSearch={setFilterSearch} __={__} module={module} />}
         headTable={headTable}
         dataTable={dataTable}
         __={__}
         module={module}
         sizeFilters={125}
-        loading={get(listInventary, "isLoading", false)}
+        loading={get(product, "isLoading", false)}
         propsPaper={{ elevation: 0 }}
         propsTable={{ size: "small" }}
         empty="inventary"

@@ -52,8 +52,16 @@
                 "question": "¿Desea eliminar el artículo?",
                 "success": "Eliminado con éxito"
             },
+            "close": {
+                "title": "Cerrar documento",
+                "question": "¿Desea cerrar el documento de entrada?, <br/> Este proceso no podrá revertirse",
+                "success": "Documento cerrado con éxito"
+            },
             "cancel": "Cancelar",
             "accept": "Aceptar",
+            "save": "Guardar",
+            "delet": "Eliminar",
+            "edit": "Editar",
             "add": "Agregar"
         },
         "input": {
@@ -118,12 +126,6 @@
         },
         "labels": {
             "1": "Detalle de documento de entrada"
-        },
-        "action": {
-            "save": "Guardar",
-            "cancel": "Cancelar",
-            "delete": "Eliminar",
-            "edit": "Editar"
         },
         "msg": {
             "create": "Documento de entrada creada con éxito",

@@ -29,11 +29,13 @@ import Alert from "../../../components/form/Alert";
 import validator from "./validator"
 import AutoComplete from "../../../components/form/AutoComplete";
 import Load from "../../../components/form/Load";
+import AlertDelete from "../../../components/form/AlertQuestion";
 
 import { getInboundIdRequest } from "../../../store/inbound/actions/inbound/getId"
 import { postInboundRequest } from "../../../store/inbound/actions/inbound/post"
 import { putInboundRequest } from "../../../store/inbound/actions/inbound/put"
 import { getInBoundType } from "../../../store/config/thunk/inBoundType/get"
+import { putCloseInboundRequest } from "../../../store/inbound/actions/inbound/putClose"
 
 const NewEdit = () => {
     const dispatch = useDispatch();
@@ -48,6 +50,8 @@ const NewEdit = () => {
     const [current, setCurrent] = useState({})
     const [loadSuccess, setLoadSuccess] = useState(false);
     const [loadDetail, setLoadDetail] = useState(false);
+    const [loadClose, setLoadClose] = useState(false);
+    const [closeDoc, setCloseDoc] = useState({ open: false, title: "", subtitle: "" })
 
     const userState = useSelector(state => state.auth.login.dataUser);
     const getState = useSelector(state => state);
@@ -134,6 +138,34 @@ const NewEdit = () => {
         }
     }
 
+    const closeDocElement = () => {
+        const body = {
+            inboundid: id,
+            language: localStorage.getItem("lang"),
+            userid: get(userState, "userId"),
+            companyid: Number(get(userState, "companyId")),
+        }
+        setLoadClose(true)
+        putCloseInboundRequest(body, () => getState)
+            .then(({ data }) => {
+                setLoadSuccess(false)
+                setLoadClose(false)
+                setShowNoti({ open: true, msg: __(`${module}.actions.close.success`), variant: "success" })
+                getInbound()
+                closeDocCancel()
+            })
+            .catch((err) => { setError(err); setLoadClose(false) })
+    }
+
+    const closeDocConfirm = () => {
+        const msg = __(`${module}.actions.close.question`)
+        setCloseDoc({ open: true, title: __(`${module}.actions.close.title`), subtitle: msg })
+    }
+
+    const closeDocCancel = () => {
+        setCloseDoc({ open: false, title: "", subtitle: "" })
+    }
+
     const initialValues = {
         description: id ? get(current, "data.description", "") : "",
         createdate: (id ? get(current, "data.createdate", false) : false) ? moment(get(current, "data.createdate")).format("L") : moment().format("L"),
@@ -152,7 +184,14 @@ const NewEdit = () => {
         <Layout
             propsToolbar={{
                 title: !id ? __(`${module}.header.new.title`) : __(`${module}.header.edit.title`),
-                srute: !id ? __(`head.new.code`) : id
+                srute: !id ? __(`head.new.code`) : id,
+                ...(get(current, "data.status") !== "CLOSE") && !!id && {
+                    btnLabel: __(`${module}.actions.close.title`),
+                    btnFunc: closeDocConfirm,
+                    color: "error",
+                    loading: loadClose,
+                    disabled: loadDetail || putInbound.loading
+                }
             }}
         >
             {!loadSuccess && id
@@ -169,8 +208,8 @@ const NewEdit = () => {
                                         <Stack className='p-4' direction="row" spacing={2} justifyContent="space-between">
                                             <Typography component="h6" variant="h6">{__(`${module}.labels.1`)}</Typography>
                                             <Stack direction="row" spacing={2} justifyContent="flex-end">
-                                                <Button className='w-[100px] min-w-[100px]' variant='outlined' color="secondary" onClick={() => navigate("/inbound")} disabled={get(postInbound, "loading") || get(putInbound, "loading")} >{__(`${module}.action.cancel`)}</Button>
-                                                <LoadingButton className='w-[100px] min-w-[100px]' variant="contained" color="secondary" type="submit" loading={get(postInbound, "loading") || get(putInbound, "loading")}>{__(`${module}.action.save`)}</LoadingButton>
+                                                <Button className='w-[100px] min-w-[100px]' variant='outlined' color="secondary" onClick={() => navigate("/inbound")} disabled={get(postInbound, "loading") || get(putInbound, "loading")} >{__(`${module}.actions.cancel`)}</Button>
+                                                <LoadingButton className='w-[100px] min-w-[100px]' variant="contained" color="secondary" type="submit" loading={get(postInbound, "loading") || get(putInbound, "loading")}>{__(`${module}.actions.save`)}</LoadingButton>
                                             </Stack>
                                         </Stack>
                                         <Divider />
@@ -279,7 +318,15 @@ const NewEdit = () => {
                 openAlert={get(alert, "open")}
                 closeAlert={closeAlert}
             />
-        </Layout>
+            <AlertDelete
+                title={closeDoc.title}
+                subtitle={closeDoc.subtitle}
+                cancel={{ label: __(`${module}.actions.cancel`), func: closeDocCancel }}
+                submit={{ label: __(`${module}.actions.accept`), func: closeDocElement }}
+                openAlert={closeDoc.open}
+                loading={loadClose}
+            />
+        </Layout >
     )
 }
 

@@ -21,14 +21,3 @@ export const postImgProductRequest = async (data, getState) => {
     }, getState);
     return request(`/api/web/additemimages`, options);
 };
-
-//* REQUEST SERVICE COMPANY ---------------------------------------
-// export const postUserPhotoRequest = async (data, getState) => {
-//     const options = await withToken({
-//         method: Methods.POST,
-//         headers: RequestType.Multipart,
-//         data,
-//     }, getState);
-//     return request(`/api/Users/UploadUserProfilePicture`, options);
-// };
-

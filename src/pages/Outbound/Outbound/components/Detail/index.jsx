@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { get, map, toString } from "lodash";
+import get from "lodash/get";
+import map from "lodash/map";
+import toString from "lodash/toString";
+
 import {
   Divider,
   IconButton,
@@ -27,6 +30,7 @@ import { deleteOutboundDetailRequest } from "../../../../../store/outbound/actio
 import { getListProduct } from "../../../../../store/product/thunk/productlist/get";
 import { getOutboundDetailPickingRequest } from "../../../../../store/outbound/actions/outboundDetailPicking/get";
 import { deleteOutboundDetailPickingRequest } from "../../../../../store/outbound/actions/outboundDetailPicking/delete";
+import { getInventoryProdClear } from "../../../../../store/product/thunk/productinventory/get";
 
 const Detail = ({ id, list, getData, loading }) => {
   const [__] = useTranslation("outb");
@@ -72,7 +76,10 @@ const Detail = ({ id, list, getData, loading }) => {
   }
 
   useEffect(() => {
-    getItemsData()
+    getItemsData();
+    return () => {
+      dispatch(getInventoryProdClear())
+    }
   }, [])
 
   const setError = (err) => {
