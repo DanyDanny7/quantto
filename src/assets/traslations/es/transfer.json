@@ -26,6 +26,7 @@
         ],
         "tableDetail": [
             "Id artículo",
+            "Item code",
             "Descripción",
             "Vencimiento",
             "Estado",
@@ -39,7 +40,7 @@
             "Descripción",
             "Vencimiento",
             "Estado",
-            "Destino",
+            "Ubicación",
             "Lote",
             "Cantidad",
             "Cant. en proceso",

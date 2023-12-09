@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from 'formik';
 import { get } from "lodash";
 
-const InputSearch = ({ seachId, onSubmit, propsContainer = {}, initialValue, ...props }) => {
+const InputSearch = ({ seachId, name = "search", onSubmit, propsContainer = {}, initialValue, disabled = false, ...props }) => {
     const [__] = useTranslation("global");
 
     const formik = useFormik({
         initialValues: {
-            search: initialValue || "",
+            [name]: initialValue || "",
         },
         onSubmit,
     });
@@ -20,10 +20,10 @@ const InputSearch = ({ seachId, onSubmit, propsContainer = {}, initialValue, ...
             <TextField
                 label={__('layout.search')}
                 id="input-search"
-                name="search"
+                name={name}
                 InputProps={{
                     endAdornment:
-                        <IconButton size="small" type="submit">
+                        <IconButton size="small" type="submit" disabled={disabled}>
                             <SearchIcon />
                         </IconButton>
                 }}
@@ -31,6 +31,7 @@ const InputSearch = ({ seachId, onSubmit, propsContainer = {}, initialValue, ...
                 onChange={get(formik, "handleChange")}
                 error={get(formik, "touched.search") && Boolean(get(formik, "errors.search"))}
                 helperText={get(formik, "touched.search") && get(formik, "errors.search")}
+                disabled={disabled}
                 {...props}
             />
         </Box>

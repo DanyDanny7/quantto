@@ -11,6 +11,12 @@ import {
 } from "../../actions/inbound/getId";
 
 import {
+    GET_INBOUND_UOM_LOADING,
+    GET_INBOUND_UOM_REJECT,
+    GET_INBOUND_UOM_SUCCESS,
+} from "../../actions/inbound/getUom";
+
+import {
     DELETE_INBOUND_LOADING,
     DELETE_INBOUND_REJECT,
     DELETE_INBOUND_SUCCESS,
@@ -63,6 +69,12 @@ const stateInit = {
         isSuccess: false,
         isReject: false,
         data: {},
+    },
+    uom: {
+        isLoading: false,
+        isSuccess: false,
+        isReject: false,
+        data: [],
     },
     post: {
         isLoading: false,
@@ -159,6 +171,34 @@ const InboundReducer = (state = stateInit, action) => {
                 isSuccess: false,
                 isReject: true,
                 data: {},
+            }
+        }
+        // ------------- Inbound uom --------------------
+        case GET_INBOUND_UOM_LOADING: return {
+            ...state,
+            uom: {
+                isLoading: true,
+                isSuccess: false,
+                isReject: false,
+                data: [],
+            }
+        }
+        case GET_INBOUND_UOM_SUCCESS: return {
+            ...state,
+            uom: {
+                isLoading: false,
+                isSuccess: true,
+                isReject: false,
+                ...action.payload,
+            }
+        }
+        case GET_INBOUND_UOM_REJECT: return {
+            ...state,
+            uom: {
+                isLoading: false,
+                isSuccess: false,
+                isReject: true,
+                data: [],
             }
         }
 

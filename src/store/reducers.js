@@ -10,6 +10,7 @@ import transfer from './transfer/reducers';
 import warehouse from './warehouse/reducers';
 import inbound from './inbound/reducers';
 import outbound from './outbound/reducers';
+import catchError from "./catchError";
 
 const appReducer = combineReducers({
     auth,
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
     warehouse,
     inbound,
     outbound,
+    catchError
 })
 
 const rootReducer = (state, action) => {

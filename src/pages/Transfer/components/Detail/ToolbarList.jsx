@@ -6,7 +6,7 @@ import InputSearch from "../../../../components/form/InputSearch";
 const ToolbarComponent = ({ setFilterSearch }) => {
 
     const onSubmit = (values) => {
-        setFilterSearch(encodeURIComponent(values.search))
+        setFilterSearch(values)
     }
 
     return (

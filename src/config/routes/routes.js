@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 
 /* ---------- Auth ---------- */
 import Login from "../../pages/Auth/Login";
+import Logout from "../../pages/Auth/Logout";
 import Register from "../../pages/Auth/Register";
 import ForgotPass from "../../pages/Auth/ForgotPass";
 import RecoveryPassRequest from "../../pages/Auth/RecoveryPassRequest";
@@ -98,7 +99,12 @@ const routesAuth = [
         key: "profile",
         path: "/profile",
         element: <Profile />,
-    }
+    },
+    {
+        key: "logout",
+        path: "/logout",
+        element: <Logout />,
+    },
 ]
 
 const routesPublic = [

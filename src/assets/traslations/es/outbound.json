@@ -33,10 +33,13 @@
             "Item id",
             "Item code",
             "Descripción",
+            "Ubicación",
             "Vencimiento",
-            "Estado",
             "Lote",
-            "Cantidad"
+            "Estado",
+            "Cantidad",
+            "Cant. reservada",
+            "Cant. total"
         ],
         "empty": {
             "title": "No hay documentos de salida que mostrar",

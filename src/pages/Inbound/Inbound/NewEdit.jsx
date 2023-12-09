@@ -63,23 +63,18 @@ const NewEdit = () => {
         setAlert({ open: false, title: "", subtitle: "", type: "", btn: "" })
     }
 
-    const setError = (err, action) => {
-        if (!isEmpty(err) && !!get(err, "Message", "")) {
+    const setError = (err) => {
+        if (!!get(err, "response.data") && !!get(err, "response.data.Message", "")) {
             setAlert({
                 open: true,
-                title: get(err, "Message", ""),
-                subtitle: (<ul>{map(get(err, "ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
+                title: get(err, "response.data.Message", ""),
+                subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
                 type: "error",
-                btn: __(`${module}.actions.close`),
+                btn: __(`${module}.actions.accept`),
                 func: closeAlert
             })
         } else {
-            setAlert({
-                open: true,
-                type: "default",
-                btn: __(`${module}.actions.close`),
-                func: closeAlert
-            })
+            setShowNoti({ open: true, msg: get(err, "message"), variant: "error" })
         }
     }
 
@@ -105,8 +100,11 @@ const NewEdit = () => {
     }, [dispatch, id])
 
     const onSubmit = (values) => {
+
+
         const body = {
             description: get(values, "description"),
+            docnum: get(values, "docnum"),
             language: get(values, "language"),
             userid: get(values, "userid"),
             companyid: get(values, "companyid"),
@@ -114,7 +112,7 @@ const NewEdit = () => {
         }
         if (id) {
             setPutInbound({ loading: true })
-            body.inBound = id
+            body.inboundid = id
             putInboundRequest(body, () => getState)
                 .then(({ data }) => {
                     setPutInbound({ loading: false })
@@ -167,6 +165,7 @@ const NewEdit = () => {
     }
 
     const initialValues = {
+        docnum: id ? get(current, "data.docnum", "") : "",
         description: id ? get(current, "data.description", "") : "",
         createdate: (id ? get(current, "data.createdate", false) : false) ? moment(get(current, "data.createdate")).format("L") : moment().format("L"),
         inventorydate: (id ? get(current, "data.inventorydate", false) : "- -") ? moment(get(current, "data.inventorydate")).format("L") : moment().format("L"),
@@ -255,7 +254,24 @@ const NewEdit = () => {
                                                         </Typography>
                                                     </FormControl>
                                                 </Grid>
-                                                <Grid item xs={12} sm={4} lg={8}>
+                                                <Grid item xs={12} sm={4} lg={2}>
+                                                    <FormControl fullWidth >
+                                                        <Typography className='pb-2' component="label" htmlFor="docnum" >
+                                                            {__(`${module}.input.docnum.label`)}
+                                                        </Typography>
+                                                        <TextField
+                                                            id="docnum"
+                                                            name="docnum"
+                                                            placeholder={__(`${module}.input.docnum.placeholder`)}
+                                                            value={get(formik, "values.docnum")}
+                                                            onChange={get(formik, "handleChange")}
+                                                            error={get(formik, "touched.docnum") && Boolean(get(formik, "errors.docnum"))}
+                                                            helperText={get(formik, "touched.docnum") && get(formik, "errors.docnum")}
+                                                            size="small"
+                                                        />
+                                                    </FormControl>
+                                                </Grid>
+                                                <Grid item xs={12} sm={4} lg={6}>
                                                     <FormControl fullWidth >
                                                         <Typography className='pb-2' component="label" htmlFor="description" >
                                                             {__(`${module}.input.description.label`)}

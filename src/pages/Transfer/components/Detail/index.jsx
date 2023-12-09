@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { get, map, replace } from "lodash";
+import { useParams } from 'react-router-dom';
 import {
   IconButton,
   Typography,
@@ -27,6 +28,8 @@ import { getInventoryProdClear } from "../../../../store/product/thunk/productin
 const Detail = ({ list, getData, loading }) => {
   const [__] = useTranslation("tran");
   const dispatch = useDispatch();
+  const { id } = useParams();
+
   const [filterSearch, setFilterSearch] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
@@ -63,7 +66,7 @@ const Detail = ({ list, getData, loading }) => {
         title: get(err, "response.data.Message", ""),
         subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
         type: "error",
-        btn: __(`${module}.actions.close`),
+        btn: __(`${module}.actions.accept`),
         func: closeAlert
       })
     } else {
@@ -117,9 +120,9 @@ const Detail = ({ list, getData, loading }) => {
       userid: get(userState, "userId"),
       companyid: Number(get(userState, "companyId")),
       language: localStorage.getItem("lang"),
-      uomId: get(selected, "uomId")
+      transferdetailid: get(selected, "transferdetailid"),
+      transferid: id
     }
-
     setLoadDelete(true)
     deleteTransferDetailRequest(body, () => getState)
       .then(({ data }) => {
@@ -135,44 +138,45 @@ const Detail = ({ list, getData, loading }) => {
   const onDeleteCancel = () => {
     setAlertDelete({ open: false, title: "", subtitle: "" })
   }
+  
   const headTable = [
+    // {
+    //   key: "itemid",
+    //   label: get(titles, "[0]"),
+    //   align: "left",
+    //   width: 150,
+    // },
     {
-      key: "itemid",
-      label: get(titles, "[0]"),
-      align: "left",
-      width: 150,
-    },
-    {
-      key: "itemname",
+      key: "itemcode",
       label: get(titles, "[1]"),
       align: "center",
       width: 150,
     },
     {
-      key: "itemcode",
-      label: get(titles, "[2]"),
-      align: "center",
-      width: 150,
-    },
-    {
-      key: "expiration",
+      key: "itemname",
       label: get(titles, "[2]"),
       align: "center",
       width: 150,
     },
     {
       key: "status",
-      label: get(titles, "[3]"),
-      align: "left",
-    },
-    {
-      key: "lot",
       label: get(titles, "[4]"),
       align: "left",
     },
     {
+      key: "expiration",
+      label: get(titles, "[3]"),
+      align: "center",
+      width: 150,
+    },
+    {
+      key: "lot",
+      label: get(titles, "[5]"),
+      align: "left",
+    },
+    {
       key: "quantity",
-      label: get(titles, "[6]"),
+      label: get(titles, "[7]"),
       align: "left",
     },
     {

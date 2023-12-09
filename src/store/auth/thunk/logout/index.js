@@ -11,3 +11,8 @@ export const logout = (formData) => async (dispatch, getState) => {
     return Promise.resolve();
 };
 
+
+export const toLogout = () => async (dispatch, getState) => {
+    await dispatch(logoutSuccess())
+    return Promise.resolve();
+};

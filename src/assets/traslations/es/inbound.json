@@ -31,6 +31,7 @@
             "Estado",
             "Lote",
             "Ubicación",
+            "UOM",
             "Cantidad"
         ],
         "empty": {
@@ -66,7 +67,7 @@
         },
         "input": {
             "inBound": {
-                "label": "Documento de entrada id"
+                "label": "ID"
             },
             "status": {
                 "label": "Estado"
@@ -86,6 +87,11 @@
                 "label": "Descripción",
                 "placeholder": "Ingresa una descripción",
                 "error": "Descripción es requerida"
+            },
+            "docnum": {
+                "label": "Doc de entrada",
+                "placeholder": "Ingresa el documento de entrada",
+                "error": "Es requerido"
             }
         },
         "inputDetail": {
@@ -118,6 +124,11 @@
                 "label": "Fecha de vencimiento",
                 "placeholder": "Ingresa la fecha de vencimiento",
                 "error": "Fecha de vencimiento es requerida"
+            },
+            "uomid": {
+                "label": "Unidad de medida",
+                "placeholder": "Seleccione la uom",
+                "error": "Campo requerido"
             }
         },
         "status": {

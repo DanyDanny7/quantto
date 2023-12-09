@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useParams } from 'react-router-dom';
 
 import Table from "../../../../../components/form/Table";
 import Toolbar from "./Toolbar";
@@ -29,6 +30,8 @@ import { getStateProducts } from "../../../../../store/config/thunk/stateProduct
 const Detail = ({ list, getData, loading }) => {
   const [__] = useTranslation("inbo");
   const dispatch = useDispatch();
+  const { id } = useParams();
+
   const [filterSearch, setFilterSearch] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [alertDelete, setAlertDelete] = useState({ open: false, title: "", subtitle: "" })
@@ -69,7 +72,7 @@ const Detail = ({ list, getData, loading }) => {
         title: get(err, "response.data.Message", ""),
         subtitle: (<ul>{map(get(err, "response.data.ValidationError", []), (item) => <li>{`• ${item}`}</li>)}</ul>),
         type: "error",
-        btn: __(`${module}.actions.close`),
+        btn: __(`${module}.actions.accept`),
         func: closeAlert
       })
     } else {
@@ -123,8 +126,10 @@ const Detail = ({ list, getData, loading }) => {
       userid: get(userState, "userId"),
       companyid: Number(get(userState, "companyId")),
       language: localStorage.getItem("lang"),
-      inbounddetailid: get(selected, "inBoundDetail")
+      inbounddetailid: get(selected, "inbounddetailid"),
+      inboundid: id,
     }
+
     setLoadDelete(true)
     deleteInboundDetailRequest(body, () => getState)
       .then(({ data }) => {
@@ -164,18 +169,23 @@ const Detail = ({ list, getData, loading }) => {
       align: "left",
     },
     {
-      key: "locationid.description",
+      key: "lot",
       label: get(titles, "[4]"),
       align: "left",
     },
     {
-      key: "lot",
+      key: "location",
       label: get(titles, "[5]"),
       align: "left",
     },
     {
-      key: "quantity",
+      key: "uom",
       label: get(titles, "[6]"),
+      align: "left",
+    },
+    {
+      key: "quantity",
+      label: get(titles, "[7]"),
       align: "center",
     },
     {

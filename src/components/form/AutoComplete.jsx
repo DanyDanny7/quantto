@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
     Autocomplete as AutocompleteUi,
     TextField,
@@ -23,6 +23,8 @@ const Autocomplete = ({
         formik?.setFieldValue(name, get(v, "value"))
     }
 
+    useEffect(() => {}, [formik.values[name]])
+
     return (
 
         <AutocompleteUi
@@ -35,7 +37,7 @@ const Autocomplete = ({
             onChange={onChange}
             getOptionLabel={({ label }) => label}
             options={options}
-            value={find(options, ({ value }) => value === get(formik, `values.${name}`))}
+            value={find(options, ({ value }) => value === get(formik, `values.${name}`)) || null}
             loading={loading}
             {...props}
             renderInput={(params) => (

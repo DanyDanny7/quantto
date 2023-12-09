@@ -14,7 +14,9 @@ import {
 import get from "lodash/get";
 import Table from "../../../../../components/form/Table";
 import map from "lodash/map";
+import filter from "lodash/filter";
 import includes from "lodash/includes";
+import toLower from "lodash/toLower";
 
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +36,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     const { id } = useParams();
     const dispatch = useDispatch();
     const [filterSearch, setFilterSearch] = useState("");
+    const [list, setList] = useState([])
 
     const titles = __(`${module}.tableDetailModal`, { returnObjects: true })
 
@@ -41,21 +44,42 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     const getState = useSelector(state => state);
     const getAvailableInventory = useSelector(state => state.product.product.inventory);
 
-    const getItemsInventoryData = ({ page, filterSearch }) => {
-        const filters = { page, ...(!!filterSearch && { itemid: filterSearch }) }
-        dispatch(getInventoryProduct(filters))
+    const getItemsInventoryData = ({ }) => {
+        dispatch(getInventoryProduct({ itemid: get(selected, "itemid") }))
+    }
+
+    useEffect(() => {
+        getItemsInventoryData()
+    }, [dispatch])
+
+    useEffect(() => {
+        setList(get(getAvailableInventory, "data", []))
+    }, [get(getAvailableInventory, "data.length", 0), get(getAvailableInventory, "isLoading", false)])
+
+    const filterData = () => {
+        const allList = get(getAvailableInventory, "data", []);
+        const newList = filter(allList, (itm) => {
+            let flag = false;
+            for (const key in itm) {
+                if (Object.hasOwnProperty.call(itm, key)) {
+                    const element = itm[key];
+                    if (includes(toLower(element), toLower(filterSearch?.search))) {
+                        flag = true;
+                    }
+                }
+            }
+            return flag;
+        })
+        setList(newList)
     }
 
     useEffect(() => {
         if (!!filterSearch) {
-            getItemsInventoryData({ page: 1, filterSearch })
+            filterData()
         }
-    }, [dispatch, filterSearch])
+    }, [JSON.stringify(filterSearch)])
 
-    useEffect(() => {
-        setFilterSearch(get(selected, "itemid") || "")
-    }, [get(selected, "itemid")])
-    
+
     const handleClose = () => {
         onClose();
         setListItems({})
@@ -89,11 +113,11 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     };
 
     const headTable = [
-        {
-            key: "itemId",
-            label: get(titles, "[0]"),
-            align: "left",
-        },
+        // {
+        //     key: "itemId",
+        //     label: get(titles, "[0]"),
+        //     align: "left",
+        // },
         {
             key: "itemCode",
             label: get(titles, "[1]"),
@@ -105,14 +129,14 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
             align: "center",
         },
         {
-            key: "expiration",
+            key: "location",
             label: get(titles, "[3]"),
             align: "center",
         },
         {
-            key: "estado",
+            key: "expiration",
             label: get(titles, "[4]"),
-            align: "left",
+            align: "center",
         },
         {
             key: "lot",
@@ -120,20 +144,25 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
             align: "left",
         },
         {
-            key: "quantity",
+            key: "estado",
             label: get(titles, "[6]"),
+            align: "left",
+        },
+        {
+            key: "quantity",
+            label: get(titles, "[7]"),
             align: "left",
             width: 150,
             sx: { minWidth: 150 }
         },
         {
             key: "quantityReserved",
-            label: get(titles, "[7]"),
+            label: get(titles, "[8]"),
             align: "center",
         },
         {
             key: "quantityTotal",
-            label: get(titles, "[8]"),
+            label: get(titles, "[9]"),
             align: "center",
         },
         {
@@ -143,7 +172,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
         },
     ]
 
-    const dataTable = map(get(getAvailableInventory, "data", []), (row, i) => {
+    const dataTable = map(list, (row, i) => {
         const id = row.lpn;
         let flag = true;
         try {
@@ -225,7 +254,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
                 </Box>
                 <Divider />
                 <Table
-                    toolbar={<Toolbar setFilterSearch={setFilterSearch} __={__} module={module} initialValue={get(selected, "itemid", "")} />}
+                    toolbar={<Toolbar setFilterSearch={setFilterSearch} />}
                     headTable={headTable}
                     dataTable={dataTable}
                     __={__}

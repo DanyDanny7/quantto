@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     Dialog,
@@ -15,14 +15,16 @@ import {
     TextField,
     Grid,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import get from "lodash/get";
 import map from "lodash/map";
 import { useFormik } from 'formik';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Close } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import moment from "moment"
 
-import validator from "./validator"
+import validator from "./validator";
 import Notification from "../../../../../components/form/Notification";
 import FormatNumber from "../../../../../components/form/FormatNumber";
 import AutoComplete from "../../../../../components/form/AutoComplete";
@@ -30,11 +32,15 @@ import DatePickerUi from "../../../../../components/form/DatePickerUi";
 
 import { postInboundDetailRequest } from "../../../../../store/inbound/actions/inboundDetail/post"
 import { putInboundDetailRequest } from "../../../../../store/inbound/actions/inboundDetail/put"
+import { getInboundUom } from "../../../../../store/inbound/thunk/inbound/getUom"
 
-const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl", showNoti, setShowNoti, getData, setError }) => {
+const NewDetail = ({ open, onClose, isEdit, toEdit, module, maxWidth = "xl", showNoti, setShowNoti, getData, setError }) => {
+    const [__] = useTranslation("inbo");
+
     const [postDetail, setPostDetail] = useState({ loading: false })
     const [putDetail, setPutDetail] = useState({ loading: false })
     const { id } = useParams();
+    const dispatch = useDispatch();
 
     const userState = useSelector(state => state.auth.login.dataUser);
     const getState = useSelector(state => state);
@@ -42,7 +48,9 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
     const product = useSelector(state => state.product.product);
     const locations = useSelector(state => state.warehouse.warehouse.location);
     const stateProducts = useSelector(state => state.config.stateProducts);
+    const uom = useSelector(state => state.inbound.inbound.uom);
 
+    const uomList = map(uom?.data, ({ uomId, description }) => ({ value: uomId, label: description }));
     const itemList = map(product?.data.data, ({ itemId, itemName }) => ({ value: itemId, label: itemName }));
     const locationList = map(locations?.data.data, ({ locationId, description }) => ({ value: locationId, label: description }));
     const statusList = map(stateProducts?.data, ({ statusid, description }) => ({ value: statusid, label: description }));
@@ -56,6 +64,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
         const body = {
             inboundid: Number(id),
             itemid: get(values, "itemid"),
+            uomid: get(values, "uomid"),
             statusid: get(values, "statusid"),
             locationid: get(values, "locationid"),
             quantity: Number(get(values, "quantity")),
@@ -67,7 +76,7 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
         }
         if (isEdit) {
             setPutDetail({ loading: true })
-            body.id = get(toEdit, "inBoundDetail")
+            body.id = get(toEdit, "inbounddetailid")
             putInboundDetailRequest(body, () => getState)
                 .then(({ data }) => {
                     setPutDetail({ loading: false })
@@ -95,8 +104,9 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
             lot: id ? get(toEdit, "lot", "") : "",
             quantity: id ? get(toEdit, "quantity", "") : "",
             statusid: id ? get(toEdit, "statusid", "") : "",
+            uomid: id ? get(toEdit, "uomid", "") : "",
 
-            expirationdate: null,
+            expirationdate: !!get(toEdit, "expirationdate", null) ? moment(get(toEdit, "expirationdate")) : null,
             locationid: id ? get(toEdit, "locationid", "") : "",
 
             // ---- complements -----
@@ -107,6 +117,23 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
         validationSchema: validator(__, module),
         onSubmit: onSubmit
     });
+
+    useEffect(() => {
+        if (!!(formik.values.itemid)) {
+            getUom({ itemid: formik.values.itemid })
+        } else {
+            change()
+        }
+    }, [formik.values.itemid])
+
+    const change = () => {
+        formik.setFieldValue("uomid", "")
+    }
+
+
+    const getUom = (e) => {
+        dispatch(getInboundUom(e))
+    }
 
     return (
         <>
@@ -144,131 +171,148 @@ const NewDetail = ({ open, onClose, isEdit, toEdit, __, module, maxWidth = "xl",
                     </Stack>
                 </Box>
                 <Divider />
-                <Grid className='p-4' container spacing={{ xs: 2, md: 3 }}>
-                    <Grid item xs={12}>
-                        <Typography variant="bodyMedium" color="#787676">{__(`${module}.modal.label1`)}</Typography>
-                        <Divider />
+                <div className='overflow-y-auto'>
+                    <Grid className='p-4 ' container spacing={{ xs: 1, md: 1 }}>
+                        <Grid item xs={12}>
+                            <Typography variant="bodyMedium" color="#787676">{__(`${module}.modal.label1`)}</Typography>
+                            <Divider />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="itemid" >
+                                    {__(`${module}.inputDetail.itemid.label`)}
+                                </Typography>
+                                <AutoComplete
+                                    name={"itemid"}
+                                    formik={formik}
+                                    label={__(`form.itemid.label`)}
+                                    placeholder={__(`form.itemid.placeholder`)}
+                                    options={itemList}
+                                    loading={get(product, "isLoading")}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="uomid" >
+                                    {__(`${module}.inputDetail.uomid.label`)}
+                                </Typography>
+                                <AutoComplete
+                                    name={"uomid"}
+                                    formik={formik}
+                                    label={__(`form.uomid.label`)}
+                                    placeholder={__(`form.uomid.placeholder`)}
+                                    options={uomList}
+                                    loading={get(uom, "isLoading")}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="lot" >
+                                    {__(`${module}.inputDetail.lot.label`)}
+                                </Typography>
+                                <TextField
+                                    id="lot"
+                                    name="lot"
+                                    placeholder={__(`${module}.inputDetail.lot.placeholder`)}
+                                    value={get(formik, "values.lot")}
+                                    onChange={get(formik, "handleChange")}
+                                    error={get(formik, "touched.lot") && Boolean(get(formik, "errors.lot"))}
+                                    helperText={get(formik, "touched.lot") && get(formik, "errors.lot")}
+                                    size="small"
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="quantity" >
+                                    {__(`${module}.inputDetail.quantity.label`)}
+                                </Typography>
+                                <TextField
+                                    id="quantity"
+                                    name="quantity"
+                                    placeholder={__(`${module}.inputDetail.quantity.placeholder`)}
+                                    value={get(formik, "values.quantity")}
+                                    onChange={get(formik, "handleChange")}
+                                    error={get(formik, "touched.quantity") && Boolean(get(formik, "errors.quantity"))}
+                                    helperText={get(formik, "touched.quantity") && get(formik, "errors.quantity")}
+                                    size="small"
+                                    InputProps={{ inputComponent: FormatNumber }}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="statusid" >
+                                    {__(`${module}.inputDetail.statusid.label`)}
+                                </Typography>
+                                <AutoComplete
+                                    name={"statusid"}
+                                    formik={formik}
+                                    label={__(`form.statusid.label`)}
+                                    placeholder={__(`form.statusid.placeholder`)}
+                                    options={statusList}
+                                    loading={get(stateProducts, "isLoading")}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant="bodyMedium" color="#787676">{__(`${module}.modal.label2`)}</Typography>
+                            <Divider />
+                        </Grid>
+                        <Grid item xs={12} md={6} >
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="expirationdate" >
+                                    {__(`${module}.inputDetail.expirationdate.label`)}
+                                </Typography>
+                                <DatePickerUi
+                                    id="expirationdate"
+                                    name="expirationdate"
+                                    formik={formik}
+                                    label={__(`form.expirationdate.label`)}
+                                    placeholder={__(`form.expirationdate.placeholder`)}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth >
+                                <Typography className='pb-1' component="label" htmlFor="locationid" >
+                                    {__(`${module}.inputDetail.locationid.label`)}
+                                </Typography>
+                                <AutoComplete
+                                    name={"locationid"}
+                                    formik={formik}
+                                    label={__(`form.locationid.label`)}
+                                    placeholder={__(`form.locationid.placeholder`)}
+                                    options={locationList}
+                                    loading={get(locations, "isLoading")}
+                                />
+                            </FormControl>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FormControl fullWidth >
-                            <Typography className='pb-2' component="label" htmlFor="itemid" >
-                                {__(`${module}.inputDetail.itemid.label`)}
-                            </Typography>
-                            <AutoComplete
-                                name={"itemid"}
-                                formik={formik}
-                                label={__(`form.itemid.label`)}
-                                placeholder={__(`form.itemid.placeholder`)}
-                                options={itemList}
-                                loading={get(product, "isLoading")}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FormControl fullWidth >
-                            <Typography className='pb-2' component="label" htmlFor="lot" >
-                                {__(`${module}.inputDetail.lot.label`)}
-                            </Typography>
-                            <TextField
-                                id="lot"
-                                name="lot"
-                                placeholder={__(`${module}.inputDetail.lot.placeholder`)}
-                                value={get(formik, "values.lot")}
-                                onChange={get(formik, "handleChange")}
-                                error={get(formik, "touched.lot") && Boolean(get(formik, "errors.lot"))}
-                                helperText={get(formik, "touched.lot") && get(formik, "errors.lot")}
-                                size="small"
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FormControl fullWidth >
-                            <Typography className='pb-2' component="label" htmlFor="quantity" >
-                                {__(`${module}.inputDetail.quantity.label`)}
-                            </Typography>
-                            <TextField
-                                id="quantity"
-                                name="quantity"
-                                placeholder={__(`${module}.inputDetail.quantity.placeholder`)}
-                                value={get(formik, "values.quantity")}
-                                onChange={get(formik, "handleChange")}
-                                error={get(formik, "touched.quantity") && Boolean(get(formik, "errors.quantity"))}
-                                helperText={get(formik, "touched.quantity") && get(formik, "errors.quantity")}
-                                size="small"
-                                InputProps={{ inputComponent: FormatNumber }}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FormControl fullWidth >
-                            <Typography className='pb-2' component="label" htmlFor="statusid" >
-                                {__(`${module}.inputDetail.statusid.label`)}
-                            </Typography>
-                            <AutoComplete
-                                name={"statusid"}
-                                formik={formik}
-                                label={__(`form.statusid.label`)}
-                                placeholder={__(`form.statusid.placeholder`)}
-                                options={statusList}
-                                loading={get(stateProducts, "isLoading")}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="bodyMedium" color="#787676">{__(`${module}.modal.label2`)}</Typography>
-                        <Divider />
-                    </Grid>
-                    <Grid item xs={12} md={6} >
-                        <FormControl fullWidth >
-                            <Typography className='pb-2' component="label" htmlFor="expirationdate" >
-                                {__(`${module}.inputDetail.expirationdate.label`)}
-                            </Typography>
-                            <DatePickerUi
-                                id="expirationdate"
-                                name="expirationdate"
-                                formik={formik}
-                                label={__(`form.expirationdate.label`)}
-                                placeholder={__(`form.expirationdate.placeholder`)}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FormControl fullWidth >
-                            <Typography className='pb-2' component="label" htmlFor="locationid" >
-                                {__(`${module}.inputDetail.locationid.label`)}
-                            </Typography>
-                            <AutoComplete
-                                name={"locationid"}
-                                formik={formik}
-                                label={__(`form.locationid.label`)}
-                                placeholder={__(`form.locationid.placeholder`)}
-                                options={locationList}
-                                loading={get(locations, "isLoading")}
-                            />
-                        </FormControl>
-                    </Grid>
-                </Grid>
-                <DialogActions>
-                    <Stack className='w-full' direction="row" spacing={2} justifyContent="flex-end">
-                        <Stack direction="row" spacing={2}>
-                            <Button
-                                variant="text"
-                                color="primary"
-                                onClick={handleClose}
-                            >
-                                {__(`${module}.modal.btn.cancel`)}
-                            </Button>
-                            <LoadingButton
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                loading={get(postDetail, "loading") || get(putDetail, "loading")}
-                            >
-                                {__(`${module}.modal.btn.save`)}
-                            </LoadingButton>
+                    <DialogActions>
+                        <Stack className='w-full' direction="row" spacing={2} justifyContent="flex-end">
+                            <Stack direction="row" spacing={2}>
+                                <Button
+                                    variant="text"
+                                    color="primary"
+                                    onClick={handleClose}
+                                >
+                                    {__(`${module}.modal.btn.cancel`)}
+                                </Button>
+                                <LoadingButton
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    loading={get(postDetail, "loading") || get(putDetail, "loading")}
+                                >
+                                    {__(`${module}.modal.btn.save`)}
+                                </LoadingButton>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                </DialogActions>
+                    </DialogActions>
+                </div>
             </Dialog >
             <Notification showNoti={showNoti} setShowNoti={setShowNoti} />
         </>

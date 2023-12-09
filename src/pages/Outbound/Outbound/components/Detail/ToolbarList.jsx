@@ -1,19 +1,19 @@
 import React from 'react';
-import { Toolbar, Stack } from "@mui/material";
+import { Toolbar } from "@mui/material";
 
 import InputSearch from "../../../../../components/form/InputSearch";
 
-const ToolbarComponent = ({ setFilterSearch, initialValue }) => {
+const ToolbarComponent = ({ setFilterSearch }) => {
 
     const onSubmit = (values) => {
-        setFilterSearch(encodeURIComponent(values.search))
+        setFilterSearch(values)
     }
 
     return (
         <Toolbar className='p-2' sx={{ borderBottomWidth: "1px", borderBottomColor: "text.sslite", borderBottomStyle: "solid" }}>
-            <Stack className='w-full' direction="row" justifyContent="space-between" spacing={2} >
-                <InputSearch seachId="search-s-outbound" onSubmit={onSubmit} color="secondary" initialValue={initialValue} sx={{ minWidth: 300 }} size="small" />
-            </Stack>
+            <div className='w-full grid sm:grid-cols-2 md:grid-cols-4 gap-3' >
+                <InputSearch seachId="search-s-outbound" onSubmit={onSubmit} color="secondary" initialValue={""} className="!max-w-[300px]" size="small" />
+            </div>
         </Toolbar>
     )
 }
